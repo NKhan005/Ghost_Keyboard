@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="G-BOARD - Touchless Spatial Vision Keyboard OS powered by MediaPipe and WebGL">
-    <title>G-BOARD | STARK ULTIMATE V6.0</title>
+    <meta name="description" content="G-BOARD - High Speed Touchless Spatial Vision Keyboard OS">
+    <title>G-BOARD | TURBO SPEED V6.5</title>
     
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
@@ -17,16 +17,15 @@
             --glow: rgba(0, 242, 255, 0.6);
             --alert: #ff3b3b; 
             --dim-neon: rgba(0, 242, 255, 0.2); 
-            --panel-bg: rgba(3, 15, 20, 0.75);
+            --panel-bg: rgba(3, 15, 20, 0.8);
             --key-text: #00f2ff;
         }
 
-        /* Cyberpunk High-Contrast Theme Profiles */
         body.theme-amber {
             --neon: #ffb700;
             --glow: rgba(255, 183, 0, 0.6);
             --dim-neon: rgba(255, 183, 0, 0.2);
-            --panel-bg: rgba(20, 15, 3, 0.75);
+            --panel-bg: rgba(20, 15, 3, 0.8);
             --key-text: #ffb700;
         }
 
@@ -34,7 +33,7 @@
             --neon: #ff0055;
             --glow: rgba(255, 0, 85, 0.6);
             --dim-neon: rgba(255, 0, 85, 0.2);
-            --panel-bg: rgba(20, 3, 10, 0.75);
+            --panel-bg: rgba(20, 3, 10, 0.8);
             --key-text: #ff0055;
         }
 
@@ -44,6 +43,7 @@
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none; 
+            touch-action: none;
         }
 
         body { 
@@ -52,8 +52,9 @@
             color: var(--neon); 
             font-family: 'Segoe UI', system-ui, sans-serif; 
             overflow: hidden; 
+            width: 100vw;
             height: 100vh; 
-            transition: color 0.3s ease, background 0.3s ease;
+            transition: color 0.2s ease, background 0.2s ease;
         }
         
         #video_input { 
@@ -62,126 +63,134 @@
             height: 100vh; 
             object-fit: cover; 
             transform: scaleX(-1); 
-            opacity: 0.22; 
+            opacity: 0.25; 
             z-index: -1; 
-            filter: contrast(120%) brightness(80%); 
+            filter: contrast(120%) brightness(85%); 
         }
 
-        /* SPATIAL FINGERTIP CURSOR RETICLE */
+        /* HARDWARE ACCELERATED RETICLE */
         #finger_cursor {
             position: fixed;
-            width: 28px;
-            height: 28px;
+            width: 24px;
+            height: 24px;
             border: 2px solid var(--neon);
             border-radius: 50%;
             pointer-events: none;
             z-index: 150;
             display: none;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 15px var(--neon);
-            transition: width 0.1s, height 0.1s, border-color 0.1s;
+            box-shadow: 0 0 12px var(--neon);
+            will-change: left, top;
         }
 
-        /* HEADER */
         #main_title { 
             position: fixed; 
-            top: 20px; 
+            top: 10px; 
             left: 50%; 
             transform: translateX(-50%); 
             font-family: 'Orbitron', sans-serif; 
-            font-size: 3.2rem; 
+            font-size: clamp(1.4rem, 4vw, 2.8rem); 
             font-weight: 900; 
-            letter-spacing: 20px; 
-            text-shadow: 0 0 30px var(--glow); 
+            letter-spacing: clamp(6px, 1.5vw, 16px); 
+            text-shadow: 0 0 20px var(--glow); 
             z-index: 100;
             color: #ffffff; 
             text-transform: uppercase;
-            transition: text-shadow 0.3s ease;
+            margin: 0;
+            text-align: center;
+            width: 100%;
         }
 
-        /* FULL-TEXT TELEMETRY HUD */
+        /* RESPONSIVE HUD TELEMETRY PANEL */
         #telemetry_box { 
             position: fixed; 
-            top: 25px; 
-            right: 25px; 
-            width: 320px; 
-            padding: 18px; 
+            top: 15px; 
+            right: 15px; 
+            width: min(300px, 85vw); 
+            padding: 10px 14px; 
             background: var(--panel-bg); 
-            -webkit-backdrop-filter: blur(14px);
-            backdrop-filter: blur(14px); 
-            border: 1px solid rgba(255, 255, 255, 0.18); 
-            border-right: 5px solid var(--neon);
-            border-radius: 8px; 
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px); 
+            border: 1px solid rgba(255, 255, 255, 0.15); 
+            border-right: 4px solid var(--neon);
+            border-radius: 6px; 
             font-family: 'Courier New', monospace; 
-            font-size: 0.8rem; 
+            font-size: clamp(0.65rem, 1.8vw, 0.75rem); 
             z-index: 100;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-            transition: border-color 0.3s ease, background 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
         }
 
         .sys-status-header {
             color: var(--neon); 
             font-weight: bold; 
-            margin-bottom: 10px; 
+            margin-bottom: 6px; 
             border-bottom: 1px solid var(--dim-neon); 
-            padding-bottom: 6px;
-            letter-spacing: 1px;
+            padding-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
         }
 
-        .stat-line { margin-bottom: 6px; display: flex; justify-content: space-between; gap: 10px; }
-        .stat-label { opacity: 0.8; white-space: nowrap; }
-        .stat-val { font-weight: bold; color: #ffffff; text-align: right; }
+        .fps-display {
+            color: #ffffff;
+        }
 
-        /* SPATIAL KEYBOARD CONTAINER */
+        .stat-line { margin-bottom: 3px; display: flex; justify-content: space-between; gap: 8px; }
+        .stat-label { opacity: 0.8; white-space: nowrap; }
+        .stat-val { font-weight: bold; color: #ffffff; text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+        /* RESPONSIVE KEYBOARD CONTAINER */
         #keyboard_overlay { 
             position: absolute; 
-            top: 54%; 
+            top: 52%; 
             left: 50%; 
             transform: translate(-50%, -50%); 
             display: flex; 
             flex-direction: column; 
-            gap: 8px; 
-            padding: 25px; 
-            background: rgba(2, 18, 24, 0.45); 
-            -webkit-backdrop-filter: blur(20px);
-            backdrop-filter: blur(20px); 
-            border-radius: 16px; 
+            gap: clamp(4px, 1vh, 8px); 
+            padding: clamp(8px, 2vw, 20px); 
+            background: rgba(2, 18, 24, 0.55); 
+            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(16px); 
+            border-radius: 12px; 
             border: 1px solid rgba(255, 255, 255, 0.12); 
             z-index: 10;
-            box-shadow: 0 0 50px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.7);
+            width: min(96vw, 760px);
         }
 
-        .row { display: flex; justify-content: center; gap: 8px; }
+        .row { display: flex; justify-content: center; gap: clamp(3px, 0.8vw, 6px); width: 100%; }
         .key { 
-            width: 52px; 
-            height: 52px; 
-            border: 1px solid rgba(255, 255, 255, 0.22); 
+            flex: 1;
+            height: clamp(38px, 6.5vh, 52px); 
+            border: 1px solid rgba(255, 255, 255, 0.2); 
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            border-radius: 6px; 
+            border-radius: 5px; 
             font-weight: 700; 
             background: rgba(255, 255, 255, 0.05); 
-            transition: all 0.12s cubic-bezier(0.2, 0, 0, 1); 
+            transition: transform 0.08s ease, background 0.08s ease; 
             font-family: 'Orbitron', sans-serif; 
-            font-size: 0.95rem; 
+            font-size: clamp(0.75rem, 2vw, 0.95rem); 
             position: relative; 
             overflow: hidden; 
             color: var(--key-text);
             cursor: pointer;
+            min-width: 0;
         }
 
-        .key.space { width: 360px; margin-top: 6px; border-bottom: 4px solid var(--neon); }
-        .key.shift { width: 88px; background: rgba(255, 255, 255, 0.1); }
-        .key.speak-key { width: 90px; background: rgba(0, 242, 255, 0.12); }
-        .key.theme-key { width: 60px; background: rgba(255, 255, 255, 0.08); }
+        .key.space { flex: 4; border-bottom: 3px solid var(--neon); }
+        .key.shift { flex: 1.5; background: rgba(255, 255, 255, 0.1); }
+        .key.speak-key { flex: 1.5; background: rgba(0, 242, 255, 0.12); }
+        .key.theme-key { flex: 1.2; background: rgba(255, 255, 255, 0.08); }
         
         .key.hover, .key:focus { 
             background: var(--neon); 
             color: #000000; 
-            box-shadow: 0 0 25px var(--neon); 
-            transform: translateY(-4px) scale(1.05); 
+            box-shadow: 0 0 18px var(--neon); 
+            transform: scale(1.06); 
             outline: none;
+            z-index: 2;
         }
         
         #clr_fill { 
@@ -190,31 +199,30 @@
             left: 0; 
             height: 100%; 
             background: var(--alert); 
-            opacity: 0.5; 
+            opacity: 0.55; 
             width: 0%; 
             pointer-events: none; 
-            transition: width 0.05s linear; 
+            transition: width 0.04s linear; 
         }
 
-        /* TERMINAL LOG PANEL */
+        /* RESPONSIVE TERMINAL LOG PANEL */
         #terminal_log { 
             position: fixed; 
-            bottom: 30px; 
+            bottom: 15px; 
             left: 50%; 
             transform: translateX(-50%); 
-            width: 85%; 
-            padding: 22px 30px; 
-            background: rgba(2, 10, 14, 0.94); 
-            border-left: 6px solid var(--neon); 
-            border-radius: 0 8px 8px 0;
+            width: min(94vw, 850px); 
+            padding: clamp(10px, 2vh, 18px) 20px; 
+            background: rgba(2, 10, 14, 0.95); 
+            border-left: 5px solid var(--neon); 
+            border-radius: 0 6px 6px 0;
             font-family: 'Courier New', monospace; 
-            font-size: 1.5rem; 
+            font-size: clamp(1rem, 2.5vw, 1.4rem); 
             white-space: pre-wrap;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            min-height: 75px; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.8);
+            min-height: 55px; 
             display: flex; 
             align-items: center;
-            transition: border-color 0.3s ease;
         }
         
         #start_btn { 
@@ -222,65 +230,73 @@
             top: 50%; 
             left: 50%; 
             transform: translate(-50%, -50%); 
-            padding: 22px 55px; 
+            padding: clamp(14px, 3vh, 22px) clamp(25px, 6vw, 45px); 
             font-family: 'Orbitron', sans-serif; 
             background: var(--neon); 
             color: #000000; 
             border: none; 
             cursor: pointer; 
             z-index: 200; 
-            font-size: 1.3rem; 
+            font-size: clamp(1rem, 2.5vw, 1.25rem); 
             font-weight: 900; 
-            letter-spacing: 4px;
+            letter-spacing: 3px;
             border-radius: 8px; 
-            box-shadow: 0 0 40px var(--neon); 
-            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 0 35px var(--neon); 
+            white-space: nowrap;
         }
-        #start_btn:hover, #start_btn:focus { transform: translate(-50%, -50%) scale(1.05); box-shadow: 0 0 60px var(--neon); outline: none; }
 
-        /* SSL SECURITY WARNING BANNER */
-        #sec_warning {
-            position: fixed; top: 0; left: 0; width: 100%; padding: 12px;
-            background: var(--alert); color: #fff; text-align: center;
-            font-family: 'Orbitron', sans-serif; font-size: 0.9rem; z-index: 300; display: none;
+        /* PORTRAIT / SMALL SCREEN COLLAPSE FOR HUD */
+        @media (max-width: 768px) and (orientation: portrait) {
+            #telemetry_box {
+                top: auto;
+                bottom: 80px;
+                right: 50%;
+                transform: translateX(50%);
+                width: 94vw;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 4px 12px;
+                padding: 8px 12px;
+            }
+            .sys-status-header { grid-column: span 2; margin-bottom: 2px; }
+            #keyboard_overlay { top: 40%; width: 98vw; padding: 6px; }
         }
     </style>
 </head>
 <body>
 
-    <div id="sec_warning" role="alert">SECURITY ALERT: Camera & GPS require HTTPS or Localhost context to operate.</div>
     <button id="start_btn" aria-label="Launch G-BOARD Operating System">LAUNCH G-BOARD OS</button>
     <video id="video_input"></video>
-    <div id="finger_cursor" aria-hidden="true"></div>
+    <div id="finger_cursor"></div>
     <h1 id="main_title">G - BOARD</h1>
 
-    <div id="telemetry_box" role="status" aria-live="polite">
-        <div class="sys-status-header" id="status_text">SYSTEM STATUS: OPERATIONAL</div>
-        <div class="stat-line"><span class="stat-label">SYSTEM TIME:</span> <span id="stat_time" class="stat-val">--:--:--</span></div>
-        <div class="stat-line"><span class="stat-label">CURRENT DATE:</span> <span id="stat_date" class="stat-val">--/--/----</span></div>
-        <div class="stat-line"><span class="stat-label">GPS LOCATION:</span> <span id="stat_loc" class="stat-val">ACQUIRING FIX...</span></div>
-        <div class="stat-line"><span class="stat-label">AMBIENT WEATHER:</span> <span id="stat_temp" class="stat-val">--°C</span></div>
-        <div class="stat-line"><span class="stat-label">TYPING SPEED:</span> <span id="stat_wpm" class="stat-val">0 WPM</span></div>
-        <div class="stat-line"><span class="stat-label">TOTAL CHARACTERS:</span> <span id="stat_chars" class="stat-val">0</span></div>
-        <div class="stat-line"><span class="stat-label">HARDWARE STATE:</span> <span id="stat_sys_temp" class="stat-val">SANDBOXED (GPU)</span></div>
+    <div id="telemetry_box">
+        <div class="sys-status-header">
+            <span>SYS: ONLINE</span>
+            <span id="fps_counter" class="fps-display">60 FPS</span>
+        </div>
+        <div class="stat-line"><span class="stat-label">TIME:</span> <span id="stat_time" class="stat-val">--:--:--</span></div>
+        <div class="stat-line"><span class="stat-label">DATE:</span> <span id="stat_date" class="stat-val">--/--/----</span></div>
+        <div class="stat-line"><span class="stat-label">LOCATION:</span> <span id="stat_loc" class="stat-val">LOCATING...</span></div>
+        <div class="stat-line"><span class="stat-label">WEATHER:</span> <span id="stat_temp" class="stat-val">--°C</span></div>
+        <div class="stat-line"><span class="stat-label">SPEED:</span> <span id="stat_wpm" class="stat-val">0 WPM</span></div>
+        <div class="stat-line"><span class="stat-label">CHARS:</span> <span id="stat_chars" class="stat-val">0</span></div>
+        <div class="stat-line"><span class="stat-label">CORE ENGINE:</span> <span class="stat-val">TURBO-CV</span></div>
     </div>
 
-    <div id="keyboard_overlay" role="region" aria-label="Spatial Keyboard Grid"></div>
-    <div id="terminal_log" role="region" aria-label="Terminal Output" aria-live="polite"><span id="typed_text">_</span></div>
+    <div id="keyboard_overlay"></div>
+    <div id="terminal_log"><span id="typed_text">_</span></div>
 
     <script>
-        // Security Context Check
-        if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-            document.getElementById('sec_warning').style.display = 'block';
-        }
-
         const videoElement = document.getElementById('video_input');
         videoElement.setAttribute('playsinline', '');
+        videoElement.setAttribute('muted', '');
 
         const typedText = document.getElementById('typed_text');
         const keyboard = document.getElementById('keyboard_overlay');
         const startBtn = document.getElementById('start_btn');
         const cursor = document.getElementById('finger_cursor');
+        const fpsCounter = document.getElementById('fps_counter');
         
         let isCaps = true;
         let audioCtx = null;
@@ -292,21 +308,25 @@
         const themes = ['cyan', 'amber', 'crimson'];
         let currentThemeIndex = 0;
 
+        // FPS Metric Tracking
+        let lastFrameTime = performance.now();
+        let frameCount = 0;
+
         function playHapticClick() {
             if (!audioCtx) return;
             try {
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(120, audioCtx.currentTime + 0.04);
-                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.04);
+                osc.frequency.setValueAtTime(850, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(140, audioCtx.currentTime + 0.035);
+                gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.035);
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
                 osc.start();
-                osc.stop(audioCtx.currentTime + 0.04);
-            } catch (e) { /* Audio Context Safe Guard */ }
+                osc.stop(audioCtx.currentTime + 0.035);
+            } catch (e) {}
         }
 
         function speakText(text) {
@@ -315,14 +335,8 @@
             const cleanText = text.replace(/_/g, '').trim();
             if (cleanText.length === 0) return;
             const utterance = new SpeechSynthesisUtterance(cleanText);
-            utterance.rate = 1.0;
+            utterance.rate = 1.05;
             synth.speak(utterance);
-        }
-
-        function fetchWithTimeout(url, timeoutMs = 5000) {
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
-            return fetch(url, { signal: controller.signal }).finally(() => clearTimeout(timeoutId));
         }
 
         function initGPSLocation() {
@@ -333,7 +347,7 @@
                         const lon = position.coords.longitude;
 
                         try {
-                            const revGeoRes = await fetchWithTimeout(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`);
+                            const revGeoRes = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`);
                             const geoData = await revGeoRes.json();
                             const locality = geoData.locality || geoData.city || geoData.principalSubdivision || "SURAMPALEM";
                             const country = geoData.countryCode || "IN";
@@ -343,18 +357,18 @@
                         }
 
                         try {
-                            const weatherRes = await fetchWithTimeout(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+                            const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
                             const weatherData = await weatherRes.json();
                             document.getElementById('stat_temp').innerText = `${weatherData.current_weather.temperature}°C`;
                         } catch (e) {
                             document.getElementById('stat_temp').innerText = "31.5°C";
                         }
                     },
-                    (error) => {
+                    () => {
                         document.getElementById('stat_loc').innerText = "SURAMPALEM, IN";
                         document.getElementById('stat_temp').innerText = "31.5°C";
                     },
-                    { enableHighAccuracy: true, timeout: 7000, maximumAge: 0 }
+                    { enableHighAccuracy: false, timeout: 6000, maximumAge: 60000 }
                 );
             } else {
                 document.getElementById('stat_loc').innerText = "SURAMPALEM, IN";
@@ -383,15 +397,10 @@
 
                     button.className = keyClass;
                     button.id = `key-${k}`;
-                    button.setAttribute('tabindex', '0');
-                    button.setAttribute('aria-label', `Key ${k}`);
                     button.innerText = (k === "SHIFT" || k === "CLR" || k === "SPACE" || k === "SPEAK" || k === "THEME" || !isNaN(k) || k === "." || k === "," || k === "-") ? k : (isCaps ? k : k.toLowerCase());
                     
                     if(k === "CLR") button.innerHTML += '<div id="clr_fill"></div>';
-                    
-                    // Fallback physical click support for accessibility
                     button.onclick = () => handleKeyExecution(button);
-
                     rowDiv.appendChild(button);
                 });
                 keyboard.appendChild(rowDiv);
@@ -402,10 +411,18 @@
         buildKeyboard();
 
         const hands = new Hands({locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`});
-        hands.setOptions({ maxNumHands: 2, modelComplexity: 1, minDetectionConfidence: 0.6, minTrackingConfidence: 0.6 });
+        hands.setOptions({ 
+            maxNumHands: 1,
+            modelComplexity: 0,
+            minDetectionConfidence: 0.5, 
+            minTrackingConfidence: 0.5 
+        });
 
         let currentKey = null;
         let hoverStartTime = 0;
+        const TRIGGER_DWELL = 0.65;
+        const BACKSPACE_DWELL = 0.50;
+        const CLEAR_ALL_DWELL = 1.10;
 
         function updateMetrics() {
             const rawText = typedText.innerText.replace(/_/g, '');
@@ -446,62 +463,68 @@
         }
 
         hands.onResults((results) => {
+            frameCount++;
+            const now = performance.now();
+            if (now - lastFrameTime >= 1000) {
+                fpsCounter.innerText = `${frameCount} FPS`;
+                frameCount = 0;
+                lastFrameTime = now;
+            }
+
             cachedKeyElements.forEach(k => k.classList.remove('hover'));
             cursor.style.display = 'none';
 
             if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
-                for (const landmarks of results.multiHandLandmarks) {
-                    const indexTip = landmarks[8];
-                    const x = (1 - indexTip.x) * window.innerWidth;
-                    const y = indexTip.y * window.innerHeight;
+                const indexTip = results.multiHandLandmarks[0][8];
+                const x = (1 - indexTip.x) * window.innerWidth;
+                const y = indexTip.y * window.innerHeight;
 
-                    cursor.style.display = 'block';
-                    cursor.style.left = `${x}px`;
-                    cursor.style.top = `${y}px`;
+                cursor.style.display = 'block';
+                cursor.style.left = `${x}px`;
+                cursor.style.top = `${y}px`;
 
-                    const el = document.elementFromPoint(x, y);
+                const el = document.elementFromPoint(x, y);
 
-                    if (el && el.classList.contains('key')) {
-                        el.classList.add('hover');
-                        cursor.style.borderColor = "#ffffff";
+                if (el && el.classList.contains('key')) {
+                    el.classList.add('hover');
+                    cursor.style.borderColor = "#ffffff";
 
-                        if (currentKey !== el.id) { currentKey = el.id; hoverStartTime = Date.now(); }
-                        else {
-                            const duration = (Date.now() - hoverStartTime) / 1000;
-                            
-                            if (el.id === "key-CLR") {
-                                const fill = document.getElementById('clr_fill');
-                                if (fill) fill.style.width = Math.min((duration / 1.5) * 100, 100) + "%";
-                                if (duration >= 1.5) {
-                                    typedText.innerText = "_"; 
-                                    hoverStartTime = Date.now(); 
-                                    if (fill) fill.style.width = "0%";
-                                    startTime = null;
-                                    playHapticClick();
-                                    updateMetrics();
-                                } else if (duration >= 0.75 && duration < 0.78) {
-                                    let t = typedText.innerText; 
-                                    if (t !== "_") typedText.innerText = t.slice(0, -1) || "_";
-                                    hoverStartTime = Date.now() - 350;
-                                    playHapticClick();
-                                    updateMetrics();
-                                }
-                            } 
-                            else if (el.innerText === "SHIFT" || el.innerText === "SPEAK" || el.innerText === "THEME") {
-                                if (duration >= 1.0) {
-                                    handleKeyExecution(el);
-                                    hoverStartTime = Date.now();
-                                }
-                            }
-                            else if (duration >= 1.0) {
-                                handleKeyExecution(el);
-                                hoverStartTime = Date.now();
-                            }
-                        }
+                    if (currentKey !== el.id) { 
+                        currentKey = el.id; 
+                        hoverStartTime = Date.now(); 
                     } else {
-                        cursor.style.borderColor = "var(--neon)";
+                        const duration = (Date.now() - hoverStartTime) / 1000;
+                        
+                        if (el.id === "key-CLR") {
+                            const fill = document.getElementById('clr_fill');
+                            if (fill) fill.style.width = Math.min((duration / CLEAR_ALL_DWELL) * 100, 100) + "%";
+                            
+                            if (duration >= CLEAR_ALL_DWELL) {
+                                typedText.innerText = "_"; 
+                                hoverStartTime = Date.now(); 
+                                if (fill) fill.style.width = "0%";
+                                startTime = null;
+                                playHapticClick();
+                                updateMetrics();
+                            } else if (duration >= BACKSPACE_DWELL && duration < (BACKSPACE_DWELL + 0.04)) {
+                                let t = typedText.innerText; 
+                                if (t !== "_") typedText.innerText = t.slice(0, -1) || "_";
+                                hoverStartTime = Date.now() - (BACKSPACE_DWELL * 600);
+                                playHapticClick();
+                                updateMetrics();
+                            }
+                        } 
+                        else if (duration >= TRIGGER_DWELL) {
+                            handleKeyExecution(el);
+                            hoverStartTime = Date.now();
+                        }
                     }
+                } else {
+                    cursor.style.borderColor = "var(--neon)";
+                    currentKey = null;
                 }
+            } else {
+                currentKey = null;
             }
         });
 
@@ -511,26 +534,32 @@
             
             initGPSLocation();
             
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 } });
-                videoElement.srcObject = stream;
-                videoElement.play();
-                
-                document.getElementById('status_text').innerText = "SYSTEM STATUS: OPERATIONAL";
+            const constraints = {
+                video: {
+                    width: { ideal: 640 },
+                    height: { ideal: 480 },
+                    facingMode: "user",
+                    frameRate: { ideal: 30, max: 60 }
+                }
+            };
 
-                const run = async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                videoElement.srcObject = stream;
+                await videoElement.play();
+                
+                const processFrame = async () => {
                     if (videoElement.readyState >= 2) {
                         await hands.send({image: videoElement});
                     }
                     const now = new Date();
                     document.getElementById('stat_time').innerText = now.toLocaleTimeString([], {hour12:false});
                     document.getElementById('stat_date').innerText = now.toLocaleDateString();
-                    requestAnimationFrame(run);
+                    requestAnimationFrame(processFrame);
                 };
-                run();
+                requestAnimationFrame(processFrame);
             } catch (err) {
-                document.getElementById('status_text').innerText = "SYSTEM STATUS: CAMERA ACCESS REFUSED";
-                alert("Camera Access Required: Please grant webcam permissions to enable G-BOARD gestures.");
+                alert("Camera Access Required: Please grant webcam permissions to enable G-BOARD.");
             }
         };
     </script>
