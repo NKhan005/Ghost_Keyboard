@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="G-BOARD V7.2 - Modular Full QWERTY with Collapsible Config Sidebar">
-    <title>G-BOARD | MODULAR QWERTY V7.2</title>
+    <meta name="description" content="G-BOARD V7.3 - Predictive Spatial Vision Keyboard with Autocomplete Ribbon">
+    <title>G-BOARD | PREDICTIVE OS V7.3</title>
     
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
@@ -82,7 +82,6 @@
             will-change: left, top;
         }
 
-        /* PERFECTLY CENTERED HEADER TITLE */
         #main_title { 
             position: fixed; 
             top: 10px; 
@@ -101,7 +100,6 @@
             white-space: nowrap;
         }
 
-        /* DEDICATED INDEPENDENT TELEMETRY PANEL */
         #telemetry_box { 
             position: fixed; 
             top: 15px; 
@@ -135,7 +133,6 @@
         .stat-label { opacity: 0.8; }
         .stat-val { font-weight: bold; color: #ffffff; text-align: right; }
 
-        /* CENTERED KEYBOARD WORKSPACE */
         #workspace {
             width: 100vw;
             height: 100vh;
@@ -143,6 +140,45 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            gap: 6px;
+        }
+
+        /* AI PREDICTION RIBBON */
+        #prediction_ribbon {
+            display: flex;
+            gap: 8px;
+            width: min(96vw, 920px);
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .predict-pill {
+            flex: 1;
+            background: rgba(0, 242, 255, 0.08);
+            border: 1px dashed var(--dim-neon);
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(0.7rem, 1.4vw, 0.85rem);
+            font-weight: 700;
+            color: #ffffff;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .predict-pill.hover, .predict-pill:hover {
+            background: var(--neon);
+            color: #000000;
+            box-shadow: 0 0 16px var(--neon);
+            transform: scale(1.03);
         }
 
         #keyboard_overlay { 
@@ -185,7 +221,6 @@
         }
 
         .key .sub-char { font-size: 0.55em; opacity: 0.6; margin-bottom: -2px; }
-
         .key.k-backspace { flex: 1.8; background: rgba(255, 59, 59, 0.1); }
         .key.k-tab { flex: 1.3; }
         .key.k-caps { flex: 1.5; }
@@ -219,7 +254,6 @@
             transition: width 0.04s linear; 
         }
 
-        /* TERMINAL PANEL */
         #terminal_log { 
             position: fixed; 
             bottom: 12px; 
@@ -241,7 +275,6 @@
             align-items: center;
         }
 
-        /* COLLAPSIBLE CYBER SIDEBAR */
         #sidebar_dock {
             position: fixed;
             top: 0;
@@ -261,11 +294,8 @@
             transition: right 0.3s cubic-bezier(0.2, 0, 0, 1);
         }
 
-        #sidebar_dock.open {
-            right: 0;
-        }
+        #sidebar_dock.open { right: 0; }
 
-        /* SIDEBAR TOGGLE BUTTON */
         #btn_sidebar_toggle {
             position: fixed;
             top: 15px;
@@ -344,9 +374,7 @@
             outline: none;
         }
 
-        .mode-state-lbl {
-            color: var(--neon);
-        }
+        .mode-state-lbl { color: var(--neon); }
 
         #start_btn { 
             position: fixed; 
@@ -367,23 +395,6 @@
             box-shadow: 0 0 35px var(--neon); 
             white-space: nowrap;
         }
-
-        @media (max-width: 768px) and (orientation: portrait) {
-            #telemetry_box {
-                top: auto;
-                bottom: 70px;
-                right: 50%;
-                transform: translateX(50%);
-                width: 96vw;
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 2px 8px;
-                padding: 6px 10px;
-            }
-            .sys-status-header { grid-column: span 2; margin-bottom: 2px; }
-            #keyboard_overlay { width: 99vw; padding: 4px; }
-            .key { height: 32px; font-size: 0.65rem; }
-        }
     </style>
 </head>
 <body>
@@ -395,7 +406,6 @@
     <button id="btn_sidebar_toggle" aria-label="Toggle Functional Configuration Sidebar">⚙ CONFIG</button>
     <h1 id="main_title">G - BOARD</h1>
 
-    <!-- INDEPENDENT TELEMETRY PANEL -->
     <div id="telemetry_box">
         <div class="sys-status-header">
             <span>SYS: ONLINE</span>
@@ -409,14 +419,17 @@
         <div class="stat-line"><span class="stat-label">CHARS:</span> <span id="stat_chars" class="stat-val">0</span></div>
     </div>
 
-    <!-- MAIN KEYBOARD WORKSPACE -->
     <div id="workspace">
+        <div id="prediction_ribbon">
+            <div class="predict-pill" id="pred_0">THE</div>
+            <div class="predict-pill" id="pred_1">SYSTEM</div>
+            <div class="predict-pill" id="pred_2">ONLINE</div>
+        </div>
         <div id="keyboard_overlay"></div>
     </div>
 
     <div id="terminal_log"><span id="typed_text">_</span></div>
 
-    <!-- OPTIONAL FUNCTIONAL SIDEBAR (MODES ONLY) -->
     <div id="sidebar_dock">
         <div class="dock-header">
             <span>COMMAND DOCK</span>
@@ -461,7 +474,7 @@
         let isShift = false;
         let isCaps = false;
         let audioCtx = null;
-        let cachedKeyElements = [];
+        let cachedInteractables = [];
 
         let charCount = 0;
         let startTime = null;
@@ -471,6 +484,58 @@
 
         let lastFrameTime = performance.now();
         let frameCount = 0;
+
+        // HIGH-FREQUENCY LEXICON & PREDICTION ENGINE
+        const DICTIONARY = [
+            "THE", "BE", "TO", "OF", "AND", "A", "IN", "THAT", "HAVE", "I", 
+            "IT", "FOR", "NOT", "ON", "WITH", "HE", "AS", "YOU", "DO", "AT", 
+            "THIS", "BUT", "HIS", "BY", "FROM", "THEY", "WE", "SAY", "HER", "SHE", 
+            "OR", "AN", "WILL", "MY", "ONE", "ALL", "WOULD", "THERE", "THEIR", "WHAT", 
+            "SO", "UP", "OUT", "IF", "ABOUT", "WHO", "GET", "WHICH", "GO", "ME",
+            "SYSTEM", "CYBER", "MATRIX", "ONLINE", "NEON", "VISION", "KEYBOARD", "GHOST",
+            "TERMINAL", "COMMAND", "EXECUTE", "SECURITY", "INITIALIZE", "ACCESS", "QUANTUM"
+        ];
+
+        function getActiveToken() {
+            const raw = typedText.innerText.replace(/_/g, '');
+            const tokens = raw.split(/\s+/);
+            return tokens[tokens.length - 1].toUpperCase();
+        }
+
+        function updatePredictionRibbon() {
+            const activeToken = getActiveToken();
+            let matches = [];
+
+            if (activeToken.length > 0) {
+                matches = DICTIONARY.filter(w => w.startsWith(activeToken));
+                if (matches.length < 3) {
+                    const fuzzy = DICTIONARY.filter(w => !matches.includes(w) && w.includes(activeToken));
+                    matches = matches.concat(fuzzy);
+                }
+            }
+
+            const defaults = ["THE", "SYSTEM", "ONLINE"];
+            for (let i = 0; i < 3; i++) {
+                const pill = document.getElementById(`pred_${i}`);
+                pill.innerText = matches[i] || defaults[i];
+            }
+        }
+
+        function injectPrediction(word) {
+            playSpatialClick(0);
+            let raw = typedText.innerText.replace(/_/g, '');
+            const tokens = raw.split(/\s+/);
+            tokens.pop();
+            tokens.push(word);
+            typedText.innerText = tokens.join(" ") + " ";
+            updateMetrics();
+            updatePredictionRibbon();
+        }
+
+        for (let i = 0; i < 3; i++) {
+            const pill = document.getElementById(`pred_${i}`);
+            pill.onclick = () => injectPrediction(pill.innerText);
+        }
 
         // SPEECH RECOGNITION (MIC)
         let recognition = null;
@@ -487,6 +552,7 @@
                 if (typedText.innerText === "_") typedText.innerText = "";
                 typedText.innerText += " " + transcript;
                 updateMetrics();
+                updatePredictionRibbon();
             };
 
             recognition.onend = () => {
@@ -609,7 +675,6 @@
             }
         }
 
-        // FULL QWERTY LAYOUT
         const qwertyRows = [
             [
                 { primary: "`", shift: "~" }, { primary: "1", shift: "!" }, { primary: "2", shift: "@" }, 
@@ -689,12 +754,11 @@
                 });
                 keyboard.appendChild(rowDiv);
             });
-            cachedKeyElements = Array.from(document.querySelectorAll('.key'));
+            cachedInteractables = Array.from(document.querySelectorAll('.key, .predict-pill'));
         }
 
         buildKeyboard();
 
-        // SIDEBAR CONTROLS
         document.getElementById('btn_sidebar_toggle').onclick = () => sidebarDock.classList.toggle('open');
         document.getElementById('btn_dock_close').onclick = () => sidebarDock.classList.remove('open');
         document.getElementById('btn_toggle_theme').onclick = cycleTheme;
@@ -703,6 +767,7 @@
             typedText.innerText = "_";
             startTime = null;
             updateMetrics();
+            updatePredictionRibbon();
         };
         document.getElementById('btn_toggle_mode').onclick = () => {
             const lbl = document.getElementById('lbl_mode_state');
@@ -725,6 +790,11 @@
         }
 
         function handleKeyExecution(el, spatialPanX = 0) {
+            if (el.classList.contains('predict-pill')) {
+                injectPrediction(el.innerText);
+                return;
+            }
+
             playSpatialClick(spatialPanX);
             const key = el.dataset.key;
             const shiftKey = el.dataset.shift;
@@ -739,10 +809,12 @@
                 let t = typedText.innerText;
                 if (t !== "_") typedText.innerText = t.slice(0, -1) || "_";
                 updateMetrics();
+                updatePredictionRibbon();
             } else if (key === "CLR") {
                 typedText.innerText = "_";
                 startTime = null;
                 updateMetrics();
+                updatePredictionRibbon();
             } else if (key === "TAB") {
                 if (typedText.innerText === "_") typedText.innerText = "";
                 typedText.innerHTML += "&nbsp;&nbsp;&nbsp;&nbsp;";
@@ -754,6 +826,7 @@
                 if (typedText.innerText === "_") typedText.innerText = "";
                 typedText.innerHTML += "&nbsp;";
                 updateMetrics();
+                updatePredictionRibbon();
             } else if (key === "MIC") {
                 toggleSpeechRecognition();
             } else if (key === "SPEAK") {
@@ -772,6 +845,7 @@
                     buildKeyboard();
                 }
                 updateMetrics();
+                updatePredictionRibbon();
             }
         }
 
@@ -781,6 +855,7 @@
                 if (t !== "_") typedText.innerText = t.slice(0, -1) || "_";
                 playSpatialClick(0);
                 updateMetrics();
+                updatePredictionRibbon();
             } else if (e.key === "Enter") {
                 if (typedText.innerText === "_") typedText.innerText = "";
                 typedText.innerText += "\n";
@@ -796,6 +871,7 @@
                 typedText.innerText += e.key;
                 playSpatialClick(0);
                 updateMetrics();
+                updatePredictionRibbon();
             }
         });
 
@@ -821,7 +897,7 @@
                 lastFrameTime = now;
             }
 
-            cachedKeyElements.forEach(k => k.classList.remove('hover'));
+            cachedInteractables.forEach(k => k.classList.remove('hover'));
             cursor.style.display = 'none';
 
             if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
@@ -841,7 +917,7 @@
 
                 const el = document.elementFromPoint(x, y);
 
-                if (el && el.classList.contains('key')) {
+                if (el && (el.classList.contains('key') || el.classList.contains('predict-pill'))) {
                     el.classList.add('hover');
                     const spatialPanX = (x / window.innerWidth) * 2 - 1;
 
