@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="G-BOARD V7.1 - Modular Full QWERTY & Cyberpunk Control Dock">
-    <title>G-BOARD | MODULAR QWERTY V7.1</title>
+    <meta name="description" content="G-BOARD V7.2 - Modular Full QWERTY with Collapsible Config Sidebar">
+    <title>G-BOARD | MODULAR QWERTY V7.2</title>
     
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
@@ -54,7 +54,6 @@
             overflow: hidden; 
             width: 100vw;
             height: 100vh; 
-            display: flex;
             transition: color 0.2s ease, background 0.2s ease;
         }
         
@@ -83,30 +82,67 @@
             will-change: left, top;
         }
 
+        /* PERFECTLY CENTERED HEADER TITLE */
         #main_title { 
             position: fixed; 
-            top: 8px; 
-            left: 38%; 
+            top: 10px; 
+            left: 50%; 
             transform: translateX(-50%); 
             font-family: 'Orbitron', sans-serif; 
-            font-size: clamp(1.2rem, 2.5vw, 2rem); 
+            font-size: clamp(1.3rem, 2.8vw, 2.2rem); 
             font-weight: 900; 
-            letter-spacing: clamp(4px, 1vw, 10px); 
-            text-shadow: 0 0 18px var(--glow); 
+            letter-spacing: clamp(6px, 1.2vw, 14px); 
+            text-shadow: 0 0 20px var(--glow); 
             z-index: 100;
             color: #ffffff; 
             text-transform: uppercase;
             margin: 0;
+            text-align: center;
+            white-space: nowrap;
         }
 
+        /* DEDICATED INDEPENDENT TELEMETRY PANEL */
+        #telemetry_box { 
+            position: fixed; 
+            top: 15px; 
+            right: 15px; 
+            width: min(280px, 85vw); 
+            padding: 8px 12px; 
+            background: var(--panel-bg); 
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px); 
+            border: 1px solid rgba(255, 255, 255, 0.15); 
+            border-right: 4px solid var(--neon);
+            border-radius: 6px; 
+            font-family: 'JetBrains Mono', monospace; 
+            font-size: clamp(0.6rem, 1.4vw, 0.72rem); 
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        .sys-status-header {
+            color: var(--neon); 
+            font-weight: bold; 
+            margin-bottom: 4px; 
+            border-bottom: 1px solid var(--dim-neon); 
+            padding-bottom: 3px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .fps-display { color: #ffffff; }
+        .stat-line { margin-bottom: 2px; display: flex; justify-content: space-between; gap: 6px; }
+        .stat-label { opacity: 0.8; }
+        .stat-val { font-weight: bold; color: #ffffff; text-align: right; }
+
+        /* CENTERED KEYBOARD WORKSPACE */
         #workspace {
-            flex: 1;
+            width: 100vw;
             height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding-right: 320px;
         }
 
         #keyboard_overlay { 
@@ -121,7 +157,7 @@
             border: 1px solid rgba(255, 255, 255, 0.12); 
             z-index: 10;
             box-shadow: 0 0 35px rgba(0, 0, 0, 0.7);
-            width: min(95%, 880px);
+            width: min(96vw, 920px);
         }
 
         .row { display: flex; justify-content: center; gap: clamp(2px, 0.4vw, 5px); width: 100%; }
@@ -183,12 +219,13 @@
             transition: width 0.04s linear; 
         }
 
+        /* TERMINAL PANEL */
         #terminal_log { 
             position: fixed; 
             bottom: 12px; 
-            left: calc((100vw - 320px) / 2); 
+            left: 50%; 
             transform: translateX(-50%); 
-            width: min(92%, 880px); 
+            width: min(94vw, 920px); 
             padding: 10px 18px; 
             background: rgba(2, 10, 14, 0.95); 
             border-left: 5px solid var(--neon); 
@@ -204,22 +241,55 @@
             align-items: center;
         }
 
+        /* COLLAPSIBLE CYBER SIDEBAR */
         #sidebar_dock {
             position: fixed;
             top: 0;
-            right: 0;
-            width: 310px;
+            right: -280px;
+            width: 270px;
             height: 100vh;
-            background: var(--panel-bg); 
+            background: var(--panel-bg);
             -webkit-backdrop-filter: blur(14px);
             backdrop-filter: blur(14px);
-            border-left: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: -5px 0 25px rgba(0,0,0,0.7);
-            padding: 18px 16px;
+            border-left: 2px solid var(--neon);
+            box-shadow: -8px 0 30px rgba(0,0,0,0.8);
+            padding: 20px 16px;
             display: flex;
             flex-direction: column;
-            gap: 14px;
-            z-index: 120;
+            gap: 12px;
+            z-index: 160;
+            transition: right 0.3s cubic-bezier(0.2, 0, 0, 1);
+        }
+
+        #sidebar_dock.open {
+            right: 0;
+        }
+
+        /* SIDEBAR TOGGLE BUTTON */
+        #btn_sidebar_toggle {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            background: rgba(2, 18, 24, 0.8);
+            border: 1px solid var(--neon);
+            color: var(--neon);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            z-index: 110;
+            transition: all 0.2s ease;
+            box-shadow: 0 0 10px var(--dim-neon);
+        }
+
+        #btn_sidebar_toggle:hover, #btn_sidebar_toggle:focus {
+            background: var(--neon);
+            color: #000;
+            box-shadow: 0 0 18px var(--neon);
+            outline: none;
         }
 
         .dock-header {
@@ -232,34 +302,29 @@
             padding-bottom: 6px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
 
-        .telemetry-group {
-            margin-top: 8px;
+        .dock-close-btn {
+            background: none;
+            border: none;
+            color: var(--neon);
+            font-size: 1rem;
+            cursor: pointer;
         }
-
-        .stat-line { 
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.72rem;
-            display: flex; 
-            justify-content: space-between; 
-            margin-bottom: 4px;
-        }
-        .stat-label { opacity: 0.8; }
-        .stat-val { font-weight: bold; color: #ffffff; }
 
         .control-group {
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            margin-top: 6px;
+            gap: 10px;
+            margin-top: 10px;
         }
 
         .sidebar-btn {
             background: rgba(255, 255, 255, 0.06);
             border: 1px solid var(--dim-neon);
             color: #ffffff;
-            padding: 10px 12px;
+            padding: 12px 14px;
             border-radius: 6px;
             font-family: 'Orbitron', sans-serif;
             font-size: 0.75rem;
@@ -303,21 +368,21 @@
             white-space: nowrap;
         }
 
-        @media (max-width: 992px) {
-            #workspace { padding-right: 0; }
-            #sidebar_dock {
-                position: fixed;
-                bottom: 0;
+        @media (max-width: 768px) and (orientation: portrait) {
+            #telemetry_box {
                 top: auto;
-                width: 100vw;
-                height: 180px;
-                flex-direction: row;
-                border-left: none;
-                border-top: 1px solid rgba(255, 255, 255, 0.15);
-                overflow-x: auto;
+                bottom: 70px;
+                right: 50%;
+                transform: translateX(50%);
+                width: 96vw;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 2px 8px;
+                padding: 6px 10px;
             }
-            #terminal_log { left: 50%; bottom: 190px; width: 96vw; }
-            #main_title { left: 50%; }
+            .sys-status-header { grid-column: span 2; margin-bottom: 2px; }
+            #keyboard_overlay { width: 99vw; padding: 4px; }
+            .key { height: 32px; font-size: 0.65rem; }
         }
     </style>
 </head>
@@ -326,33 +391,39 @@
     <button id="start_btn" aria-label="Launch G-BOARD Operating System">LAUNCH G-BOARD OS</button>
     <video id="video_input"></video>
     <div id="finger_cursor"></div>
+    
+    <button id="btn_sidebar_toggle" aria-label="Toggle Functional Configuration Sidebar">⚙ CONFIG</button>
     <h1 id="main_title">G - BOARD</h1>
 
+    <!-- INDEPENDENT TELEMETRY PANEL -->
+    <div id="telemetry_box">
+        <div class="sys-status-header">
+            <span>SYS: ONLINE</span>
+            <span id="fps_counter" class="fps-display">60 FPS</span>
+        </div>
+        <div class="stat-line"><span class="stat-label">INPUT MODE:</span> <span id="stat_mode" class="stat-val">VISION + PINCH</span></div>
+        <div class="stat-line"><span class="stat-label">TIME:</span> <span id="stat_time" class="stat-val">--:--:--</span></div>
+        <div class="stat-line"><span class="stat-label">LOCATION:</span> <span id="stat_loc" class="stat-val">LOCATING...</span></div>
+        <div class="stat-line"><span class="stat-label">WEATHER:</span> <span id="stat_temp" class="stat-val">--°C</span></div>
+        <div class="stat-line"><span class="stat-label">SPEED:</span> <span id="stat_wpm" class="stat-val">0 WPM</span></div>
+        <div class="stat-line"><span class="stat-label">CHARS:</span> <span id="stat_chars" class="stat-val">0</span></div>
+    </div>
+
+    <!-- MAIN KEYBOARD WORKSPACE -->
     <div id="workspace">
         <div id="keyboard_overlay"></div>
     </div>
 
     <div id="terminal_log"><span id="typed_text">_</span></div>
 
+    <!-- OPTIONAL FUNCTIONAL SIDEBAR (MODES ONLY) -->
     <div id="sidebar_dock">
-        <div>
-            <div class="dock-header">
-                <span>SYSTEM TELEMETRY</span>
-                <span id="fps_counter">60 FPS</span>
-            </div>
-            <div class="telemetry-group">
-                <div class="stat-line"><span class="stat-label">INPUT MODE:</span> <span id="stat_mode" class="stat-val">VISION + PINCH</span></div>
-                <div class="stat-line"><span class="stat-label">TIME:</span> <span id="stat_time" class="stat-val">--:--:--</span></div>
-                <div class="stat-line"><span class="stat-label">LOCATION:</span> <span id="stat_loc" class="stat-val">LOCATING...</span></div>
-                <div class="stat-line"><span class="stat-label">WEATHER:</span> <span id="stat_temp" class="stat-val">--°C</span></div>
-                <div class="stat-line"><span class="stat-label">SPEED:</span> <span id="stat_wpm" class="stat-val">0 WPM</span></div>
-                <div class="stat-line"><span class="stat-label">CHARS:</span> <span id="stat_chars" class="stat-val">0</span></div>
-            </div>
+        <div class="dock-header">
+            <span>COMMAND DOCK</span>
+            <button id="btn_dock_close" class="dock-close-btn" aria-label="Close Sidebar">✕</button>
         </div>
 
         <div class="control-group">
-            <div class="dock-header">COMMAND CONTROLS</div>
-            
             <button class="sidebar-btn" id="btn_toggle_mode">
                 <span>INPUT MODE</span>
                 <span id="lbl_mode_state" class="mode-state-lbl">AUTO</span>
@@ -367,6 +438,11 @@
                 <span>EXPORT BUFFER</span>
                 <span>.TXT</span>
             </button>
+
+            <button class="sidebar-btn" id="btn_clear_buffer">
+                <span>CLEAR LOG</span>
+                <span>FLUSH</span>
+            </button>
         </div>
     </div>
 
@@ -380,6 +456,7 @@
         const startBtn = document.getElementById('start_btn');
         const cursor = document.getElementById('finger_cursor');
         const fpsCounter = document.getElementById('fps_counter');
+        const sidebarDock = document.getElementById('sidebar_dock');
         
         let isShift = false;
         let isCaps = false;
@@ -395,6 +472,7 @@
         let lastFrameTime = performance.now();
         let frameCount = 0;
 
+        // SPEECH RECOGNITION (MIC)
         let recognition = null;
         let isRecording = false;
 
@@ -531,6 +609,7 @@
             }
         }
 
+        // FULL QWERTY LAYOUT
         const qwertyRows = [
             [
                 { primary: "`", shift: "~" }, { primary: "1", shift: "!" }, { primary: "2", shift: "@" }, 
@@ -615,8 +694,16 @@
 
         buildKeyboard();
 
+        // SIDEBAR CONTROLS
+        document.getElementById('btn_sidebar_toggle').onclick = () => sidebarDock.classList.toggle('open');
+        document.getElementById('btn_dock_close').onclick = () => sidebarDock.classList.remove('open');
         document.getElementById('btn_toggle_theme').onclick = cycleTheme;
         document.getElementById('btn_export_doc').onclick = exportBuffer;
+        document.getElementById('btn_clear_buffer').onclick = () => {
+            typedText.innerText = "_";
+            startTime = null;
+            updateMetrics();
+        };
         document.getElementById('btn_toggle_mode').onclick = () => {
             const lbl = document.getElementById('lbl_mode_state');
             lbl.innerText = lbl.innerText === "AUTO" ? "PHYSICAL" : "AUTO";
