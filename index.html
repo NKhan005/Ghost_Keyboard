@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="G-BOARD V7.4 - Deep Lexicon Predictive Vision OS">
-    <title>G-BOARD | PREDICTIVE OS V7.4</title>
+    <meta name="description" content="G-BOARD V7.5 - Precision Input Mode Isolation & Robotic Reticle OS">
+    <title>G-BOARD | PRECISION OS V7.5</title>
     
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
@@ -68,18 +68,56 @@
             filter: contrast(120%) brightness(85%); 
         }
 
+        /* ROBOTIC CYBER RETICLE CURSOR */
         #finger_cursor {
             position: fixed;
-            width: 22px;
-            height: 22px;
-            border: 2px solid var(--neon);
-            border-radius: 50%;
+            width: 32px;
+            height: 32px;
             pointer-events: none;
             z-index: 150;
             display: none;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 12px var(--neon);
             will-change: left, top;
+            transition: transform 0.05s ease-out;
+        }
+
+        #finger_cursor::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border: 2px dashed var(--neon);
+            border-radius: 50%;
+            animation: spinReticle 4s linear infinite;
+        }
+
+        #finger_cursor::after {
+            content: '+';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 900;
+            color: var(--neon);
+            text-shadow: 0 0 6px var(--neon);
+        }
+
+        #finger_cursor.locked::before {
+            border-color: #00ff66;
+            border-style: solid;
+            box-shadow: 0 0 16px #00ff66;
+        }
+
+        #finger_cursor.locked::after {
+            color: #00ff66;
+            content: '●';
+            font-size: 10px;
+        }
+
+        @keyframes spinReticle {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         #main_title { 
@@ -143,7 +181,6 @@
             gap: 6px;
         }
 
-        /* AI PREDICTION RIBBON */
         #prediction_ribbon {
             display: flex;
             gap: 8px;
@@ -260,6 +297,7 @@
             transition: width 0.04s linear; 
         }
 
+        /* ROBOTIC TERMINAL LOG WITH BLINKING BLOCK CARET */
         #terminal_log { 
             position: fixed; 
             bottom: 12px; 
@@ -281,13 +319,28 @@
             align-items: center;
         }
 
+        .terminal-caret {
+            display: inline-block;
+            width: 8px;
+            height: 1.2em;
+            background: var(--neon);
+            margin-left: 2px;
+            vertical-align: middle;
+            animation: caretBlink 1s infinite;
+        }
+
+        @keyframes caretBlink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
         #sidebar_dock {
             position: fixed;
             top: 0;
             right: -280px;
             width: 270px;
             height: 100vh;
-            background: var(--panel-bg);
+            background: var(--panel-bg); 
             -webkit-backdrop-filter: blur(14px);
             backdrop-filter: blur(14px);
             border-left: 2px solid var(--neon);
@@ -380,7 +433,7 @@
             outline: none;
         }
 
-        .mode-state-lbl { color: var(--neon); }
+        .mode-state-lbl { color: var(--neon); font-weight: bold; }
 
         #start_btn { 
             position: fixed; 
@@ -417,7 +470,7 @@
             <span>SYS: ONLINE</span>
             <span id="fps_counter" class="fps-display">60 FPS</span>
         </div>
-        <div class="stat-line"><span class="stat-label">INPUT MODE:</span> <span id="stat_mode" class="stat-val">VISION + PINCH</span></div>
+        <div class="stat-line"><span class="stat-label">INPUT MODE:</span> <span id="stat_mode" class="stat-val">AUTO DUAL</span></div>
         <div class="stat-line"><span class="stat-label">TIME:</span> <span id="stat_time" class="stat-val">--:--:--</span></div>
         <div class="stat-line"><span class="stat-label">LOCATION:</span> <span id="stat_loc" class="stat-val">LOCATING...</span></div>
         <div class="stat-line"><span class="stat-label">WEATHER:</span> <span id="stat_temp" class="stat-val">--°C</span></div>
@@ -427,14 +480,14 @@
 
     <div id="workspace">
         <div id="prediction_ribbon">
-            <div class="predict-pill empty" id="pred_0">I</div>
-            <div class="predict-pill empty" id="pred_1">THE</div>
-            <div class="predict-pill empty" id="pred_2">ACTIVATE</div>
+            <div class="predict-pill empty" id="pred_0">i</div>
+            <div class="predict-pill empty" id="pred_1">the</div>
+            <div class="predict-pill empty" id="pred_2">activate</div>
         </div>
         <div id="keyboard_overlay"></div>
     </div>
 
-    <div id="terminal_log"><span id="typed_text">_</span></div>
+    <div id="terminal_log"><span id="typed_text"></span><span class="terminal-caret"></span></div>
 
     <div id="sidebar_dock">
         <div class="dock-header">
@@ -477,6 +530,10 @@
         const fpsCounter = document.getElementById('fps_counter');
         const sidebarDock = document.getElementById('sidebar_dock');
         
+        // INPUT MODE CONTROLLER: 'AUTO' | 'VISION' | 'PHYSICAL'
+        const INPUT_MODES = ['AUTO', 'VISION ONLY', 'PHYSICAL ONLY'];
+        let currentModeIndex = 0;
+
         let isShift = false;
         let isCaps = false;
         let audioCtx = null;
@@ -491,7 +548,6 @@
         let lastFrameTime = performance.now();
         let frameCount = 0;
 
-        // EXPANDED LEXICON & BIGRAM DICTIONARY
         const DICTIONARY = [
             "ACTIVATE", "ACCESS", "ACCOUNT", "ACTION", "ACTIVE", "ADD", "ADDRESS", "ADVANCED", "AGAIN", "AGENT",
             "ALERT", "ALGORITHM", "ALLOW", "ALMOST", "ALONE", "ALREADY", "ALSO", "ALWAYS", "AMONG", "AMOUNT",
@@ -566,57 +622,57 @@
             "WINDOW", "WIRELESS", "WORD", "WORK", "WORKER", "WORKSPACE", "WORLD", "WPM", "WRITE", "ZONE"
         ];
 
-        // CONTEXTUAL NEXT-WORD (BIGRAM) LOOKUP
         const BIGRAMS = {
-            "HELLO": ["WORLD", "THERE", "SYSTEM"],
-            "ACTIVATE": ["SYSTEM", "COMMAND", "PROTOCOL"],
-            "SYSTEM": ["ONLINE", "READY", "STATUS"],
-            "CYBER": ["MATRIX", "SECURITY", "SPACE"],
-            "START": ["ENGINE", "PROCESS", "RECORDING"],
-            "CLEAR": ["BUFFER", "LOG", "SCREEN"],
-            "INPUT": ["MODE", "DEVICE", "DATA"],
-            "OPEN": ["TERMINAL", "CONSOLE", "SETTINGS"],
-            "SECURITY": ["AUTHORIZED", "ENABLED", "CHECK"],
-            "THE": ["SYSTEM", "MATRIX", "USER"]
+            "HELLO": ["world", "there", "system"],
+            "ACTIVATE": ["system", "command", "protocol"],
+            "SYSTEM": ["online", "ready", "status"],
+            "CYBER": ["matrix", "security", "space"],
+            "START": ["engine", "process", "recording"],
+            "CLEAR": ["buffer", "log", "screen"],
+            "INPUT": ["mode", "device", "data"],
+            "OPEN": ["terminal", "console", "settings"],
+            "SECURITY": ["authorized", "enabled", "check"],
+            "THE": ["system", "matrix", "user"]
         };
 
-        function getActiveToken() {
-            const raw = typedText.innerText.replace(/_/g, '');
+        function getRawToken() {
+            const raw = typedText.innerText;
             if (!raw.trim()) return "";
             const tokens = raw.split(/\s+/);
-            return tokens[tokens.length - 1].toUpperCase();
+            return tokens[tokens.length - 1];
         }
 
-        function getPreviousToken() {
-            const raw = typedText.innerText.replace(/_/g, '').trim();
-            if (!raw) return "";
-            const tokens = raw.split(/\s+/);
-            return tokens.length > 1 ? tokens[tokens.length - 2].toUpperCase() : tokens[0].toUpperCase();
+        // SMART CASING HELPER
+        function formatWordCase(template, targetWord) {
+            if (!template) return targetWord.toLowerCase();
+            if (template === template.toUpperCase() && template.length > 1) {
+                return targetWord.toUpperCase();
+            }
+            if (template[0] === template[0].toUpperCase()) {
+                return targetWord.charAt(0).toUpperCase() + targetWord.slice(1).toLowerCase();
+            }
+            return targetWord.toLowerCase();
         }
 
         function updatePredictionRibbon() {
-            const activeToken = getActiveToken();
-            const raw = typedText.innerText.replace(/_/g, '');
+            const rawToken = getRawToken();
+            const raw = typedText.innerText;
             const endsWithSpace = raw.endsWith(" ") || raw.endsWith("\u00A0");
             
             let matches = [];
 
             if (endsWithSpace) {
-                const prev = getPreviousToken();
-                if (BIGRAMS[prev]) {
-                    matches = BIGRAMS[prev];
-                } else {
-                    matches = ["SYSTEM", "ONLINE", "COMMAND"];
-                }
-            } else if (activeToken.length > 0) {
-                matches = DICTIONARY.filter(w => w.startsWith(activeToken));
-                if (matches.length < 3) {
-                    const fuzzy = DICTIONARY.filter(w => !matches.includes(w) && w.includes(activeToken));
-                    matches = matches.concat(fuzzy);
-                }
+                const prev = rawToken.toUpperCase();
+                const bigramMatches = BIGRAMS[prev] || ["system", "online", "command"];
+                matches = bigramMatches.map(w => formatWordCase(rawToken, w));
+            } else if (rawToken.length > 0) {
+                const searchUpper = rawToken.toUpperCase();
+                const prefixMatches = DICTIONARY.filter(w => w.startsWith(searchUpper));
+                const allMatches = prefixMatches.length < 3 ? prefixMatches.concat(DICTIONARY.filter(w => !prefixMatches.includes(w) && w.includes(searchUpper))) : prefixMatches;
+                matches = allMatches.slice(0, 3).map(w => formatWordCase(rawToken, w));
             }
 
-            const defaults = ["I", "THE", "ACTIVATE"];
+            const defaults = ["i", "the", "activate"].map(w => formatWordCase(rawToken, w));
             for (let i = 0; i < 3; i++) {
                 const pill = document.getElementById(`pred_${i}`);
                 if (matches[i]) {
@@ -631,7 +687,7 @@
 
         function injectPrediction(word) {
             playSpatialClick(0);
-            let raw = typedText.innerText.replace(/_/g, '');
+            let raw = typedText.innerText;
             const endsWithSpace = raw.endsWith(" ") || raw.endsWith("\u00A0");
             
             if (endsWithSpace || !raw.trim()) {
@@ -652,6 +708,21 @@
             pill.onclick = () => injectPrediction(pill.innerText);
         }
 
+        // INPUT MODE SWITCHER
+        function setInputMode(modeIndex) {
+            currentModeIndex = modeIndex % INPUT_MODES.length;
+            const mode = INPUT_MODES[currentModeIndex];
+            document.getElementById('lbl_mode_state').innerText = mode;
+            document.getElementById('stat_mode').innerText = mode;
+
+            if (mode === "PHYSICAL ONLY") {
+                cursor.style.display = 'none';
+                cachedInteractables.forEach(k => k.classList.remove('hover'));
+            }
+        }
+
+        document.getElementById('btn_toggle_mode').onclick = () => setInputMode(currentModeIndex + 1);
+
         // SPEECH RECOGNITION (MIC)
         let recognition = null;
         let isRecording = false;
@@ -664,8 +735,7 @@
 
             recognition.onresult = (event) => {
                 const transcript = event.results[0][0].transcript;
-                if (typedText.innerText === "_") typedText.innerText = "";
-                typedText.innerText += " " + transcript;
+                typedText.innerText = (typedText.innerText.trim() ? typedText.innerText + " " : "") + transcript;
                 updateMetrics();
                 updatePredictionRibbon();
             };
@@ -726,7 +796,7 @@
         function speakText(text) {
             if (!synth) return;
             synth.cancel();
-            const cleanText = text.replace(/_/g, '').trim();
+            const cleanText = text.trim();
             if (cleanText.length === 0) return;
             const utterance = new SpeechSynthesisUtterance(cleanText);
             utterance.rate = 1.05;
@@ -734,14 +804,14 @@
         }
 
         function copyBuffer() {
-            const raw = typedText.innerText.replace(/_/g, '');
+            const raw = typedText.innerText;
             navigator.clipboard.writeText(raw).then(() => {
                 alert("Terminal Buffer Copied to Clipboard!");
             });
         }
 
         function exportBuffer() {
-            const raw = typedText.innerText.replace(/_/g, '');
+            const raw = typedText.innerText;
             const blob = new Blob([raw], { type: 'text/plain;charset=utf-8' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
@@ -879,18 +949,14 @@
         document.getElementById('btn_toggle_theme').onclick = cycleTheme;
         document.getElementById('btn_export_doc').onclick = exportBuffer;
         document.getElementById('btn_clear_buffer').onclick = () => {
-            typedText.innerText = "_";
+            typedText.innerText = "";
             startTime = null;
             updateMetrics();
             updatePredictionRibbon();
         };
-        document.getElementById('btn_toggle_mode').onclick = () => {
-            const lbl = document.getElementById('lbl_mode_state');
-            lbl.innerText = lbl.innerText === "AUTO" ? "PHYSICAL" : "AUTO";
-        };
 
         function updateMetrics() {
-            const rawText = typedText.innerText.replace(/_/g, '');
+            const rawText = typedText.innerText;
             charCount = rawText.length;
             document.getElementById('stat_chars').innerText = charCount;
 
@@ -922,23 +988,20 @@
                 buildKeyboard();
             } else if (key === "BKSP") {
                 let t = typedText.innerText;
-                if (t !== "_") typedText.innerText = t.slice(0, -1) || "_";
+                if (t.length > 0) typedText.innerText = t.slice(0, -1);
                 updateMetrics();
                 updatePredictionRibbon();
             } else if (key === "CLR") {
-                typedText.innerText = "_";
+                typedText.innerText = "";
                 startTime = null;
                 updateMetrics();
                 updatePredictionRibbon();
             } else if (key === "TAB") {
-                if (typedText.innerText === "_") typedText.innerText = "";
                 typedText.innerHTML += "&nbsp;&nbsp;&nbsp;&nbsp;";
             } else if (key === "ENTER") {
-                if (typedText.innerText === "_") typedText.innerText = "";
                 typedText.innerText += "\n";
             } else if (key === "SPACE") {
                 if (!startTime) startTime = Date.now();
-                if (typedText.innerText === "_") typedText.innerText = "";
                 typedText.innerHTML += "&nbsp;";
                 updateMetrics();
                 updatePredictionRibbon();
@@ -950,7 +1013,6 @@
                 copyBuffer();
             } else {
                 if (!startTime) startTime = Date.now();
-                if (typedText.innerText === "_") typedText.innerText = "";
                 const uppercase = isCaps !== isShift;
                 const charToAdd = uppercase ? (shiftKey && key.match(/[a-z]/i) ? shiftKey : (isShift ? shiftKey : key)) : key;
                 typedText.innerText += charToAdd;
@@ -964,25 +1026,26 @@
             }
         }
 
+        // PHYSICAL KEYBOARD LISTENER WITH MODE ENFORCEMENT
         window.addEventListener('keydown', (e) => {
+            const currentMode = INPUT_MODES[currentModeIndex];
+            if (currentMode === "VISION ONLY") return; // Strict Mode Lock
+
             if (e.key === "Backspace") {
                 let t = typedText.innerText;
-                if (t !== "_") typedText.innerText = t.slice(0, -1) || "_";
+                if (t.length > 0) typedText.innerText = t.slice(0, -1);
                 playSpatialClick(0);
                 updateMetrics();
                 updatePredictionRibbon();
             } else if (e.key === "Enter") {
-                if (typedText.innerText === "_") typedText.innerText = "";
                 typedText.innerText += "\n";
                 playSpatialClick(0);
             } else if (e.key === "Tab") {
                 e.preventDefault();
-                if (typedText.innerText === "_") typedText.innerText = "";
                 typedText.innerHTML += "&nbsp;&nbsp;&nbsp;&nbsp;";
                 playSpatialClick(0);
             } else if (e.key.length === 1) {
                 if (!startTime) startTime = Date.now();
-                if (typedText.innerText === "_") typedText.innerText = "";
                 typedText.innerText += e.key;
                 playSpatialClick(0);
                 updateMetrics();
@@ -990,6 +1053,7 @@
             }
         });
 
+        // HIGH-SPEED VISION TRACKING PIPELINE
         const hands = new Hands({locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`});
         hands.setOptions({ 
             maxNumHands: 1,
@@ -1010,6 +1074,12 @@
                 fpsCounter.innerText = `${frameCount} FPS`;
                 frameCount = 0;
                 lastFrameTime = now;
+            }
+
+            const currentMode = INPUT_MODES[currentModeIndex];
+            if (currentMode === "PHYSICAL ONLY") {
+                cursor.style.display = 'none';
+                return; // Vision Interaction Blocked in Physical Mode
             }
 
             cachedInteractables.forEach(k => k.classList.remove('hover'));
@@ -1037,14 +1107,14 @@
                     const spatialPanX = (x / window.innerWidth) * 2 - 1;
 
                     if (pinchDist < 38) {
-                        cursor.style.borderColor = "#00ff66";
+                        cursor.classList.add('locked');
                         if (!isPinching) {
                             isPinching = true;
                             handleKeyExecution(el, spatialPanX);
                         }
                     } else {
                         isPinching = false;
-                        cursor.style.borderColor = "#ffffff";
+                        cursor.classList.remove('locked');
 
                         if (currentKey !== el.id) {
                             currentKey = el.id;
@@ -1066,7 +1136,7 @@
                         }
                     }
                 } else {
-                    cursor.style.borderColor = "var(--neon)";
+                    cursor.classList.remove('locked');
                     currentKey = null;
                     isPinching = false;
                 }
