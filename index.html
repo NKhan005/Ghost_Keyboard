@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="G-BOARD - High Speed Touchless Spatial Vision Keyboard OS">
-    <title>G-BOARD | TURBO SPEED V6.5</title>
+    <meta name="description" content="G-BOARD V7.1 - Modular Full QWERTY & Cyberpunk Control Dock">
+    <title>G-BOARD | MODULAR QWERTY V7.1</title>
     
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
         
         :root { 
             --neon: #00f2ff; 
             --glow: rgba(0, 242, 255, 0.6);
             --alert: #ff3b3b; 
             --dim-neon: rgba(0, 242, 255, 0.2); 
-            --panel-bg: rgba(3, 15, 20, 0.8);
+            --panel-bg: rgba(3, 15, 20, 0.85);
             --key-text: #00f2ff;
         }
 
@@ -25,7 +25,7 @@
             --neon: #ffb700;
             --glow: rgba(255, 183, 0, 0.6);
             --dim-neon: rgba(255, 183, 0, 0.2);
-            --panel-bg: rgba(20, 15, 3, 0.8);
+            --panel-bg: rgba(20, 15, 3, 0.85);
             --key-text: #ffb700;
         }
 
@@ -33,7 +33,7 @@
             --neon: #ff0055;
             --glow: rgba(255, 0, 85, 0.6);
             --dim-neon: rgba(255, 0, 85, 0.2);
-            --panel-bg: rgba(20, 3, 10, 0.8);
+            --panel-bg: rgba(20, 3, 10, 0.85);
             --key-text: #ff0055;
         }
 
@@ -54,6 +54,7 @@
             overflow: hidden; 
             width: 100vw;
             height: 100vh; 
+            display: flex;
             transition: color 0.2s ease, background 0.2s ease;
         }
         
@@ -63,16 +64,15 @@
             height: 100vh; 
             object-fit: cover; 
             transform: scaleX(-1); 
-            opacity: 0.25; 
+            opacity: 0.2; 
             z-index: -1; 
             filter: contrast(120%) brightness(85%); 
         }
 
-        /* HARDWARE ACCELERATED RETICLE */
         #finger_cursor {
             position: fixed;
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
             border: 2px solid var(--neon);
             border-radius: 50%;
             pointer-events: none;
@@ -85,110 +85,88 @@
 
         #main_title { 
             position: fixed; 
-            top: 10px; 
-            left: 50%; 
+            top: 8px; 
+            left: 38%; 
             transform: translateX(-50%); 
             font-family: 'Orbitron', sans-serif; 
-            font-size: clamp(1.4rem, 4vw, 2.8rem); 
+            font-size: clamp(1.2rem, 2.5vw, 2rem); 
             font-weight: 900; 
-            letter-spacing: clamp(6px, 1.5vw, 16px); 
-            text-shadow: 0 0 20px var(--glow); 
+            letter-spacing: clamp(4px, 1vw, 10px); 
+            text-shadow: 0 0 18px var(--glow); 
             z-index: 100;
             color: #ffffff; 
             text-transform: uppercase;
             margin: 0;
-            text-align: center;
-            width: 100%;
         }
 
-        /* RESPONSIVE HUD TELEMETRY PANEL */
-        #telemetry_box { 
-            position: fixed; 
-            top: 15px; 
-            right: 15px; 
-            width: min(300px, 85vw); 
-            padding: 10px 14px; 
-            background: var(--panel-bg); 
-            -webkit-backdrop-filter: blur(10px);
-            backdrop-filter: blur(10px); 
-            border: 1px solid rgba(255, 255, 255, 0.15); 
-            border-right: 4px solid var(--neon);
-            border-radius: 6px; 
-            font-family: 'Courier New', monospace; 
-            font-size: clamp(0.65rem, 1.8vw, 0.75rem); 
-            z-index: 100;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
-        }
-
-        .sys-status-header {
-            color: var(--neon); 
-            font-weight: bold; 
-            margin-bottom: 6px; 
-            border-bottom: 1px solid var(--dim-neon); 
-            padding-bottom: 4px;
+        #workspace {
+            flex: 1;
+            height: 100vh;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding-right: 320px;
         }
 
-        .fps-display {
-            color: #ffffff;
-        }
-
-        .stat-line { margin-bottom: 3px; display: flex; justify-content: space-between; gap: 8px; }
-        .stat-label { opacity: 0.8; white-space: nowrap; }
-        .stat-val { font-weight: bold; color: #ffffff; text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-        /* RESPONSIVE KEYBOARD CONTAINER */
         #keyboard_overlay { 
-            position: absolute; 
-            top: 52%; 
-            left: 50%; 
-            transform: translate(-50%, -50%); 
             display: flex; 
             flex-direction: column; 
-            gap: clamp(4px, 1vh, 8px); 
-            padding: clamp(8px, 2vw, 20px); 
-            background: rgba(2, 18, 24, 0.55); 
+            gap: clamp(3px, 0.8vh, 6px); 
+            padding: clamp(6px, 1.2vw, 12px); 
+            background: rgba(2, 18, 24, 0.65); 
             -webkit-backdrop-filter: blur(16px);
             backdrop-filter: blur(16px); 
-            border-radius: 12px; 
+            border-radius: 10px; 
             border: 1px solid rgba(255, 255, 255, 0.12); 
             z-index: 10;
             box-shadow: 0 0 35px rgba(0, 0, 0, 0.7);
-            width: min(96vw, 760px);
+            width: min(95%, 880px);
         }
 
-        .row { display: flex; justify-content: center; gap: clamp(3px, 0.8vw, 6px); width: 100%; }
+        .row { display: flex; justify-content: center; gap: clamp(2px, 0.4vw, 5px); width: 100%; }
+        
         .key { 
             flex: 1;
-            height: clamp(38px, 6.5vh, 52px); 
-            border: 1px solid rgba(255, 255, 255, 0.2); 
+            height: clamp(34px, 5.2vh, 44px); 
+            border: 1px solid rgba(255, 255, 255, 0.18); 
             display: flex; 
+            flex-direction: column;
             align-items: center; 
             justify-content: center; 
-            border-radius: 5px; 
+            border-radius: 4px; 
             font-weight: 700; 
-            background: rgba(255, 255, 255, 0.05); 
-            transition: transform 0.08s ease, background 0.08s ease; 
-            font-family: 'Orbitron', sans-serif; 
-            font-size: clamp(0.75rem, 2vw, 0.95rem); 
+            background: rgba(255, 255, 255, 0.04); 
+            transition: transform 0.06s ease, background 0.06s ease; 
+            font-family: 'Orbitron', 'JetBrains Mono', sans-serif; 
+            font-size: clamp(0.68rem, 1.3vw, 0.85rem); 
             position: relative; 
             overflow: hidden; 
             color: var(--key-text);
             cursor: pointer;
             min-width: 0;
+            padding: 0 2px;
         }
 
-        .key.space { flex: 4; border-bottom: 3px solid var(--neon); }
-        .key.shift { flex: 1.5; background: rgba(255, 255, 255, 0.1); }
-        .key.speak-key { flex: 1.5; background: rgba(0, 242, 255, 0.12); }
-        .key.theme-key { flex: 1.2; background: rgba(255, 255, 255, 0.08); }
-        
+        .key .sub-char { font-size: 0.55em; opacity: 0.6; margin-bottom: -2px; }
+
+        .key.k-backspace { flex: 1.8; background: rgba(255, 59, 59, 0.1); }
+        .key.k-tab { flex: 1.3; }
+        .key.k-caps { flex: 1.5; }
+        .key.k-enter { flex: 1.8; background: rgba(0, 242, 255, 0.12); }
+        .key.k-shift { flex: 2.1; }
+        .key.k-space { flex: 6.5; border-bottom: 3px solid var(--neon); }
+        .key.k-fn { flex: 1.4; background: rgba(255, 255, 255, 0.08); font-size: 0.72em; }
+        .key.k-active { background: var(--neon); color: #000; }
+        .key.k-recording { background: var(--alert) !important; color: #fff !important; animation: pulse 1s infinite; }
+
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+
         .key.hover, .key:focus { 
             background: var(--neon); 
             color: #000000; 
-            box-shadow: 0 0 18px var(--neon); 
-            transform: scale(1.06); 
+            box-shadow: 0 0 16px var(--neon); 
+            transform: scale(1.05); 
             outline: none;
             z-index: 2;
         }
@@ -199,45 +177,125 @@
             left: 0; 
             height: 100%; 
             background: var(--alert); 
-            opacity: 0.55; 
+            opacity: 0.5; 
             width: 0%; 
             pointer-events: none; 
             transition: width 0.04s linear; 
         }
 
-        /* RESPONSIVE TERMINAL LOG PANEL */
         #terminal_log { 
             position: fixed; 
-            bottom: 15px; 
-            left: 50%; 
+            bottom: 12px; 
+            left: calc((100vw - 320px) / 2); 
             transform: translateX(-50%); 
-            width: min(94vw, 850px); 
-            padding: clamp(10px, 2vh, 18px) 20px; 
+            width: min(92%, 880px); 
+            padding: 10px 18px; 
             background: rgba(2, 10, 14, 0.95); 
             border-left: 5px solid var(--neon); 
             border-radius: 0 6px 6px 0;
-            font-family: 'Courier New', monospace; 
-            font-size: clamp(1rem, 2.5vw, 1.4rem); 
+            font-family: 'JetBrains Mono', monospace; 
+            font-size: clamp(0.95rem, 1.8vw, 1.25rem); 
             white-space: pre-wrap;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.8);
-            min-height: 55px; 
+            box-shadow: 0 6px 20px rgba(0,0,0,0.8);
+            min-height: 50px; 
+            max-height: 85px;
+            overflow-y: auto;
             display: flex; 
             align-items: center;
         }
-        
+
+        #sidebar_dock {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 310px;
+            height: 100vh;
+            background: var(--panel-bg); 
+            -webkit-backdrop-filter: blur(14px);
+            backdrop-filter: blur(14px);
+            border-left: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: -5px 0 25px rgba(0,0,0,0.7);
+            padding: 18px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            z-index: 120;
+        }
+
+        .dock-header {
+            color: var(--neon);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            border-bottom: 1px solid var(--dim-neon);
+            padding-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .telemetry-group {
+            margin-top: 8px;
+        }
+
+        .stat-line { 
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            display: flex; 
+            justify-content: space-between; 
+            margin-bottom: 4px;
+        }
+        .stat-label { opacity: 0.8; }
+        .stat-val { font-weight: bold; color: #ffffff; }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 6px;
+        }
+
+        .sidebar-btn {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--dim-neon);
+            color: #ffffff;
+            padding: 10px 12px;
+            border-radius: 6px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-btn:hover, .sidebar-btn:focus {
+            background: var(--neon);
+            color: #000000;
+            box-shadow: 0 0 15px var(--neon);
+            outline: none;
+        }
+
+        .mode-state-lbl {
+            color: var(--neon);
+        }
+
         #start_btn { 
             position: fixed; 
             top: 50%; 
             left: 50%; 
             transform: translate(-50%, -50%); 
-            padding: clamp(14px, 3vh, 22px) clamp(25px, 6vw, 45px); 
+            padding: 18px 40px; 
             font-family: 'Orbitron', sans-serif; 
             background: var(--neon); 
             color: #000000; 
             border: none; 
             cursor: pointer; 
             z-index: 200; 
-            font-size: clamp(1rem, 2.5vw, 1.25rem); 
+            font-size: clamp(1rem, 2vw, 1.25rem); 
             font-weight: 900; 
             letter-spacing: 3px;
             border-radius: 8px; 
@@ -245,21 +303,21 @@
             white-space: nowrap;
         }
 
-        /* PORTRAIT / SMALL SCREEN COLLAPSE FOR HUD */
-        @media (max-width: 768px) and (orientation: portrait) {
-            #telemetry_box {
+        @media (max-width: 992px) {
+            #workspace { padding-right: 0; }
+            #sidebar_dock {
+                position: fixed;
+                bottom: 0;
                 top: auto;
-                bottom: 80px;
-                right: 50%;
-                transform: translateX(50%);
-                width: 94vw;
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 4px 12px;
-                padding: 8px 12px;
+                width: 100vw;
+                height: 180px;
+                flex-direction: row;
+                border-left: none;
+                border-top: 1px solid rgba(255, 255, 255, 0.15);
+                overflow-x: auto;
             }
-            .sys-status-header { grid-column: span 2; margin-bottom: 2px; }
-            #keyboard_overlay { top: 40%; width: 98vw; padding: 6px; }
+            #terminal_log { left: 50%; bottom: 190px; width: 96vw; }
+            #main_title { left: 50%; }
         }
     </style>
 </head>
@@ -270,22 +328,47 @@
     <div id="finger_cursor"></div>
     <h1 id="main_title">G - BOARD</h1>
 
-    <div id="telemetry_box">
-        <div class="sys-status-header">
-            <span>SYS: ONLINE</span>
-            <span id="fps_counter" class="fps-display">60 FPS</span>
-        </div>
-        <div class="stat-line"><span class="stat-label">TIME:</span> <span id="stat_time" class="stat-val">--:--:--</span></div>
-        <div class="stat-line"><span class="stat-label">DATE:</span> <span id="stat_date" class="stat-val">--/--/----</span></div>
-        <div class="stat-line"><span class="stat-label">LOCATION:</span> <span id="stat_loc" class="stat-val">LOCATING...</span></div>
-        <div class="stat-line"><span class="stat-label">WEATHER:</span> <span id="stat_temp" class="stat-val">--°C</span></div>
-        <div class="stat-line"><span class="stat-label">SPEED:</span> <span id="stat_wpm" class="stat-val">0 WPM</span></div>
-        <div class="stat-line"><span class="stat-label">CHARS:</span> <span id="stat_chars" class="stat-val">0</span></div>
-        <div class="stat-line"><span class="stat-label">CORE ENGINE:</span> <span class="stat-val">TURBO-CV</span></div>
+    <div id="workspace">
+        <div id="keyboard_overlay"></div>
     </div>
 
-    <div id="keyboard_overlay"></div>
     <div id="terminal_log"><span id="typed_text">_</span></div>
+
+    <div id="sidebar_dock">
+        <div>
+            <div class="dock-header">
+                <span>SYSTEM TELEMETRY</span>
+                <span id="fps_counter">60 FPS</span>
+            </div>
+            <div class="telemetry-group">
+                <div class="stat-line"><span class="stat-label">INPUT MODE:</span> <span id="stat_mode" class="stat-val">VISION + PINCH</span></div>
+                <div class="stat-line"><span class="stat-label">TIME:</span> <span id="stat_time" class="stat-val">--:--:--</span></div>
+                <div class="stat-line"><span class="stat-label">LOCATION:</span> <span id="stat_loc" class="stat-val">LOCATING...</span></div>
+                <div class="stat-line"><span class="stat-label">WEATHER:</span> <span id="stat_temp" class="stat-val">--°C</span></div>
+                <div class="stat-line"><span class="stat-label">SPEED:</span> <span id="stat_wpm" class="stat-val">0 WPM</span></div>
+                <div class="stat-line"><span class="stat-label">CHARS:</span> <span id="stat_chars" class="stat-val">0</span></div>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <div class="dock-header">COMMAND CONTROLS</div>
+            
+            <button class="sidebar-btn" id="btn_toggle_mode">
+                <span>INPUT MODE</span>
+                <span id="lbl_mode_state" class="mode-state-lbl">AUTO</span>
+            </button>
+            
+            <button class="sidebar-btn" id="btn_toggle_theme">
+                <span>THEME PROFILE</span>
+                <span id="lbl_theme_name">CYAN</span>
+            </button>
+
+            <button class="sidebar-btn" id="btn_export_doc">
+                <span>EXPORT BUFFER</span>
+                <span>.TXT</span>
+            </button>
+        </div>
+    </div>
 
     <script>
         const videoElement = document.getElementById('video_input');
@@ -298,7 +381,8 @@
         const cursor = document.getElementById('finger_cursor');
         const fpsCounter = document.getElementById('fps_counter');
         
-        let isCaps = true;
+        let isShift = false;
+        let isCaps = false;
         let audioCtx = null;
         let cachedKeyElements = [];
 
@@ -308,22 +392,73 @@
         const themes = ['cyan', 'amber', 'crimson'];
         let currentThemeIndex = 0;
 
-        // FPS Metric Tracking
         let lastFrameTime = performance.now();
         let frameCount = 0;
 
-        function playHapticClick() {
+        let recognition = null;
+        let isRecording = false;
+
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRec();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                if (typedText.innerText === "_") typedText.innerText = "";
+                typedText.innerText += " " + transcript;
+                updateMetrics();
+            };
+
+            recognition.onend = () => {
+                isRecording = false;
+                const micKey = document.getElementById('k_MIC');
+                if (micKey) micKey.classList.remove('k-recording');
+            };
+        }
+
+        function toggleSpeechRecognition() {
+            if (!recognition) {
+                alert("Speech Recognition API is not supported in this browser.");
+                return;
+            }
+            const micKey = document.getElementById('k_MIC');
+            if (!isRecording) {
+                recognition.start();
+                isRecording = true;
+                if (micKey) micKey.classList.add('k-recording');
+            } else {
+                recognition.stop();
+                isRecording = false;
+                if (micKey) micKey.classList.remove('k-recording');
+            }
+        }
+
+        function playSpatialClick(normalizedX = 0) {
             if (!audioCtx) return;
             try {
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
+                const panner = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : null;
+
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(850, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(140, audioCtx.currentTime + 0.035);
+                osc.frequency.setValueAtTime(860, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(130, audioCtx.currentTime + 0.035);
+
                 gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.035);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
+
+                if (panner) {
+                    panner.pan.setValueAtTime(Math.max(-1, Math.min(1, normalizedX)), audioCtx.currentTime);
+                    osc.connect(gain);
+                    gain.connect(panner);
+                    panner.connect(audioCtx.destination);
+                } else {
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                }
+
                 osc.start();
                 osc.stop(audioCtx.currentTime + 0.035);
             } catch (e) {}
@@ -337,6 +472,29 @@
             const utterance = new SpeechSynthesisUtterance(cleanText);
             utterance.rate = 1.05;
             synth.speak(utterance);
+        }
+
+        function copyBuffer() {
+            const raw = typedText.innerText.replace(/_/g, '');
+            navigator.clipboard.writeText(raw).then(() => {
+                alert("Terminal Buffer Copied to Clipboard!");
+            });
+        }
+
+        function exportBuffer() {
+            const raw = typedText.innerText.replace(/_/g, '');
+            const blob = new Blob([raw], { type: 'text/plain;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `G-BOARD_LOG_${Date.now()}.txt`;
+            link.click();
+        }
+
+        function cycleTheme() {
+            currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+            const themeName = themes[currentThemeIndex];
+            document.body.className = `theme-${themeName}`;
+            document.getElementById('lbl_theme_name').innerText = themeName.toUpperCase();
         }
 
         function initGPSLocation() {
@@ -370,38 +528,85 @@
                     },
                     { enableHighAccuracy: false, timeout: 6000, maximumAge: 60000 }
                 );
-            } else {
-                document.getElementById('stat_loc').innerText = "SURAMPALEM, IN";
-                document.getElementById('stat_temp').innerText = "31.5°C";
             }
         }
 
-        const numbers = ["1","2","3","4","5","6","7","8","9","0"];
-        const row1 = ["Q","W","E","R","T","Y","U","I","O","P"];
-        const row2 = ["A","S","D","F","G","H","J","K","L"];
-        const row3 = ["SHIFT","Z","X","C","V","B","N","M", "CLR"];
-        const row4 = [".", ",", "-", "SPEAK", "THEME", "SPACE"];
+        const qwertyRows = [
+            [
+                { primary: "`", shift: "~" }, { primary: "1", shift: "!" }, { primary: "2", shift: "@" }, 
+                { primary: "3", shift: "#" }, { primary: "4", shift: "$" }, { primary: "5", shift: "%" }, 
+                { primary: "6", shift: "^" }, { primary: "7", shift: "&" }, { primary: "8", shift: "*" }, 
+                { primary: "9", shift: "(" }, { primary: "0", shift: ")" }, { primary: "-", shift: "_" }, 
+                { primary: "=", shift: "+" }, { primary: "BKSP", class: "k-backspace", special: true }
+            ],
+            [
+                { primary: "TAB", class: "k-tab", special: true },
+                { primary: "q", shift: "Q" }, { primary: "w", shift: "W" }, { primary: "e", shift: "E" },
+                { primary: "r", shift: "R" }, { primary: "t", shift: "T" }, { primary: "y", shift: "Y" },
+                { primary: "u", shift: "U" }, { primary: "i", shift: "I" }, { primary: "o", shift: "O" },
+                { primary: "p", shift: "P" }, { primary: "[", shift: "{" }, { primary: "]", shift: "}" },
+                { primary: "\\", shift: "|" }
+            ],
+            [
+                { primary: "CAPS", class: "k-caps", special: true },
+                { primary: "a", shift: "A" }, { primary: "s", shift: "S" }, { primary: "d", shift: "D" },
+                { primary: "f", shift: "F" }, { primary: "g", shift: "G" }, { primary: "h", shift: "H" },
+                { primary: "j", shift: "J" }, { primary: "k", shift: "K" }, { primary: "l", shift: "L" },
+                { primary: ";", shift: ":" }, { primary: "'", shift: "\"" }, 
+                { primary: "ENTER", class: "k-enter", special: true }
+            ],
+            [
+                { primary: "SHIFT", class: "k-shift", special: true },
+                { primary: "z", shift: "Z" }, { primary: "x", shift: "X" }, { primary: "c", shift: "C" },
+                { primary: "v", shift: "V" }, { primary: "b", shift: "B" }, { primary: "n", shift: "N" },
+                { primary: "m", shift: "M" }, { primary: ",", shift: "<" }, { primary: ".", shift: ">" },
+                { primary: "/", shift: "?" }, { primary: "CLR", class: "k-backspace", special: true }
+            ],
+            [
+                { primary: "MIC", class: "k-fn", special: true },
+                { primary: "SPEAK", class: "k-fn", special: true },
+                { primary: "SPACE", class: "k-space", special: true },
+                { primary: "COPY", class: "k-fn", special: true }
+            ]
+        ];
 
         function buildKeyboard() {
             keyboard.innerHTML = "";
-            [numbers, row1, row2, row3, row4].forEach(rowData => {
-                const rowDiv = document.createElement('div'); 
+            qwertyRows.forEach(row => {
+                const rowDiv = document.createElement('div');
                 rowDiv.className = 'row';
-                rowData.forEach(k => {
-                    const button = document.createElement('button');
-                    let keyClass = 'key';
-                    if (k === "SPACE") keyClass += ' space';
-                    else if (k === "SHIFT") keyClass += ' shift';
-                    else if (k === "SPEAK") keyClass += ' speak-key';
-                    else if (k === "THEME") keyClass += ' theme-key';
 
-                    button.className = keyClass;
-                    button.id = `key-${k}`;
-                    button.innerText = (k === "SHIFT" || k === "CLR" || k === "SPACE" || k === "SPEAK" || k === "THEME" || !isNaN(k) || k === "." || k === "," || k === "-") ? k : (isCaps ? k : k.toLowerCase());
-                    
-                    if(k === "CLR") button.innerHTML += '<div id="clr_fill"></div>';
-                    button.onclick = () => handleKeyExecution(button);
-                    rowDiv.appendChild(button);
+                row.forEach(keyObj => {
+                    const btn = document.createElement('button');
+                    btn.className = `key ${keyObj.class || ''}`;
+                    if (keyObj.primary === "CAPS" && isCaps) btn.classList.add('k-active');
+                    if (keyObj.primary === "SHIFT" && isShift) btn.classList.add('k-active');
+
+                    let displayChar = keyObj.primary;
+                    if (!keyObj.special) {
+                        const uppercase = isCaps !== isShift;
+                        displayChar = uppercase ? (keyObj.shift && keyObj.primary.length === 1 && keyObj.primary.match(/[a-z]/i) ? keyObj.shift : (isShift ? keyObj.shift : keyObj.primary)) : keyObj.primary;
+                    }
+
+                    btn.id = `k_${keyObj.primary}`;
+                    btn.dataset.key = keyObj.primary;
+                    btn.dataset.shift = keyObj.shift || "";
+
+                    if (keyObj.shift && !keyObj.primary.match(/[a-z]/i)) {
+                        btn.innerHTML = `<span class="sub-char">${keyObj.shift}</span><span>${keyObj.primary}</span>`;
+                    } else {
+                        btn.innerText = displayChar;
+                    }
+
+                    if (keyObj.primary === "CLR") btn.innerHTML += '<div id="clr_fill"></div>';
+
+                    btn.onclick = () => {
+                        const rect = btn.getBoundingClientRect();
+                        const normX = ((rect.left + rect.width / 2) / window.innerWidth) * 2 - 1;
+                        handleKeyExecution(btn, normX);
+                    };
+
+                    rowDiv.appendChild(btn);
                 });
                 keyboard.appendChild(rowDiv);
             });
@@ -410,19 +615,12 @@
 
         buildKeyboard();
 
-        const hands = new Hands({locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`});
-        hands.setOptions({ 
-            maxNumHands: 1,
-            modelComplexity: 0,
-            minDetectionConfidence: 0.5, 
-            minTrackingConfidence: 0.5 
-        });
-
-        let currentKey = null;
-        let hoverStartTime = 0;
-        const TRIGGER_DWELL = 0.65;
-        const BACKSPACE_DWELL = 0.50;
-        const CLEAR_ALL_DWELL = 1.10;
+        document.getElementById('btn_toggle_theme').onclick = cycleTheme;
+        document.getElementById('btn_export_doc').onclick = exportBuffer;
+        document.getElementById('btn_toggle_mode').onclick = () => {
+            const lbl = document.getElementById('lbl_mode_state');
+            lbl.innerText = lbl.innerText === "AUTO" ? "PHYSICAL" : "AUTO";
+        };
 
         function updateMetrics() {
             const rawText = typedText.innerText.replace(/_/g, '');
@@ -439,28 +637,93 @@
             }
         }
 
-        function handleKeyExecution(el) {
-            playHapticClick();
-            if (el.innerText === "SHIFT") {
-                isCaps = !isCaps; 
+        function handleKeyExecution(el, spatialPanX = 0) {
+            playSpatialClick(spatialPanX);
+            const key = el.dataset.key;
+            const shiftKey = el.dataset.shift;
+
+            if (key === "CAPS") {
+                isCaps = !isCaps;
                 buildKeyboard();
-            } else if (el.innerText === "SPEAK") {
-                speakText(typedText.innerText);
-            } else if (el.innerText === "THEME") {
-                currentThemeIndex = (currentThemeIndex + 1) % themes.length;
-                document.body.className = `theme-${themes[currentThemeIndex]}`;
-            } else if (el.id === "key-CLR") {
+            } else if (key === "SHIFT") {
+                isShift = !isShift;
+                buildKeyboard();
+            } else if (key === "BKSP") {
+                let t = typedText.innerText;
+                if (t !== "_") typedText.innerText = t.slice(0, -1) || "_";
+                updateMetrics();
+            } else if (key === "CLR") {
                 typedText.innerText = "_";
                 startTime = null;
                 updateMetrics();
+            } else if (key === "TAB") {
+                if (typedText.innerText === "_") typedText.innerText = "";
+                typedText.innerHTML += "&nbsp;&nbsp;&nbsp;&nbsp;";
+            } else if (key === "ENTER") {
+                if (typedText.innerText === "_") typedText.innerText = "";
+                typedText.innerText += "\n";
+            } else if (key === "SPACE") {
+                if (!startTime) startTime = Date.now();
+                if (typedText.innerText === "_") typedText.innerText = "";
+                typedText.innerHTML += "&nbsp;";
+                updateMetrics();
+            } else if (key === "MIC") {
+                toggleSpeechRecognition();
+            } else if (key === "SPEAK") {
+                speakText(typedText.innerText);
+            } else if (key === "COPY") {
+                copyBuffer();
             } else {
                 if (!startTime) startTime = Date.now();
                 if (typedText.innerText === "_") typedText.innerText = "";
-                if (el.innerText === "SPACE") typedText.innerHTML += "&nbsp;";
-                else typedText.innerText += el.innerText;
+                const uppercase = isCaps !== isShift;
+                const charToAdd = uppercase ? (shiftKey && key.match(/[a-z]/i) ? shiftKey : (isShift ? shiftKey : key)) : key;
+                typedText.innerText += charToAdd;
+                
+                if (isShift) {
+                    isShift = false;
+                    buildKeyboard();
+                }
                 updateMetrics();
             }
         }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === "Backspace") {
+                let t = typedText.innerText;
+                if (t !== "_") typedText.innerText = t.slice(0, -1) || "_";
+                playSpatialClick(0);
+                updateMetrics();
+            } else if (e.key === "Enter") {
+                if (typedText.innerText === "_") typedText.innerText = "";
+                typedText.innerText += "\n";
+                playSpatialClick(0);
+            } else if (e.key === "Tab") {
+                e.preventDefault();
+                if (typedText.innerText === "_") typedText.innerText = "";
+                typedText.innerHTML += "&nbsp;&nbsp;&nbsp;&nbsp;";
+                playSpatialClick(0);
+            } else if (e.key.length === 1) {
+                if (!startTime) startTime = Date.now();
+                if (typedText.innerText === "_") typedText.innerText = "";
+                typedText.innerText += e.key;
+                playSpatialClick(0);
+                updateMetrics();
+            }
+        });
+
+        const hands = new Hands({locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`});
+        hands.setOptions({ 
+            maxNumHands: 1,
+            modelComplexity: 0,
+            minDetectionConfidence: 0.5, 
+            minTrackingConfidence: 0.5 
+        });
+
+        let currentKey = null;
+        let hoverStartTime = 0;
+        let isPinching = false;
+        const TRIGGER_DWELL = 0.65;
 
         hands.onResults((results) => {
             frameCount++;
@@ -475,7 +738,9 @@
             cursor.style.display = 'none';
 
             if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
-                const indexTip = results.multiHandLandmarks[0][8];
+                const landmarks = results.multiHandLandmarks[0];
+                const indexTip = landmarks[8];
+
                 const x = (1 - indexTip.x) * window.innerWidth;
                 const y = indexTip.y * window.innerHeight;
 
@@ -483,57 +748,61 @@
                 cursor.style.left = `${x}px`;
                 cursor.style.top = `${y}px`;
 
+                const dx = (landmarks[8].x - landmarks[4].x) * window.innerWidth;
+                const dy = (landmarks[8].y - landmarks[4].y) * window.innerHeight;
+                const pinchDist = Math.hypot(dx, dy);
+
                 const el = document.elementFromPoint(x, y);
 
                 if (el && el.classList.contains('key')) {
                     el.classList.add('hover');
-                    cursor.style.borderColor = "#ffffff";
+                    const spatialPanX = (x / window.innerWidth) * 2 - 1;
 
-                    if (currentKey !== el.id) { 
-                        currentKey = el.id; 
-                        hoverStartTime = Date.now(); 
+                    if (pinchDist < 38) {
+                        cursor.style.borderColor = "#00ff66";
+                        if (!isPinching) {
+                            isPinching = true;
+                            handleKeyExecution(el, spatialPanX);
+                        }
                     } else {
-                        const duration = (Date.now() - hoverStartTime) / 1000;
-                        
-                        if (el.id === "key-CLR") {
-                            const fill = document.getElementById('clr_fill');
-                            if (fill) fill.style.width = Math.min((duration / CLEAR_ALL_DWELL) * 100, 100) + "%";
-                            
-                            if (duration >= CLEAR_ALL_DWELL) {
-                                typedText.innerText = "_"; 
-                                hoverStartTime = Date.now(); 
-                                if (fill) fill.style.width = "0%";
-                                startTime = null;
-                                playHapticClick();
-                                updateMetrics();
-                            } else if (duration >= BACKSPACE_DWELL && duration < (BACKSPACE_DWELL + 0.04)) {
-                                let t = typedText.innerText; 
-                                if (t !== "_") typedText.innerText = t.slice(0, -1) || "_";
-                                hoverStartTime = Date.now() - (BACKSPACE_DWELL * 600);
-                                playHapticClick();
-                                updateMetrics();
-                            }
-                        } 
-                        else if (duration >= TRIGGER_DWELL) {
-                            handleKeyExecution(el);
+                        isPinching = false;
+                        cursor.style.borderColor = "#ffffff";
+
+                        if (currentKey !== el.id) {
+                            currentKey = el.id;
                             hoverStartTime = Date.now();
+                        } else {
+                            const duration = (Date.now() - hoverStartTime) / 1000;
+                            if (el.dataset.key === "CLR") {
+                                const fill = document.getElementById('clr_fill');
+                                if (fill) fill.style.width = Math.min((duration / 1.1) * 100, 100) + "%";
+                                if (duration >= 1.1) {
+                                    handleKeyExecution(el, spatialPanX);
+                                    hoverStartTime = Date.now();
+                                    if (fill) fill.style.width = "0%";
+                                }
+                            } else if (duration >= TRIGGER_DWELL) {
+                                handleKeyExecution(el, spatialPanX);
+                                hoverStartTime = Date.now();
+                            }
                         }
                     }
                 } else {
                     cursor.style.borderColor = "var(--neon)";
                     currentKey = null;
+                    isPinching = false;
                 }
             } else {
                 currentKey = null;
+                isPinching = false;
             }
         });
 
         startBtn.onclick = async () => {
             startBtn.style.display = 'none';
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            
             initGPSLocation();
-            
+
             const constraints = {
                 video: {
                     width: { ideal: 640 },
@@ -547,19 +816,18 @@
                 const stream = await navigator.mediaDevices.getUserMedia(constraints);
                 videoElement.srcObject = stream;
                 await videoElement.play();
-                
+
                 const processFrame = async () => {
                     if (videoElement.readyState >= 2) {
                         await hands.send({image: videoElement});
                     }
                     const now = new Date();
                     document.getElementById('stat_time').innerText = now.toLocaleTimeString([], {hour12:false});
-                    document.getElementById('stat_date').innerText = now.toLocaleDateString();
                     requestAnimationFrame(processFrame);
                 };
                 requestAnimationFrame(processFrame);
             } catch (err) {
-                alert("Camera Access Required: Please grant webcam permissions to enable G-BOARD.");
+                alert("Camera Access Required for Spatial Typing.");
             }
         };
     </script>
