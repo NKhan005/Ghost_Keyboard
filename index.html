@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="G-BOARD V7.3 - Predictive Spatial Vision Keyboard with Autocomplete Ribbon">
-    <title>G-BOARD | PREDICTIVE OS V7.3</title>
+    <meta name="description" content="G-BOARD V7.4 - Deep Lexicon Predictive Vision OS">
+    <title>G-BOARD | PREDICTIVE OS V7.4</title>
     
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
@@ -155,7 +155,7 @@
         .predict-pill {
             flex: 1;
             background: rgba(0, 242, 255, 0.08);
-            border: 1px dashed var(--dim-neon);
+            border: 1px solid var(--dim-neon);
             border-radius: 6px;
             padding: 6px 12px;
             font-family: 'Orbitron', monospace;
@@ -168,10 +168,15 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            min-height: 32px;
+            min-height: 34px;
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        .predict-pill.empty {
+            opacity: 0.45;
+            border-style: dashed;
         }
 
         .predict-pill.hover, .predict-pill:hover {
@@ -179,6 +184,7 @@
             color: #000000;
             box-shadow: 0 0 16px var(--neon);
             transform: scale(1.03);
+            opacity: 1;
         }
 
         #keyboard_overlay { 
@@ -421,9 +427,9 @@
 
     <div id="workspace">
         <div id="prediction_ribbon">
-            <div class="predict-pill" id="pred_0">THE</div>
-            <div class="predict-pill" id="pred_1">SYSTEM</div>
-            <div class="predict-pill" id="pred_2">ONLINE</div>
+            <div class="predict-pill empty" id="pred_0">I</div>
+            <div class="predict-pill empty" id="pred_1">THE</div>
+            <div class="predict-pill empty" id="pred_2">ACTIVATE</div>
         </div>
         <div id="keyboard_overlay"></div>
     </div>
@@ -485,28 +491,124 @@
         let lastFrameTime = performance.now();
         let frameCount = 0;
 
-        // HIGH-FREQUENCY LEXICON & PREDICTION ENGINE
+        // EXPANDED LEXICON & BIGRAM DICTIONARY
         const DICTIONARY = [
-            "THE", "BE", "TO", "OF", "AND", "A", "IN", "THAT", "HAVE", "I", 
-            "IT", "FOR", "NOT", "ON", "WITH", "HE", "AS", "YOU", "DO", "AT", 
-            "THIS", "BUT", "HIS", "BY", "FROM", "THEY", "WE", "SAY", "HER", "SHE", 
-            "OR", "AN", "WILL", "MY", "ONE", "ALL", "WOULD", "THERE", "THEIR", "WHAT", 
-            "SO", "UP", "OUT", "IF", "ABOUT", "WHO", "GET", "WHICH", "GO", "ME",
-            "SYSTEM", "CYBER", "MATRIX", "ONLINE", "NEON", "VISION", "KEYBOARD", "GHOST",
-            "TERMINAL", "COMMAND", "EXECUTE", "SECURITY", "INITIALIZE", "ACCESS", "QUANTUM"
+            "ACTIVATE", "ACCESS", "ACCOUNT", "ACTION", "ACTIVE", "ADD", "ADDRESS", "ADVANCED", "AGAIN", "AGENT",
+            "ALERT", "ALGORITHM", "ALLOW", "ALMOST", "ALONE", "ALREADY", "ALSO", "ALWAYS", "AMONG", "AMOUNT",
+            "ANALYZE", "ANDROID", "ANSWER", "ANY", "ANYONE", "ANYTHING", "APPLICATION", "APPLY", "AREA", "ARMOR",
+            "AROUND", "ARRAY", "ARTICLE", "ARTIFICIAL", "ASK", "ASSISTANT", "ATTACK", "AUDIO", "AUTHENTICATE", "AUTHORIZE",
+            "AUTO", "AVAILABLE", "BACK", "BACKUP", "BASE", "BASIC", "BATTERY", "BEAUTIFUL", "BECOME", "BEFORE",
+            "BEGIN", "BEHIND", "BELIEVE", "BETTER", "BETWEEN", "BINARY", "BIOMETRIC", "BLOCK", "BLUETOOTH", "BOARD",
+            "BODY", "BOOT", "BORDER", "BOT", "BOTH", "BRAIN", "BRANCH", "BREAK", "BRIDGE", "BROWSER",
+            "BUFFER", "BUILD", "BUILT", "BUSINESS", "BUTTON", "BYTE", "CALCULATE", "CALL", "CAMERA", "CANCEL",
+            "CAPACITY", "CAPTURE", "CARD", "CARE", "CARRY", "CASE", "CENTER", "CENTRAL", "CHAIN", "CHALLENGE",
+            "CHANGE", "CHANNEL", "CHARGE", "CHECK", "CHIP", "CIPHER", "CIRCUIT", "CITY", "CLASS", "CLEAN",
+            "CLEAR", "CLICK", "CLIENT", "CLONE", "CLOSE", "CLOUD", "CLUSTER", "CODE", "COGNITIVE", "COLLAPSE",
+            "COLLECT", "COLOR", "COMMAND", "COMMENCE", "COMMON", "COMMUNICATE", "COMPILE", "COMPLETE", "COMPLEX", "COMPONENT",
+            "COMPUTE", "COMPUTER", "CONFIG", "CONNECT", "CONSOLE", "CONSTANT", "CONTAIN", "CONTEXT", "CONTINUE", "CONTROL",
+            "CONVERT", "COOL", "COORDINATE", "COPY", "CORE", "CORRECT", "COUNT", "COURSE", "CRACK", "CREATE",
+            "CRIMSON", "CRITICAL", "CURRENT", "CURSOR", "CYBER", "CYBERPUNK", "CYBERSPACE", "CYCLE", "DATA", "DATABASE",
+            "DEBUG", "DECENTRALIZED", "DECIDE", "DECODE", "DEFAULT", "DEFENSE", "DEFINE", "DELETE", "DELIVERY", "DEPLOY",
+            "DESIGN", "DESKTOP", "DESTROY", "DETECT", "DEVELOP", "DEVICE", "DIAGNOSTIC", "DIALOG", "DICTIONARY", "DIGITAL",
+            "DIRECT", "DISABLE", "DISCONNECT", "DISPLAY", "DISTANCE", "DOCK", "DOCUMENT", "DOMAIN", "DOUBLE", "DOWNLOAD",
+            "DRIVE", "DRIVER", "DRONE", "DYNAMIC", "EARLY", "ECHO", "EDGE", "EDIT", "EFFECT", "EFFORT",
+            "ELECTRIC", "ELECTRONIC", "ELEMENT", "ELEVATE", "EMBED", "EMERGENCY", "EMIT", "ENABLE", "ENCRYPT", "END",
+            "ENERGY", "ENGINE", "ENHANCE", "ENTER", "ENTITY", "ENTRY", "ENVIRONMENT", "EQUIPMENT", "ERROR", "ESCAPE",
+            "EVENT", "EVERY", "EVERYONE", "EVERYTHING", "EXACT", "EXECUTE", "EXPAND", "EXPECT", "EXPORT", "EXTEND",
+            "EXTERNAL", "EXTREME", "EYE", "FACE", "FACTOR", "FAIL", "FAST", "FEATURE", "FEED", "FIELD",
+            "FILE", "FILTER", "FINAL", "FIND", "FINGER", "FIREWALL", "FIRMWARE", "FIRST", "FIX", "FLASH",
+            "FLIGHT", "FLOW", "FLUSH", "FOCUS", "FOLLOW", "FORCE", "FORECAST", "FORMAT", "FRAME", "FRAMEWORK",
+            "FREE", "FREQUENCY", "FRONT", "FULL", "FUNCTION", "FUTURE", "GAME", "GATE", "GATEWAY", "GATHER",
+            "GENERATE", "GESTURE", "GHOST", "GLOBAL", "GLOW", "GOAL", "GPS", "GRAPH", "GRAPHICS", "GRID",
+            "GROUP", "GROWTH", "GUARD", "GUIDE", "HACK", "HAND", "HARDWARE", "HEAD", "HEALTH", "HEATMAP",
+            "HELLO", "HELP", "HIDE", "HIGH", "HISTORY", "HOLD", "HOLOGRAPHIC", "HOME", "HOST", "HOTSPOT",
+            "HOVER", "HUD", "HUMAN", "HYPER", "IDENTIFY", "IDENTITY", "IMAGE", "IMMEDIATE", "IMPACT", "IMPLEMENT",
+            "IMPORT", "IMPROVE", "INDEX", "INDICATE", "INFO", "INFRASTRUCTURE", "INITIALIZE", "INITIATE", "INPUT", "INSIGHT",
+            "INSPECT", "INSTALL", "INSTANCE", "INSTANT", "INSTRUCTION", "INTEGRATE", "INTEL", "INTELLIGENCE", "INTENT", "INTERACTION",
+            "INTERFACE", "INTERNAL", "INTERNET", "INTERRUPT", "INTERVAL", "INVALID", "INVENT", "IP", "ISOLATE", "ITEM",
+            "JAVASCRIPT", "JOIN", "JOYSTICK", "JUMP", "KERNEL", "KEY", "KEYBOARD", "KEYSTROKE", "KILL", "KNOWLEDGE",
+            "LABEL", "LANDMARK", "LANGUAGE", "LASER", "LATENCY", "LAUNCH", "LAYER", "LAYOUT", "LEAD", "LEARN",
+            "LEAVE", "LEVEL", "LIBRARY", "LIGHT", "LIMIT", "LINE", "LINK", "LINUX", "LIST", "LISTEN",
+            "LIVE", "LOAD", "LOCAL", "LOCATE", "LOCATION", "LOCK", "LOG", "LOGIC", "LOGIN", "LOOP",
+            "MACHINE", "MAIN", "MAINTAIN", "MAJOR", "MAKE", "MANAGE", "MAP", "MARK", "MARKET", "MASTER",
+            "MATCH", "MATRIX", "MAXIMUM", "MEDIA", "MEDIAPIPE", "MEMORY", "MENU", "MESSAGE", "METRIC", "MICRO",
+            "MINIMUM", "MISSION", "MODE", "MODEL", "MODEM", "MODIFY", "MODULE", "MONITOR", "MOTION", "MOVE",
+            "MULTI", "MULTIMEDIA", "NAME", "NANOTECH", "NATIVE", "NAVIGATE", "NEAR", "NEED", "NEON", "NET",
+            "NETWORK", "NEURAL", "NODE", "NOISE", "NORMALIZE", "NOTE", "NOTIFICATION", "NULL", "NUMBER", "OBJECT",
+            "OBSERVE", "OFFLINE", "OFFSET", "ONLINE", "OPEN", "OPERATE", "OPERATION", "OPERATOR", "OPTIMIZE", "OPTION",
+            "ORBIT", "ORDER", "ORIENTATION", "ORIGIN", "OS", "OUTPUT", "OVERLAY", "OVERRIDE", "PACKET", "PAGE",
+            "PANEL", "PARAM", "PARAMETER", "PARSER", "PASSWORD", "PATH", "PATTERN", "PAUSE", "PEER", "PERCENT",
+            "PERFECT", "PERFORM", "PERFORMANCE", "PERMISSION", "PERSON", "PHONE", "PHOTO", "PHYSICAL", "PINCH", "PIPELINE",
+            "PIXEL", "PLATFORM", "PLAY", "PLUGIN", "POINT", "POINTER", "POLICY", "PORT", "POSITION", "POWER",
+            "PRECISION", "PREDICT", "PREFIX", "PREVIEW", "PRIMARY", "PRINT", "PRIORITY", "PRIVATE", "PROCESS", "PROCESSOR",
+            "PROFILE", "PROGRAM", "PROJECT", "PROMPT", "PROTECT", "PROTOCOL", "PROVIDER", "PUBLIC", "PULSE", "PUSH",
+            "QUANTUM", "QUERY", "QUEUE", "QUICK", "RADAR", "RADIO", "RADIUS", "RAM", "RANDOM", "RANGE",
+            "RATE", "RAW", "REACH", "REACT", "READ", "READY", "REAL", "REALTIME", "REBOOT", "RECEIVE",
+            "RECOGNIZE", "RECORD", "RECOVERY", "REDUCE", "REFRESH", "REGION", "REGISTER", "RELEASE", "RELOAD", "REMOTE",
+            "REMOVE", "RENDER", "REPEAT", "REPLACE", "REPORT", "REQUEST", "REQUIRE", "RESET", "RESOLUTION", "RESOURCE",
+            "RESPONSE", "RESTORE", "RESTRICT", "RESULT", "RETICLE", "RETURN", "REVERSE", "REVISION", "RIBBON", "ROBOT",
+            "ROOT", "ROTATE", "ROUTER", "ROUTINE", "ROW", "RULE", "RUN", "RUNTIME", "SAFE", "SAMPLE",
+            "SAVE", "SCALE", "SCAN", "SCANNER", "SCENARIO", "SCHEDULE", "SCREEN", "SCRIPT", "SCROLL", "SEARCH",
+            "SECURE", "SECURITY", "SEGMENT", "SELECT", "SEND", "SENSOR", "SEQUENCE", "SERIAL", "SERVE", "SERVER",
+            "SERVICE", "SESSION", "SET", "SETTINGS", "SHIFT", "SHORTCUT", "SHUTDOWN", "SIDEBAR", "SIGNAL", "SIGNATURE",
+            "SILENT", "SIMPLE", "SIMULATION", "SINGLE", "SITE", "SIZE", "SLM", "SMART", "SNAPSHOT", "SOCKET",
+            "SOFTWARE", "SOURCE", "SPACE", "SPATIAL", "SPEAK", "SPEECH", "SPEED", "STACK", "STANDARD", "STANDBY",
+            "START", "STATE", "STATIC", "STATISTICS", "STATUS", "STEREOSCOPIC", "STOP", "STORAGE", "STREAM", "STRING",
+            "STRUCTURE", "STYLE", "SUBMIT", "SUBSYSTEM", "SUCCESS", "SUGGESTION", "SUPERVISOR", "SUPPORT", "SURVEILLANCE", "SWITCH",
+            "SYNAPSE", "SYNCHRONIZE", "SYNTAX", "SYSTEM", "TAB", "TABLE", "TAG", "TARGET", "TASK", "TEAM",
+            "TECH", "TECHNOLOGY", "TELEMETRY", "TEMPERATURE", "TEMPLATE", "TERMINAL", "TEST", "TEXT", "THEME", "THREAD",
+            "THRESHOLD", "THUMB", "TIME", "TIMEOUT", "TIMER", "TITLE", "TOGGLE", "TOKEN", "TOOL", "TOOLKIT",
+            "TOP", "TOUCH", "TRACE", "TRACK", "TRACKING", "TRAFFIC", "TRANSFORM", "TRANSLATE", "TRANSMIT", "TRIGGER",
+            "TRUE", "TRY", "TUNNEL", "TYPE", "TYPING", "ULTRA", "UNAUTHORIZED", "UNDER", "UNIT", "UNKNOWN",
+            "UNLOCK", "UPDATE", "UPGRADE", "UPLOAD", "URL", "USER", "UTILITY", "VALIDATE", "VALUE", "VARIABLE",
+            "VECTOR", "VERIFY", "VERSION", "VIDEO", "VIEW", "VIEWPORT", "VIRTUAL", "VISION", "VOICE", "VOLUME",
+            "WAIT", "WARNING", "WATCH", "WAVE", "WEATHER", "WEB", "WEBCAM", "WEBGPU", "WEBRTC", "WEIGHT",
+            "WINDOW", "WIRELESS", "WORD", "WORK", "WORKER", "WORKSPACE", "WORLD", "WPM", "WRITE", "ZONE"
         ];
+
+        // CONTEXTUAL NEXT-WORD (BIGRAM) LOOKUP
+        const BIGRAMS = {
+            "HELLO": ["WORLD", "THERE", "SYSTEM"],
+            "ACTIVATE": ["SYSTEM", "COMMAND", "PROTOCOL"],
+            "SYSTEM": ["ONLINE", "READY", "STATUS"],
+            "CYBER": ["MATRIX", "SECURITY", "SPACE"],
+            "START": ["ENGINE", "PROCESS", "RECORDING"],
+            "CLEAR": ["BUFFER", "LOG", "SCREEN"],
+            "INPUT": ["MODE", "DEVICE", "DATA"],
+            "OPEN": ["TERMINAL", "CONSOLE", "SETTINGS"],
+            "SECURITY": ["AUTHORIZED", "ENABLED", "CHECK"],
+            "THE": ["SYSTEM", "MATRIX", "USER"]
+        };
 
         function getActiveToken() {
             const raw = typedText.innerText.replace(/_/g, '');
+            if (!raw.trim()) return "";
             const tokens = raw.split(/\s+/);
             return tokens[tokens.length - 1].toUpperCase();
         }
 
+        function getPreviousToken() {
+            const raw = typedText.innerText.replace(/_/g, '').trim();
+            if (!raw) return "";
+            const tokens = raw.split(/\s+/);
+            return tokens.length > 1 ? tokens[tokens.length - 2].toUpperCase() : tokens[0].toUpperCase();
+        }
+
         function updatePredictionRibbon() {
             const activeToken = getActiveToken();
+            const raw = typedText.innerText.replace(/_/g, '');
+            const endsWithSpace = raw.endsWith(" ") || raw.endsWith("\u00A0");
+            
             let matches = [];
 
-            if (activeToken.length > 0) {
+            if (endsWithSpace) {
+                const prev = getPreviousToken();
+                if (BIGRAMS[prev]) {
+                    matches = BIGRAMS[prev];
+                } else {
+                    matches = ["SYSTEM", "ONLINE", "COMMAND"];
+                }
+            } else if (activeToken.length > 0) {
                 matches = DICTIONARY.filter(w => w.startsWith(activeToken));
                 if (matches.length < 3) {
                     const fuzzy = DICTIONARY.filter(w => !matches.includes(w) && w.includes(activeToken));
@@ -514,20 +616,33 @@
                 }
             }
 
-            const defaults = ["THE", "SYSTEM", "ONLINE"];
+            const defaults = ["I", "THE", "ACTIVATE"];
             for (let i = 0; i < 3; i++) {
                 const pill = document.getElementById(`pred_${i}`);
-                pill.innerText = matches[i] || defaults[i];
+                if (matches[i]) {
+                    pill.innerText = matches[i];
+                    pill.classList.remove('empty');
+                } else {
+                    pill.innerText = defaults[i];
+                    pill.classList.add('empty');
+                }
             }
         }
 
         function injectPrediction(word) {
             playSpatialClick(0);
             let raw = typedText.innerText.replace(/_/g, '');
-            const tokens = raw.split(/\s+/);
-            tokens.pop();
-            tokens.push(word);
-            typedText.innerText = tokens.join(" ") + " ";
+            const endsWithSpace = raw.endsWith(" ") || raw.endsWith("\u00A0");
+            
+            if (endsWithSpace || !raw.trim()) {
+                typedText.innerText = (raw.trim() ? raw.trim() + " " : "") + word + " ";
+            } else {
+                const tokens = raw.split(/\s+/);
+                tokens.pop();
+                tokens.push(word);
+                typedText.innerText = tokens.join(" ") + " ";
+            }
+
             updateMetrics();
             updatePredictionRibbon();
         }
