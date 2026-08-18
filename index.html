@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="G-BOARD V8.4 - 10/10 Reference Blueprint Biometric Spatial Vision OS">
-    <title>G-BOARD | NEURAL BIOMETRIC OS V8.4</title>
+    <meta name="description" content="G-BOARD V8.5 - Edge-to-Edge Neural Plexus Biometric Spatial OS">
+    <title>G-BOARD | NEURAL BIOMETRIC OS V8.5</title>
     
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/face_detection.js" crossorigin="anonymous"></script>
@@ -50,7 +50,7 @@
 
         body { 
             margin: 0; 
-            background: #010811; 
+            background: #010408; 
             color: var(--neon); 
             font-family: 'Segoe UI', system-ui, sans-serif; 
             overflow: hidden; 
@@ -70,11 +70,11 @@
             filter: contrast(125%) brightness(85%); 
         }
 
-        /* FULL-SCREEN EXACT BLUEPRINT SHIELD */
+        /* FULL-SCREEN DEEP BLACK NEURAL SHIELD */
         #security_shield {
             position: fixed;
             inset: 0;
-            background: radial-gradient(circle at 50% 45%, #04243a 0%, #021320 40%, #010912 75%, #000408 100%);
+            background: radial-gradient(circle at 50% 45%, #031c2e 0%, #010d17 38%, #00060c 70%, #000204 100%);
             z-index: 180;
             display: flex;
             flex-direction: column;
@@ -89,35 +89,36 @@
             pointer-events: none;
         }
 
-        /* 3D NEURAL PLEXUS CANVAS */
+        /* EDGE-TO-EDGE 3D NEURAL PLEXUS CANVAS */
         #neural_background_canvas {
             position: absolute;
             inset: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             pointer-events: none;
             z-index: 1;
         }
 
-        /* EXACT REFERENCE APERTURE CONTAINER */
+        /* CIRCULAR BIOMETRIC APERTURE */
         #bio_aperture_wrapper {
             position: relative;
-            width: clamp(270px, 36vmin, 330px);
-            height: clamp(270px, 36vmin, 330px);
+            width: clamp(270px, 36vmin, 340px);
+            height: clamp(270px, 36vmin, 340px);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 10;
         }
 
+        /* CLEAR LIVE CAMERA VIEWPORT */
         #bio_camera_viewport {
             position: absolute;
             inset: 10px;
             border-radius: 50%;
             overflow: hidden;
             z-index: 2;
-            box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.95);
-            background: #010e1a;
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 242, 255, 0.25);
+            background: #010810;
         }
 
         #bio_live_video {
@@ -125,37 +126,26 @@
             height: 100%;
             object-fit: cover;
             transform: scaleX(-1);
-            filter: contrast(140%) brightness(100%) hue-rotate(185deg) saturate(180%);
-            opacity: 0.45;
-            mix-blend-mode: screen;
+            filter: contrast(110%) brightness(105%);
+            opacity: 0.95;
         }
 
-        #bio_mesh_canvas {
-            position: absolute;
-            inset: 10px;
-            width: calc(100% - 20px);
-            height: calc(100% - 20px);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 6;
-        }
-
-        /* EXACT REFERENCE DOUBLE CONCENTRIC RINGS */
+        /* CONCENTRIC HUD APERTURE RINGS */
         .bio-ring-outer {
             position: absolute;
             inset: 0;
-            border: 2px solid rgba(0, 242, 255, 0.6);
+            border: 2px solid rgba(0, 242, 255, 0.7);
             border-radius: 50%;
-            box-shadow: 0 0 25px rgba(0, 242, 255, 0.45), inset 0 0 20px rgba(0, 242, 255, 0.25);
+            box-shadow: 0 0 25px rgba(0, 242, 255, 0.5), inset 0 0 20px rgba(0, 242, 255, 0.2);
             z-index: 4;
         }
 
         .bio-ring-dots {
             position: absolute;
             inset: -8px;
-            border: 2px dotted rgba(0, 242, 255, 0.7);
+            border: 2px dotted rgba(0, 242, 255, 0.75);
             border-radius: 50%;
-            animation: rotateClockwise 30s linear infinite;
+            animation: rotateClockwise 28s linear infinite;
             z-index: 3;
         }
 
@@ -164,7 +154,7 @@
             inset: 6px;
             border: 1px dashed rgba(0, 242, 255, 0.5);
             border-radius: 50%;
-            animation: rotateCounterClockwise 18s linear infinite;
+            animation: rotateCounterClockwise 16s linear infinite;
             z-index: 4;
         }
 
@@ -172,13 +162,13 @@
             position: absolute;
             inset: 10px;
             border-radius: 50%;
-            background: conic-gradient(from 0deg, rgba(0, 242, 255, 0.45) 0deg, transparent 75deg);
+            background: conic-gradient(from 0deg, rgba(0, 242, 255, 0.35) 0deg, transparent 75deg);
             animation: radarSweep 2.4s linear infinite;
             pointer-events: none;
             z-index: 5;
         }
 
-        /* STATIC & FLOATING DATA ORBITALS MATCHING REFERENCE */
+        /* DATA ORBITAL BEACONS */
         .bio-orb-beacon {
             position: absolute;
             background: #00f2ff;
@@ -200,7 +190,7 @@
         }
 
         #bio_aperture_wrapper.authorized #bio_radar_sweep {
-            background: conic-gradient(from 0deg, rgba(0, 255, 102, 0.5) 0deg, transparent 75deg);
+            background: conic-gradient(from 0deg, rgba(0, 255, 102, 0.45) 0deg, transparent 75deg);
         }
 
         #bio_aperture_wrapper.authorized .bio-orb-beacon {
@@ -212,7 +202,7 @@
         @keyframes rotateCounterClockwise { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
         @keyframes radarSweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* EXACT REFERENCE STATUS TEXT & PROGRESS BAR */
+        /* STATUS TEXT & PROGRESS BAR */
         #bio_status_text {
             position: relative;
             z-index: 10;
@@ -675,8 +665,6 @@
             <div id="bio_camera_viewport">
                 <video id="bio_live_video" autoplay muted></video>
             </div>
-            
-            <canvas id="bio_mesh_canvas"></canvas>
         </div>
         
         <div id="bio_status_text">BIOMETRIC MESH SCAN: 0%</div>
@@ -764,8 +752,6 @@
         
         const securityShield = document.getElementById('security_shield');
         const bioApertureWrapper = document.getElementById('bio_aperture_wrapper');
-        const bioMeshCanvas = document.getElementById('bio_mesh_canvas');
-        const bioCtx = bioMeshCanvas.getContext('2d');
         const neuralBgCanvas = document.getElementById('neural_background_canvas');
         const neuralCtx = neuralBgCanvas.getContext('2d');
         
@@ -798,24 +784,20 @@
         let frameCount = 0;
 
         function resizeCanvases() {
-            const rect = bioMeshCanvas.getBoundingClientRect();
-            bioMeshCanvas.width = rect.width;
-            bioMeshCanvas.height = rect.height;
-
             neuralBgCanvas.width = window.innerWidth;
             neuralBgCanvas.height = window.innerHeight;
         }
         window.addEventListener('resize', resizeCanvases);
 
-        // 3D FULL-SCREEN NEURAL PLEXUS ENGINE MATCHING REFERENCE IMAGE
-        const PLEXUS_NODE_COUNT = 90;
+        // EDGE-TO-EDGE 3D NEURAL PLEXUS FIELD
+        const PLEXUS_NODE_COUNT = 135;
         const neuralNodes = Array.from({ length: PLEXUS_NODE_COUNT }, () => ({
-            x: (Math.random() - 0.5) * 1600,
-            y: (Math.random() - 0.5) * 1200,
-            z: Math.random() * 800 + 200,
-            vx: (Math.random() - 0.5) * 0.7,
-            vy: (Math.random() - 0.5) * 0.7,
-            vz: (Math.random() - 0.5) * 0.7
+            x: (Math.random() - 0.5) * 2200,
+            y: (Math.random() - 0.5) * 1600,
+            z: Math.random() * 1000 + 100,
+            vx: (Math.random() - 0.5) * 0.75,
+            vy: (Math.random() - 0.5) * 0.75,
+            vz: (Math.random() - 0.5) * 0.75
         }));
 
         let plexusAngle = 0;
@@ -826,9 +808,9 @@
             const h = neuralBgCanvas.height;
             const cx = w / 2;
             const cy = h / 2;
-            const fov = 460;
+            const fov = 480;
 
-            plexusAngle += 0.002;
+            plexusAngle += 0.0018;
             const cosA = Math.cos(plexusAngle);
             const sinA = Math.sin(plexusAngle);
 
@@ -837,12 +819,12 @@
                 node.y += node.vy;
                 node.z += node.vz;
 
-                if (node.x < -800) node.x = 800; if (node.x > 800) node.x = -800;
-                if (node.y < -600) node.y = 600; if (node.y > 600) node.y = -600;
-                if (node.z < 200) node.z = 1000; if (node.z > 1000) node.z = 200;
+                if (node.x < -1100) node.x = 1100; if (node.x > 1100) node.x = -1100;
+                if (node.y < -800) node.y = 800; if (node.y > 800) node.y = -800;
+                if (node.z < 100) node.z = 1100; if (node.z > 1100) node.z = 100;
 
                 const rotX = node.x * cosA - node.z * sinA;
-                const rotZ = node.x * sinA + node.z * cosA + 600;
+                const rotZ = node.x * sinA + node.z * cosA + 650;
 
                 const scale = fov / (rotZ || 1);
                 return {
@@ -853,17 +835,17 @@
                 };
             });
 
-            // Draw Plexus Vector Beams
+            // Connect Vector Constellation Beams
             for (let i = 0; i < projected.length; i++) {
                 for (let j = i + 1; j < projected.length; j++) {
                     const dx = projected[i].x - projected[j].x;
                     const dy = projected[i].y - projected[j].y;
                     const dist = Math.hypot(dx, dy);
 
-                    if (dist < 135) {
-                        const alpha = (1 - dist / 135) * (isAuthorized ? 0.35 : 0.32);
+                    if (dist < 155) {
+                        const alpha = (1 - dist / 155) * (isAuthorized ? 0.38 : 0.32);
                         neuralCtx.strokeStyle = isAuthorized ? `rgba(0, 255, 102, ${alpha})` : `rgba(0, 242, 255, ${alpha})`;
-                        neuralCtx.lineWidth = (1 - dist / 135) * 1.6;
+                        neuralCtx.lineWidth = (1 - dist / 155) * 1.8;
                         neuralCtx.beginPath();
                         neuralCtx.moveTo(projected[i].x, projected[i].y);
                         neuralCtx.lineTo(projected[j].x, projected[j].y);
@@ -872,9 +854,9 @@
                 }
             }
 
-            // Draw Glowing Reference Molecular Nodes
+            // Render Glowing Neural Stars
             projected.forEach(p => {
-                const radius = Math.max(1.2, p.scale * 3.5);
+                const radius = Math.max(1.2, p.scale * 3.8);
                 neuralCtx.fillStyle = isAuthorized ? "#00ff66" : "#00f2ff";
                 neuralCtx.shadowBlur = 12;
                 neuralCtx.shadowColor = isAuthorized ? "#00ff66" : "#00f2ff";
@@ -1473,140 +1455,7 @@
             }
         });
 
-        // 10/10 EXACT REFERENCE BLUEPRINT HOLOGRAPHIC FACE MATRIX RENDERER
-        function drawHolographicMesh(landmarks, box) {
-            bioCtx.clearRect(0, 0, bioMeshCanvas.width, bioMeshCanvas.height);
-            if (!landmarks || landmarks.length === 0) return;
-
-            const w = bioMeshCanvas.width;
-            const h = bioMeshCanvas.height;
-
-            const rawPts = landmarks.map(pt => ({
-                x: (1 - pt.x) * w,
-                y: pt.y * h
-            }));
-
-            const pts = [];
-
-            if (rawPts.length >= 6) {
-                const leftEye = rawPts[0];
-                const rightEye = rawPts[1];
-                const nose = rawPts[2];
-                const mouth = rawPts[3];
-
-                const eyeDx = rightEye.x - leftEye.x;
-                const eyeDy = rightEye.y - leftEye.y;
-                const eyeSpan = Math.hypot(eyeDx, eyeDy) || 60;
-                const eyeCenter = { x: (leftEye.x + rightEye.x) / 2, y: (leftEye.y + rightEye.y) / 2 };
-
-                // 1. Precise Eye Anchors
-                pts.push({ x: leftEye.x, y: leftEye.y, isEye: true });
-                pts.push({ x: rightEye.x, y: rightEye.y, isEye: true });
-
-                // 2. Forehead & Cranial Dome Arch (Matching Reference Dome)
-                const domeRadius = eyeSpan * 1.35;
-                const domeCenterY = eyeCenter.y - eyeSpan * 0.2;
-                for (let a = Math.PI * 0.15; a <= Math.PI * 0.85; a += 0.14) {
-                    pts.push({
-                        x: eyeCenter.x - Math.cos(a) * domeRadius,
-                        y: domeCenterY - Math.sin(a) * domeRadius
-                    });
-                }
-
-                // 3. Eyebrow Ridges
-                for (let i = -3; i <= 3; i++) {
-                    pts.push({ x: leftEye.x + i * (eyeSpan * 0.14), y: leftEye.y - eyeSpan * 0.22 });
-                    pts.push({ x: rightEye.x + i * (eyeSpan * 0.14), y: rightEye.y - eyeSpan * 0.22 });
-                }
-
-                // 4. Nose Bridge & Nostril Wings
-                pts.push({ x: eyeCenter.x, y: eyeCenter.y });
-                pts.push({ x: eyeCenter.x, y: eyeCenter.y + (nose.y - eyeCenter.y) * 0.5 });
-                pts.push({ x: nose.x, y: nose.y });
-                pts.push({ x: nose.x - eyeSpan * 0.22, y: nose.y });
-                pts.push({ x: nose.x + eyeSpan * 0.22, y: nose.y });
-
-                // 5. Cheek & Temple Geometric Constellation
-                pts.push({ x: leftEye.x - eyeSpan * 0.65, y: leftEye.y });
-                pts.push({ x: rightEye.x + eyeSpan * 0.65, y: rightEye.y });
-                pts.push({ x: leftEye.x - eyeSpan * 0.45, y: nose.y });
-                pts.push({ x: rightEye.x + eyeSpan * 0.45, y: nose.y });
-
-                // 6. Oral Contour & Chin
-                pts.push({ x: mouth.x - eyeSpan * 0.28, y: mouth.y });
-                pts.push({ x: mouth.x + eyeSpan * 0.28, y: mouth.y });
-                pts.push({ x: mouth.x, y: mouth.y - eyeSpan * 0.08 });
-                pts.push({ x: mouth.x, y: mouth.y + eyeSpan * 0.12 });
-                pts.push({ x: mouth.x, y: mouth.y + eyeSpan * 0.48 }); // Chin base
-
-                // 7. Outer Jawline Contour
-                for (let s = -3; s <= 3; s++) {
-                    const progress = Math.abs(s) / 3;
-                    pts.push({
-                        x: mouth.x + s * (eyeSpan * 0.38),
-                        y: mouth.y + progress * (eyeSpan * 0.45)
-                    });
-                }
-
-                // 8. Dense Matrix Grid Nodes
-                for (let gx = -2; gx <= 2; gx++) {
-                    for (let gy = -2; gy <= 2; gy++) {
-                        if (gx === 0 && gy === 0) continue;
-                        pts.push({
-                            x: nose.x + gx * (eyeSpan * 0.22),
-                            y: nose.y + gy * (eyeSpan * 0.18)
-                        });
-                    }
-                }
-            }
-
-            // Draw Geometric Blueprint Wireframe
-            bioCtx.strokeStyle = isAuthorized ? "rgba(0, 255, 102, 0.42)" : "rgba(0, 242, 255, 0.42)";
-            bioCtx.lineWidth = 1.05;
-
-            bioCtx.beginPath();
-            for (let i = 0; i < pts.length; i++) {
-                for (let j = i + 1; j < pts.length; j++) {
-                    const dist = Math.hypot(pts[i].x - pts[j].x, pts[i].y - pts[j].y);
-                    if (dist < w * 0.22) {
-                        bioCtx.moveTo(pts[i].x, pts[i].y);
-                        bioCtx.lineTo(pts[j].x, pts[j].y);
-                    }
-                }
-            }
-            bioCtx.stroke();
-
-            // Render Luminous Cyan Face Nodes
-            pts.forEach(p => {
-                if (p.isEye) {
-                    // Intense Luminous Eye Nodes Matching Reference
-                    const eyeColor = isAuthorized ? "#00ff66" : "#00f2ff";
-                    const eyeGrad = bioCtx.createRadialGradient(p.x, p.y, 1, p.x, p.y, 14);
-                    eyeGrad.addColorStop(0, "#ffffff");
-                    eyeGrad.addColorStop(0.3, eyeColor);
-                    eyeGrad.addColorStop(1, "transparent");
-
-                    bioCtx.fillStyle = eyeGrad;
-                    bioCtx.beginPath();
-                    bioCtx.arc(p.x, p.y, 14, 0, Math.PI * 2);
-                    bioCtx.fill();
-
-                    bioCtx.fillStyle = "#ffffff";
-                    bioCtx.beginPath();
-                    bioCtx.arc(p.x, p.y, 3.5, 0, Math.PI * 2);
-                    bioCtx.fill();
-                } else {
-                    bioCtx.fillStyle = isAuthorized ? "#00ff66" : "#00f2ff";
-                    bioCtx.shadowBlur = 6;
-                    bioCtx.shadowColor = isAuthorized ? "#00ff66" : "#00f2ff";
-                    bioCtx.beginPath();
-                    bioCtx.arc(p.x, p.y, 1.8, 0, Math.PI * 2);
-                    bioCtx.fill();
-                    bioCtx.shadowBlur = 0;
-                }
-            });
-        }
-
+        // MEDIAPIPE FACE DETECTION (CLEAN CORE LOGIC)
         const faceDetection = new FaceDetection({
             locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/${file}`
         });
@@ -1618,10 +1467,6 @@
         faceDetection.onResults((results) => {
             if (results.detections && results.detections.length > 0) {
                 lastFaceDetectedTime = Date.now();
-                const detection = results.detections[0];
-                if (detection.landmarks) {
-                    drawHolographicMesh(detection.landmarks, detection.boundingBox);
-                }
 
                 if (!isAuthorized) {
                     scanProgress += 2.5;
@@ -1644,8 +1489,6 @@
                     }
                 }
             } else {
-                bioCtx.clearRect(0, 0, bioMeshCanvas.width, bioMeshCanvas.height);
-
                 if (isAuthorized && (Date.now() - lastFaceDetectedTime > FACE_LOCK_TIMEOUT)) {
                     isAuthorized = false;
                     scanProgress = 0;
