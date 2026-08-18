@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="G-BOARD V8.5 - Edge-to-Edge Neural Plexus Biometric Spatial OS">
-    <title>G-BOARD | NEURAL BIOMETRIC OS V8.5</title>
+    <meta name="description" content="G-BOARD V8.6 - Full Viewport Edge-to-Edge Neural Plexus & Biometric Voice Authorization OS">
+    <title>G-BOARD | NEURAL BIOMETRIC OS V8.6</title>
     
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/face_detection.js" crossorigin="anonymous"></script>
@@ -789,15 +789,15 @@
         }
         window.addEventListener('resize', resizeCanvases);
 
-        // EDGE-TO-EDGE 3D NEURAL PLEXUS FIELD
-        const PLEXUS_NODE_COUNT = 135;
+        // EDGE-TO-EDGE 3D NEURAL PLEXUS FIELD (220 NODES)
+        const PLEXUS_NODE_COUNT = 220;
         const neuralNodes = Array.from({ length: PLEXUS_NODE_COUNT }, () => ({
-            x: (Math.random() - 0.5) * 2200,
-            y: (Math.random() - 0.5) * 1600,
-            z: Math.random() * 1000 + 100,
-            vx: (Math.random() - 0.5) * 0.75,
-            vy: (Math.random() - 0.5) * 0.75,
-            vz: (Math.random() - 0.5) * 0.75
+            x: (Math.random() - 0.5) * 3600,
+            y: (Math.random() - 0.5) * 2400,
+            z: Math.random() * 1200 + 50,
+            vx: (Math.random() - 0.5) * 0.8,
+            vy: (Math.random() - 0.5) * 0.8,
+            vz: (Math.random() - 0.5) * 0.8
         }));
 
         let plexusAngle = 0;
@@ -808,9 +808,9 @@
             const h = neuralBgCanvas.height;
             const cx = w / 2;
             const cy = h / 2;
-            const fov = 480;
+            const fov = 520;
 
-            plexusAngle += 0.0018;
+            plexusAngle += 0.0016;
             const cosA = Math.cos(plexusAngle);
             const sinA = Math.sin(plexusAngle);
 
@@ -819,12 +819,12 @@
                 node.y += node.vy;
                 node.z += node.vz;
 
-                if (node.x < -1100) node.x = 1100; if (node.x > 1100) node.x = -1100;
-                if (node.y < -800) node.y = 800; if (node.y > 800) node.y = -800;
-                if (node.z < 100) node.z = 1100; if (node.z > 1100) node.z = 100;
+                if (node.x < -1800) node.x = 1800; if (node.x > 1800) node.x = -1800;
+                if (node.y < -1200) node.y = 1200; if (node.y > 1200) node.y = -1200;
+                if (node.z < 50) node.z = 1250; if (node.z > 1250) node.z = 50;
 
                 const rotX = node.x * cosA - node.z * sinA;
-                const rotZ = node.x * sinA + node.z * cosA + 650;
+                const rotZ = node.x * sinA + node.z * cosA + 750;
 
                 const scale = fov / (rotZ || 1);
                 return {
@@ -842,10 +842,10 @@
                     const dy = projected[i].y - projected[j].y;
                     const dist = Math.hypot(dx, dy);
 
-                    if (dist < 155) {
-                        const alpha = (1 - dist / 155) * (isAuthorized ? 0.38 : 0.32);
+                    if (dist < 200) {
+                        const alpha = (1 - dist / 200) * (isAuthorized ? 0.42 : 0.35);
                         neuralCtx.strokeStyle = isAuthorized ? `rgba(0, 255, 102, ${alpha})` : `rgba(0, 242, 255, ${alpha})`;
-                        neuralCtx.lineWidth = (1 - dist / 155) * 1.8;
+                        neuralCtx.lineWidth = (1 - dist / 200) * 1.8;
                         neuralCtx.beginPath();
                         neuralCtx.moveTo(projected[i].x, projected[i].y);
                         neuralCtx.lineTo(projected[j].x, projected[j].y);
@@ -1455,7 +1455,7 @@
             }
         });
 
-        // MEDIAPIPE FACE DETECTION (CLEAN CORE LOGIC)
+        // MEDIAPIPE FACE DETECTION (CLEAN CORE LOGIC & AI VOICE ANNOUNCEMENT)
         const faceDetection = new FaceDetection({
             locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/${file}`
         });
@@ -1476,16 +1476,19 @@
                     if (scanProgress >= 100) {
                         isAuthorized = true;
                         bioApertureWrapper.classList.add('authorized');
-                        bioStatusText.innerText = "BIOMETRIC MATCH CONFIRMED - ACCESS GRANTED";
+                        bioStatusText.innerText = "BIOMETRIC MESH SCAN - COMPLETE 100%";
                         bioStatusText.style.color = "var(--success)";
                         bioProgressFill.style.backgroundColor = "var(--success)";
                         statSec.innerText = "AUTHORIZED";
                         statSec.className = "stat-val sec-auth";
                         playSecurityChime(true);
+                        
+                        // Automated Voice Announcement
+                        speakText("Scan Completed, Approved! Accessing Ghost Keyboard");
 
                         setTimeout(() => {
                             securityShield.classList.add('unlocked');
-                        }, 700);
+                        }, 1200);
                     }
                 }
             } else {
