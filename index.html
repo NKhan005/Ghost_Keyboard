@@ -3,39 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="G-BOARD V8.3 - Full-Screen Neural Plexus Biometric Face Mesh & Spatial OS">
-    <title>G-BOARD | NEURAL BIOMETRIC OS V8.3</title>
+    <meta name="description" content="G-BOARD V8.4 - 10/10 Reference Blueprint Biometric Spatial Vision OS">
+    <title>G-BOARD | NEURAL BIOMETRIC OS V8.4</title>
     
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/face_detection.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400;600;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;600;800&display=swap');
         
         :root { 
             --neon: #00f2ff; 
-            --glow: rgba(0, 242, 255, 0.6);
+            --neon-dim: rgba(0, 242, 255, 0.25);
+            --glow: rgba(0, 242, 255, 0.65);
             --alert: #ff3b3b; 
             --success: #00ff66;
-            --dim-neon: rgba(0, 242, 255, 0.2); 
-            --panel-bg: rgba(3, 15, 20, 0.88);
+            --panel-bg: rgba(2, 12, 22, 0.9);
             --key-text: #00f2ff;
         }
 
         body.theme-amber {
             --neon: #ffb700;
-            --glow: rgba(255, 183, 0, 0.6);
-            --dim-neon: rgba(255, 183, 0, 0.2);
-            --panel-bg: rgba(20, 15, 3, 0.88);
+            --neon-dim: rgba(255, 183, 0, 0.25);
+            --glow: rgba(255, 183, 0, 0.65);
+            --panel-bg: rgba(20, 15, 3, 0.9);
             --key-text: #ffb700;
         }
 
         body.theme-crimson {
             --neon: #ff0055;
-            --glow: rgba(255, 0, 85, 0.6);
-            --dim-neon: rgba(255, 0, 85, 0.2);
-            --panel-bg: rgba(20, 3, 10, 0.88);
+            --neon-dim: rgba(255, 0, 85, 0.25);
+            --glow: rgba(255, 0, 85, 0.65);
+            --panel-bg: rgba(20, 3, 10, 0.9);
             --key-text: #ff0055;
         }
 
@@ -50,7 +50,7 @@
 
         body { 
             margin: 0; 
-            background: #010408; 
+            background: #010811; 
             color: var(--neon); 
             font-family: 'Segoe UI', system-ui, sans-serif; 
             overflow: hidden; 
@@ -65,18 +65,16 @@
             height: 100vh; 
             object-fit: cover; 
             transform: scaleX(-1); 
-            opacity: 0.15; 
+            opacity: 0.12; 
             z-index: -1; 
             filter: contrast(125%) brightness(85%); 
         }
 
-        /* FULL-SCREEN NEURAL PLEXUS BIOMETRIC SHIELD */
+        /* FULL-SCREEN EXACT BLUEPRINT SHIELD */
         #security_shield {
             position: fixed;
             inset: 0;
-            background: radial-gradient(circle at center, rgba(1, 14, 28, 0.88) 0%, rgba(0, 3, 7, 0.98) 100%);
-            -webkit-backdrop-filter: blur(20px);
-            backdrop-filter: blur(20px);
+            background: radial-gradient(circle at 50% 45%, #04243a 0%, #021320 40%, #010912 75%, #000408 100%);
             z-index: 180;
             display: flex;
             flex-direction: column;
@@ -91,7 +89,7 @@
             pointer-events: none;
         }
 
-        /* Background Full-Screen 3D Neural Plexus Canvas */
+        /* 3D NEURAL PLEXUS CANVAS */
         #neural_background_canvas {
             position: absolute;
             inset: 0;
@@ -101,11 +99,11 @@
             z-index: 1;
         }
 
-        /* CENTRAL HOLOGRAPHIC BIOMETRIC APERTURE */
+        /* EXACT REFERENCE APERTURE CONTAINER */
         #bio_aperture_wrapper {
             position: relative;
-            width: clamp(280px, 38vmin, 340px);
-            height: clamp(280px, 38vmin, 340px);
+            width: clamp(270px, 36vmin, 330px);
+            height: clamp(270px, 36vmin, 330px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -114,12 +112,12 @@
 
         #bio_camera_viewport {
             position: absolute;
-            inset: 12px;
+            inset: 10px;
             border-radius: 50%;
             overflow: hidden;
             z-index: 2;
-            box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.9), 0 0 25px rgba(0, 242, 255, 0.35);
-            background: #000;
+            box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.95);
+            background: #010e1a;
         }
 
         #bio_live_video {
@@ -127,91 +125,106 @@
             height: 100%;
             object-fit: cover;
             transform: scaleX(-1);
-            filter: contrast(135%) brightness(105%) hue-rotate(185deg) saturate(160%);
-            opacity: 0.82;
+            filter: contrast(140%) brightness(100%) hue-rotate(185deg) saturate(180%);
+            opacity: 0.45;
+            mix-blend-mode: screen;
         }
 
         #bio_mesh_canvas {
             position: absolute;
-            inset: 12px;
-            width: calc(100% - 24px);
-            height: calc(100% - 24px);
+            inset: 10px;
+            width: calc(100% - 20px);
+            height: calc(100% - 20px);
             border-radius: 50%;
             pointer-events: none;
             z-index: 6;
         }
 
-        /* Concentric Rings & Orbitals matching Reference Image */
+        /* EXACT REFERENCE DOUBLE CONCENTRIC RINGS */
         .bio-ring-outer {
             position: absolute;
             inset: 0;
-            border: 2px dashed var(--neon);
+            border: 2px solid rgba(0, 242, 255, 0.6);
             border-radius: 50%;
-            animation: rotateClockwise 16s linear infinite;
-            box-shadow: 0 0 30px var(--glow), inset 0 0 20px rgba(0, 242, 255, 0.2);
-            transition: border-color 0.3s, box-shadow 0.3s;
+            box-shadow: 0 0 25px rgba(0, 242, 255, 0.45), inset 0 0 20px rgba(0, 242, 255, 0.25);
             z-index: 4;
+        }
+
+        .bio-ring-dots {
+            position: absolute;
+            inset: -8px;
+            border: 2px dotted rgba(0, 242, 255, 0.7);
+            border-radius: 50%;
+            animation: rotateClockwise 30s linear infinite;
+            z-index: 3;
         }
 
         .bio-ring-middle {
             position: absolute;
             inset: 6px;
-            border: 1px solid rgba(0, 242, 255, 0.35);
-            border-top: 3px solid var(--neon);
-            border-bottom: 3px solid var(--neon);
+            border: 1px dashed rgba(0, 242, 255, 0.5);
             border-radius: 50%;
-            animation: rotateCounterClockwise 10s linear infinite;
-            transition: border-color 0.3s;
+            animation: rotateCounterClockwise 18s linear infinite;
             z-index: 4;
         }
 
         #bio_radar_sweep {
             position: absolute;
-            inset: 12px;
+            inset: 10px;
             border-radius: 50%;
-            background: conic-gradient(from 0deg, rgba(0, 242, 255, 0.38) 0deg, transparent 75deg);
+            background: conic-gradient(from 0deg, rgba(0, 242, 255, 0.45) 0deg, transparent 75deg);
             animation: radarSweep 2.4s linear infinite;
             pointer-events: none;
             z-index: 5;
         }
 
-        /* Floating Orbital Data Nodes */
-        .bio-orbital-node {
+        /* STATIC & FLOATING DATA ORBITALS MATCHING REFERENCE */
+        .bio-orb-beacon {
             position: absolute;
-            width: 8px;
-            height: 8px;
-            background: var(--neon);
+            background: #00f2ff;
             border-radius: 50%;
-            box-shadow: 0 0 12px var(--neon);
-            z-index: 8;
+            box-shadow: 0 0 14px #00f2ff, 0 0 24px #00f2ff;
+            z-index: 9;
+            pointer-events: none;
         }
+        .b-1 { width: 10px; height: 10px; top: 12%; left: -6%; }
+        .b-2 { width: 8px; height: 8px; top: 48%; left: -9%; }
+        .b-3 { width: 11px; height: 11px; bottom: 18%; left: -4%; }
+        .b-4 { width: 9px; height: 9px; top: 22%; right: -7%; }
+        .b-5 { width: 7px; height: 7px; bottom: 35%; right: -8%; }
 
         #bio_aperture_wrapper.authorized .bio-ring-outer,
-        #bio_aperture_wrapper.authorized .bio-ring-middle {
+        #bio_aperture_wrapper.authorized .bio-ring-dots {
             border-color: var(--success);
-            box-shadow: 0 0 50px rgba(0, 255, 102, 0.9), inset 0 0 35px rgba(0, 255, 102, 0.3);
+            box-shadow: 0 0 45px rgba(0, 255, 102, 0.9), inset 0 0 30px rgba(0, 255, 102, 0.35);
         }
 
         #bio_aperture_wrapper.authorized #bio_radar_sweep {
             background: conic-gradient(from 0deg, rgba(0, 255, 102, 0.5) 0deg, transparent 75deg);
         }
 
+        #bio_aperture_wrapper.authorized .bio-orb-beacon {
+            background: #00ff66;
+            box-shadow: 0 0 16px #00ff66, 0 0 26px #00ff66;
+        }
+
         @keyframes rotateClockwise { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes rotateCounterClockwise { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
         @keyframes radarSweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
+        /* EXACT REFERENCE STATUS TEXT & PROGRESS BAR */
         #bio_status_text {
             position: relative;
             z-index: 10;
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(0.85rem, 1.8vw, 1.05rem);
-            letter-spacing: 3px;
+            font-family: 'Orbitron', monospace, sans-serif;
+            font-size: clamp(0.9rem, 2vw, 1.25rem);
+            letter-spacing: clamp(3px, 0.6vw, 6px);
             font-weight: 800;
-            color: var(--neon);
+            color: #00f2ff;
             text-align: center;
-            margin-top: 36px;
-            text-shadow: 0 0 14px var(--glow);
-            transition: color 0.3s;
+            margin-top: 38px;
+            text-shadow: 0 0 16px var(--glow);
+            text-transform: uppercase;
         }
 
         #bio_progress_bar {
@@ -219,18 +232,19 @@
             z-index: 10;
             width: min(340px, 86vw);
             height: 6px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(0, 30, 50, 0.7);
             border-radius: 4px;
             margin-top: 14px;
             overflow: hidden;
-            border: 1px solid var(--dim-neon);
+            border: 1px solid rgba(0, 242, 255, 0.25);
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.8);
         }
 
         #bio_progress_fill {
             width: 0%;
             height: 100%;
-            background: var(--neon);
-            box-shadow: 0 0 14px var(--neon);
+            background: #00f2ff;
+            box-shadow: 0 0 16px #00f2ff;
             transition: width 0.08s linear, background-color 0.3s;
         }
 
@@ -338,7 +352,7 @@
             color: var(--neon); 
             font-weight: bold; 
             margin-bottom: 4px; 
-            border-bottom: 1px solid var(--dim-neon); 
+            border-bottom: 1px solid var(--neon-dim); 
             padding-bottom: 3px;
             display: flex;
             justify-content: space-between;
@@ -373,7 +387,7 @@
         .predict-pill {
             flex: 1;
             background: rgba(0, 242, 255, 0.08);
-            border: 1px solid var(--dim-neon);
+            border: 1px solid var(--neon-dim);
             border-radius: 6px;
             padding: 6px 12px;
             font-family: 'Orbitron', monospace;
@@ -482,7 +496,7 @@
             transform: translateX(-50%);
             width: min(94vw, 920px);
             background: rgba(2, 10, 14, 0.95);
-            border: 1px solid var(--dim-neon);
+            border: 1px solid var(--neon-dim);
             border-left: 5px solid var(--neon);
             border-radius: 0 8px 8px 0;
             box-shadow: 0 8px 30px rgba(0,0,0,0.85);
@@ -564,7 +578,7 @@
             cursor: pointer;
             z-index: 110;
             transition: all 0.2s ease;
-            box-shadow: 0 0 10px var(--dim-neon);
+            box-shadow: 0 0 10px var(--neon-dim);
         }
 
         #btn_sidebar_toggle:hover, #btn_sidebar_toggle:focus {
@@ -580,7 +594,7 @@
             font-size: 0.85rem;
             font-weight: bold;
             letter-spacing: 1.5px;
-            border-bottom: 1px solid var(--dim-neon);
+            border-bottom: 1px solid var(--neon-dim);
             padding-bottom: 6px;
             display: flex;
             justify-content: space-between;
@@ -592,7 +606,7 @@
 
         .sidebar-btn {
             background: rgba(255, 255, 255, 0.06);
-            border: 1px solid var(--dim-neon);
+            border: 1px solid var(--neon-dim);
             color: #ffffff;
             padding: 12px 14px;
             border-radius: 6px;
@@ -642,11 +656,18 @@
     <button id="start_btn" aria-label="Launch G-BOARD Operating System">LAUNCH G-BOARD OS</button>
     <video id="video_input"></video>
 
-    <!-- FULL-SCREEN HOLOGRAPHIC BIOMETRIC APERTURE WITH 3D NEURAL PLEXUS -->
+    <!-- FULL-SCREEN HOLOGRAPHIC BIOMETRIC APERTURE -->
     <div id="security_shield">
         <canvas id="neural_background_canvas"></canvas>
 
         <div id="bio_aperture_wrapper">
+            <div class="bio-orb-beacon b-1"></div>
+            <div class="bio-orb-beacon b-2"></div>
+            <div class="bio-orb-beacon b-3"></div>
+            <div class="bio-orb-beacon b-4"></div>
+            <div class="bio-orb-beacon b-5"></div>
+
+            <div class="bio-ring-dots"></div>
             <div class="bio-ring-outer"></div>
             <div class="bio-ring-middle"></div>
             <div id="bio_radar_sweep"></div>
@@ -786,15 +807,15 @@
         }
         window.addEventListener('resize', resizeCanvases);
 
-        // 3D FULL-SCREEN NEURAL PLEXUS CONSTELLATION ENGINE
-        const PLEXUS_NODE_COUNT = 85;
+        // 3D FULL-SCREEN NEURAL PLEXUS ENGINE MATCHING REFERENCE IMAGE
+        const PLEXUS_NODE_COUNT = 90;
         const neuralNodes = Array.from({ length: PLEXUS_NODE_COUNT }, () => ({
             x: (Math.random() - 0.5) * 1600,
             y: (Math.random() - 0.5) * 1200,
             z: Math.random() * 800 + 200,
-            vx: (Math.random() - 0.5) * 0.8,
-            vy: (Math.random() - 0.5) * 0.8,
-            vz: (Math.random() - 0.5) * 0.8
+            vx: (Math.random() - 0.5) * 0.7,
+            vy: (Math.random() - 0.5) * 0.7,
+            vz: (Math.random() - 0.5) * 0.7
         }));
 
         let plexusAngle = 0;
@@ -805,7 +826,7 @@
             const h = neuralBgCanvas.height;
             const cx = w / 2;
             const cy = h / 2;
-            const fov = 450;
+            const fov = 460;
 
             plexusAngle += 0.002;
             const cosA = Math.cos(plexusAngle);
@@ -839,10 +860,10 @@
                     const dy = projected[i].y - projected[j].y;
                     const dist = Math.hypot(dx, dy);
 
-                    if (dist < 140) {
-                        const alpha = (1 - dist / 140) * (isAuthorized ? 0.35 : 0.28);
+                    if (dist < 135) {
+                        const alpha = (1 - dist / 135) * (isAuthorized ? 0.35 : 0.32);
                         neuralCtx.strokeStyle = isAuthorized ? `rgba(0, 255, 102, ${alpha})` : `rgba(0, 242, 255, ${alpha})`;
-                        neuralCtx.lineWidth = (1 - dist / 140) * 1.5;
+                        neuralCtx.lineWidth = (1 - dist / 135) * 1.6;
                         neuralCtx.beginPath();
                         neuralCtx.moveTo(projected[i].x, projected[i].y);
                         neuralCtx.lineTo(projected[j].x, projected[j].y);
@@ -851,11 +872,11 @@
                 }
             }
 
-            // Draw Glowing Molecular Nodes
+            // Draw Glowing Reference Molecular Nodes
             projected.forEach(p => {
-                const radius = Math.max(1, p.scale * 3.2);
+                const radius = Math.max(1.2, p.scale * 3.5);
                 neuralCtx.fillStyle = isAuthorized ? "#00ff66" : "#00f2ff";
-                neuralCtx.shadowBlur = 10;
+                neuralCtx.shadowBlur = 12;
                 neuralCtx.shadowColor = isAuthorized ? "#00ff66" : "#00f2ff";
                 neuralCtx.beginPath();
                 neuralCtx.arc(p.x, p.y, radius, 0, Math.PI * 2);
@@ -1452,7 +1473,7 @@
             }
         });
 
-        // REFERENCE-MATCHED HIGH-DENSITY FACIAL MATRIX RENDERER
+        // 10/10 EXACT REFERENCE BLUEPRINT HOLOGRAPHIC FACE MATRIX RENDERER
         function drawHolographicMesh(landmarks, box) {
             bioCtx.clearRect(0, 0, bioMeshCanvas.width, bioMeshCanvas.height);
             if (!landmarks || landmarks.length === 0) return;
@@ -1460,50 +1481,94 @@
             const w = bioMeshCanvas.width;
             const h = bioMeshCanvas.height;
 
-            const pts = landmarks.map(pt => ({
+            const rawPts = landmarks.map(pt => ({
                 x: (1 - pt.x) * w,
                 y: pt.y * h
             }));
 
-            // Synthesize high-density structural facial mesh nodes
-            if (pts.length >= 6) {
-                const nose = pts[2];
-                const leftEye = pts[0];
-                const rightEye = pts[1];
-                const mouth = pts[3];
+            const pts = [];
 
+            if (rawPts.length >= 6) {
+                const leftEye = rawPts[0];
+                const rightEye = rawPts[1];
+                const nose = rawPts[2];
+                const mouth = rawPts[3];
+
+                const eyeDx = rightEye.x - leftEye.x;
+                const eyeDy = rightEye.y - leftEye.y;
+                const eyeSpan = Math.hypot(eyeDx, eyeDy) || 60;
                 const eyeCenter = { x: (leftEye.x + rightEye.x) / 2, y: (leftEye.y + rightEye.y) / 2 };
-                const chin = { x: mouth.x, y: mouth.y + (mouth.y - nose.y) * 0.95 };
-                const forehead = { x: eyeCenter.x, y: eyeCenter.y - (nose.y - eyeCenter.y) * 1.6 };
 
-                const leftCheek = { x: leftEye.x + (leftEye.x - eyeCenter.x) * 0.7, y: nose.y };
-                const rightCheek = { x: rightEye.x + (rightEye.x - eyeCenter.x) * 0.7, y: nose.y };
-                const leftJaw = { x: leftCheek.x * 0.9, y: mouth.y + 10 };
-                const rightJaw = { x: rightCheek.x * 1.1, y: mouth.y + 10 };
+                // 1. Precise Eye Anchors
+                pts.push({ x: leftEye.x, y: leftEye.y, isEye: true });
+                pts.push({ x: rightEye.x, y: rightEye.y, isEye: true });
 
-                pts.push(eyeCenter, chin, forehead, leftCheek, rightCheek, leftJaw, rightJaw);
+                // 2. Forehead & Cranial Dome Arch (Matching Reference Dome)
+                const domeRadius = eyeSpan * 1.35;
+                const domeCenterY = eyeCenter.y - eyeSpan * 0.2;
+                for (let a = Math.PI * 0.15; a <= Math.PI * 0.85; a += 0.14) {
+                    pts.push({
+                        x: eyeCenter.x - Math.cos(a) * domeRadius,
+                        y: domeCenterY - Math.sin(a) * domeRadius
+                    });
+                }
 
-                // Add grid matrix dots for reference wireframe density
-                for (let r = -2; r <= 2; r++) {
-                    for (let c = -2; c <= 2; c++) {
-                        if (r === 0 && c === 0) continue;
+                // 3. Eyebrow Ridges
+                for (let i = -3; i <= 3; i++) {
+                    pts.push({ x: leftEye.x + i * (eyeSpan * 0.14), y: leftEye.y - eyeSpan * 0.22 });
+                    pts.push({ x: rightEye.x + i * (eyeSpan * 0.14), y: rightEye.y - eyeSpan * 0.22 });
+                }
+
+                // 4. Nose Bridge & Nostril Wings
+                pts.push({ x: eyeCenter.x, y: eyeCenter.y });
+                pts.push({ x: eyeCenter.x, y: eyeCenter.y + (nose.y - eyeCenter.y) * 0.5 });
+                pts.push({ x: nose.x, y: nose.y });
+                pts.push({ x: nose.x - eyeSpan * 0.22, y: nose.y });
+                pts.push({ x: nose.x + eyeSpan * 0.22, y: nose.y });
+
+                // 5. Cheek & Temple Geometric Constellation
+                pts.push({ x: leftEye.x - eyeSpan * 0.65, y: leftEye.y });
+                pts.push({ x: rightEye.x + eyeSpan * 0.65, y: rightEye.y });
+                pts.push({ x: leftEye.x - eyeSpan * 0.45, y: nose.y });
+                pts.push({ x: rightEye.x + eyeSpan * 0.45, y: nose.y });
+
+                // 6. Oral Contour & Chin
+                pts.push({ x: mouth.x - eyeSpan * 0.28, y: mouth.y });
+                pts.push({ x: mouth.x + eyeSpan * 0.28, y: mouth.y });
+                pts.push({ x: mouth.x, y: mouth.y - eyeSpan * 0.08 });
+                pts.push({ x: mouth.x, y: mouth.y + eyeSpan * 0.12 });
+                pts.push({ x: mouth.x, y: mouth.y + eyeSpan * 0.48 }); // Chin base
+
+                // 7. Outer Jawline Contour
+                for (let s = -3; s <= 3; s++) {
+                    const progress = Math.abs(s) / 3;
+                    pts.push({
+                        x: mouth.x + s * (eyeSpan * 0.38),
+                        y: mouth.y + progress * (eyeSpan * 0.45)
+                    });
+                }
+
+                // 8. Dense Matrix Grid Nodes
+                for (let gx = -2; gx <= 2; gx++) {
+                    for (let gy = -2; gy <= 2; gy++) {
+                        if (gx === 0 && gy === 0) continue;
                         pts.push({
-                            x: nose.x + c * (w * 0.08),
-                            y: nose.y + r * (h * 0.08)
+                            x: nose.x + gx * (eyeSpan * 0.22),
+                            y: nose.y + gy * (eyeSpan * 0.18)
                         });
                     }
                 }
             }
 
-            bioCtx.strokeStyle = isAuthorized ? "rgba(0, 255, 102, 0.4)" : "rgba(0, 242, 255, 0.4)";
-            bioCtx.fillStyle = isAuthorized ? "#00ff66" : "#00f2ff";
-            bioCtx.lineWidth = 1.1;
+            // Draw Geometric Blueprint Wireframe
+            bioCtx.strokeStyle = isAuthorized ? "rgba(0, 255, 102, 0.42)" : "rgba(0, 242, 255, 0.42)";
+            bioCtx.lineWidth = 1.05;
 
             bioCtx.beginPath();
             for (let i = 0; i < pts.length; i++) {
                 for (let j = i + 1; j < pts.length; j++) {
                     const dist = Math.hypot(pts[i].x - pts[j].x, pts[i].y - pts[j].y);
-                    if (dist < w * 0.28) {
+                    if (dist < w * 0.22) {
                         bioCtx.moveTo(pts[i].x, pts[i].y);
                         bioCtx.lineTo(pts[j].x, pts[j].y);
                     }
@@ -1511,15 +1576,34 @@
             }
             bioCtx.stroke();
 
-            // Glowing nodes with laser eye beacons matching reference
-            pts.forEach((p, idx) => {
-                const isEye = idx === 0 || idx === 1;
-                bioCtx.beginPath();
-                bioCtx.arc(p.x, p.y, isEye ? 4.5 : 2.2, 0, Math.PI * 2);
-                bioCtx.shadowBlur = isEye ? 14 : 6;
-                bioCtx.shadowColor = isAuthorized ? "#00ff66" : "#00f2ff";
-                bioCtx.fill();
-                bioCtx.shadowBlur = 0;
+            // Render Luminous Cyan Face Nodes
+            pts.forEach(p => {
+                if (p.isEye) {
+                    // Intense Luminous Eye Nodes Matching Reference
+                    const eyeColor = isAuthorized ? "#00ff66" : "#00f2ff";
+                    const eyeGrad = bioCtx.createRadialGradient(p.x, p.y, 1, p.x, p.y, 14);
+                    eyeGrad.addColorStop(0, "#ffffff");
+                    eyeGrad.addColorStop(0.3, eyeColor);
+                    eyeGrad.addColorStop(1, "transparent");
+
+                    bioCtx.fillStyle = eyeGrad;
+                    bioCtx.beginPath();
+                    bioCtx.arc(p.x, p.y, 14, 0, Math.PI * 2);
+                    bioCtx.fill();
+
+                    bioCtx.fillStyle = "#ffffff";
+                    bioCtx.beginPath();
+                    bioCtx.arc(p.x, p.y, 3.5, 0, Math.PI * 2);
+                    bioCtx.fill();
+                } else {
+                    bioCtx.fillStyle = isAuthorized ? "#00ff66" : "#00f2ff";
+                    bioCtx.shadowBlur = 6;
+                    bioCtx.shadowColor = isAuthorized ? "#00ff66" : "#00f2ff";
+                    bioCtx.beginPath();
+                    bioCtx.arc(p.x, p.y, 1.8, 0, Math.PI * 2);
+                    bioCtx.fill();
+                    bioCtx.shadowBlur = 0;
+                }
             });
         }
 
