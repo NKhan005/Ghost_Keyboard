@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="G-BOARD V8.1 - Holographic Circular Biometric Face Mesh & Spatial Vision OS">
-    <title>G-BOARD | CIRCULAR BIOMETRIC OS V8.1</title>
+    <meta name="description" content="G-BOARD V8.2 - Full-Screen Molecular Biometric Face Mesh & Spatial OS">
+    <title>G-BOARD | MOLECULAR BIOMETRIC OS V8.2</title>
     
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/face_detection.js" crossorigin="anonymous"></script>
@@ -65,18 +65,18 @@
             height: 100vh; 
             object-fit: cover; 
             transform: scaleX(-1); 
-            opacity: 0.22; 
+            opacity: 0.18; 
             z-index: -1; 
             filter: contrast(125%) brightness(85%); 
         }
 
-        /* BIOMETRIC SECURITY SHIELD */
+        /* FULL-SCREEN BIOMETRIC SECURITY SHIELD */
         #security_shield {
             position: fixed;
             inset: 0;
-            background: radial-gradient(circle at center, rgba(3, 15, 25, 0.75) 0%, rgba(1, 4, 8, 0.95) 100%);
-            -webkit-backdrop-filter: blur(20px);
-            backdrop-filter: blur(20px);
+            background: radial-gradient(circle at center, rgba(3, 15, 28, 0.9) 0%, rgba(1, 4, 8, 0.98) 100%);
+            -webkit-backdrop-filter: blur(24px);
+            backdrop-filter: blur(24px);
             z-index: 180;
             display: flex;
             flex-direction: column;
@@ -91,23 +91,51 @@
             pointer-events: none;
         }
 
-        /* CIRCULAR HOLOGRAPHIC BIOMETRIC APERTURE */
+        /* LARGE CIRCULAR BIOMETRIC APERTURE */
         #bio_aperture_wrapper {
             position: relative;
-            width: 290px;
-            height: 290px;
+            width: clamp(280px, 42vmin, 380px);
+            height: clamp(280px, 42vmin, 380px);
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        #bio_mesh_canvas {
+        #bio_camera_viewport {
             position: absolute;
+            inset: 12px;
+            border-radius: 50%;
+            overflow: hidden;
+            z-index: 2;
+            box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.85);
+            background: #000;
+        }
+
+        #bio_live_video {
             width: 100%;
             height: 100%;
+            object-fit: cover;
+            transform: scaleX(-1);
+            filter: contrast(140%) brightness(110%) hue-rotate(185deg) saturate(160%);
+            opacity: 0.85;
+        }
+
+        #bio_mesh_canvas {
+            position: absolute;
+            inset: 12px;
+            width: calc(100% - 24px);
+            height: calc(100% - 24px);
             border-radius: 50%;
             pointer-events: none;
-            z-index: 5;
+            z-index: 6;
+        }
+
+        #bio_orbit_canvas {
+            position: absolute;
+            width: 140%;
+            height: 140%;
+            pointer-events: none;
+            z-index: 8;
         }
 
         .bio-ring-outer {
@@ -115,78 +143,62 @@
             inset: 0;
             border: 2px dashed var(--neon);
             border-radius: 50%;
-            animation: rotateClockwise 12s linear infinite;
-            box-shadow: 0 0 25px var(--glow), inset 0 0 25px rgba(0, 242, 255, 0.15);
+            animation: rotateClockwise 14s linear infinite;
+            box-shadow: 0 0 30px var(--glow), inset 0 0 25px rgba(0, 242, 255, 0.2);
             transition: border-color 0.3s, box-shadow 0.3s;
+            z-index: 4;
         }
 
         .bio-ring-middle {
             position: absolute;
-            inset: 16px;
+            inset: 8px;
             border: 1px solid rgba(0, 242, 255, 0.3);
             border-top: 3px solid var(--neon);
             border-bottom: 3px solid var(--neon);
             border-radius: 50%;
-            animation: rotateCounterClockwise 8s linear infinite;
+            animation: rotateCounterClockwise 9s linear infinite;
             transition: border-color 0.3s;
-        }
-
-        .bio-ring-inner {
-            position: absolute;
-            inset: 32px;
-            border: 1px dotted var(--neon);
-            border-radius: 50%;
-            opacity: 0.7;
+            z-index: 4;
         }
 
         #bio_radar_sweep {
             position: absolute;
-            inset: 0;
+            inset: 12px;
             border-radius: 50%;
-            background: conic-gradient(from 0deg, rgba(0, 242, 255, 0.35) 0deg, transparent 65deg);
-            animation: radarSweep 2.8s linear infinite;
+            background: conic-gradient(from 0deg, rgba(0, 242, 255, 0.4) 0deg, transparent 70deg);
+            animation: radarSweep 2.5s linear infinite;
             pointer-events: none;
+            z-index: 5;
         }
 
         #bio_aperture_wrapper.authorized .bio-ring-outer,
         #bio_aperture_wrapper.authorized .bio-ring-middle {
             border-color: var(--success);
-            box-shadow: 0 0 45px rgba(0, 255, 102, 0.9), inset 0 0 35px rgba(0, 255, 102, 0.25);
+            box-shadow: 0 0 50px rgba(0, 255, 102, 0.9), inset 0 0 35px rgba(0, 255, 102, 0.3);
         }
 
         #bio_aperture_wrapper.authorized #bio_radar_sweep {
-            background: conic-gradient(from 0deg, rgba(0, 255, 102, 0.45) 0deg, transparent 65deg);
+            background: conic-gradient(from 0deg, rgba(0, 255, 102, 0.5) 0deg, transparent 70deg);
         }
 
-        @keyframes rotateClockwise {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes rotateCounterClockwise {
-            from { transform: rotate(360deg); }
-            to { transform: rotate(0deg); }
-        }
-
-        @keyframes radarSweep {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
+        @keyframes rotateClockwise { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes rotateCounterClockwise { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+        @keyframes radarSweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         #bio_status_text {
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.84rem;
-            letter-spacing: 2.5px;
+            font-size: clamp(0.78rem, 1.8vw, 0.92rem);
+            letter-spacing: 3px;
             font-weight: 800;
             color: var(--neon);
             text-align: center;
-            margin-top: 28px;
+            margin-top: 32px;
             text-shadow: 0 0 12px var(--glow);
             transition: color 0.3s;
         }
 
         #bio_progress_bar {
-            width: 260px;
+            width: min(320px, 85vw);
             height: 6px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 4px;
@@ -203,7 +215,7 @@
             transition: width 0.08s linear, background-color 0.3s;
         }
 
-        /* ROBOTIC HUD RETICLE */
+        /* ROBOTIC RETICLE CURSOR */
         #finger_cursor {
             position: fixed;
             width: 38px;
@@ -265,10 +277,7 @@
             transform: translate(-50%, -50%) rotate(45deg);
         }
 
-        @keyframes spinReticle {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spinReticle { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         #main_title { 
             position: fixed; 
@@ -483,11 +492,7 @@
         #terminal_log::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
         #terminal_log::-webkit-scrollbar-thumb { background: var(--neon); border-radius: 4px; }
 
-        .terminal-segment {
-            cursor: pointer;
-            transition: background 0.1s;
-            border-radius: 2px;
-        }
+        .terminal-segment { cursor: pointer; transition: background 0.1s; border-radius: 2px; }
         .terminal-segment:hover { background: rgba(0, 242, 255, 0.2); }
 
         .terminal-caret {
@@ -501,10 +506,7 @@
             animation: caretBlink 0.9s infinite;
         }
 
-        @keyframes caretBlink {
-            0%, 49% { opacity: 1; }
-            50%, 100% { opacity: 0; }
-        }
+        @keyframes caretBlink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
 
         #sidebar_dock {
             position: fixed;
@@ -621,15 +623,21 @@
     <button id="start_btn" aria-label="Launch G-BOARD Operating System">LAUNCH G-BOARD OS</button>
     <video id="video_input"></video>
 
-    <!-- HOLOGRAPHIC CIRCULAR BIOMETRIC APERTURE -->
+    <!-- FULL-SCREEN HOLOGRAPHIC BIOMETRIC APERTURE -->
     <div id="security_shield">
         <div id="bio_aperture_wrapper">
+            <canvas id="bio_orbit_canvas"></canvas>
             <div class="bio-ring-outer"></div>
             <div class="bio-ring-middle"></div>
-            <div class="bio-ring-inner"></div>
             <div id="bio_radar_sweep"></div>
-            <canvas id="bio_mesh_canvas" width="290" height="290"></canvas>
+            
+            <div id="bio_camera_viewport">
+                <video id="bio_live_video" autoplay muted></video>
+            </div>
+            
+            <canvas id="bio_mesh_canvas"></canvas>
         </div>
+        
         <div id="bio_status_text">ALIGN FACE WITHIN APERTURE</div>
         <div id="bio_progress_bar"><div id="bio_progress_fill"></div></div>
     </div>
@@ -701,8 +709,11 @@
 
     <script>
         const videoElement = document.getElementById('video_input');
-        videoElement.setAttribute('playsinline', '');
-        videoElement.setAttribute('muted', '');
+        const bioLiveVideo = document.getElementById('bio_live_video');
+        
+        // Use standard DOM properties to maintain 100% cross-browser compliance
+        videoElement.playsInline = true;
+        bioLiveVideo.playsInline = true;
 
         const terminalLog = document.getElementById('terminal_log');
         const keyboard = document.getElementById('keyboard_overlay');
@@ -715,11 +726,12 @@
         const bioApertureWrapper = document.getElementById('bio_aperture_wrapper');
         const bioMeshCanvas = document.getElementById('bio_mesh_canvas');
         const bioCtx = bioMeshCanvas.getContext('2d');
+        const bioOrbitCanvas = document.getElementById('bio_orbit_canvas');
+        const orbitCtx = bioOrbitCanvas.getContext('2d');
         const bioStatusText = document.getElementById('bio_status_text');
         const bioProgressFill = document.getElementById('bio_progress_fill');
         const statSec = document.getElementById('stat_sec');
 
-        // BIOMETRIC CONFIGURATION: 6.0-SECOND SAFE LOCKOUT THRESHOLD
         const FACE_LOCK_TIMEOUT = 6000;
         let isAuthorized = false;
         let scanProgress = 0;
@@ -743,6 +755,63 @@
 
         let lastFrameTime = performance.now();
         let frameCount = 0;
+
+        function resizeCanvases() {
+            const rect = bioMeshCanvas.getBoundingClientRect();
+            bioMeshCanvas.width = rect.width;
+            bioMeshCanvas.height = rect.height;
+
+            const orbitRect = bioOrbitCanvas.getBoundingClientRect();
+            bioOrbitCanvas.width = orbitRect.width;
+            bioOrbitCanvas.height = orbitRect.height;
+        }
+        window.addEventListener('resize', resizeCanvases);
+
+        // REVOLVING MOLECULAR ORBIT PARTICLES
+        const molecularParticles = Array.from({ length: 14 }, (_, i) => ({
+            angle: (i / 14) * Math.PI * 2,
+            radiusX: 0.44,
+            radiusY: 0.32,
+            tilt: (i % 2 === 0 ? 1 : -1) * 0.4,
+            speed: 0.015 + (i % 3) * 0.005,
+            size: 2.5 + (i % 3) * 1.5
+        }));
+
+        function renderMolecularOrbits() {
+            orbitCtx.clearRect(0, 0, bioOrbitCanvas.width, bioOrbitCanvas.height);
+            const w = bioOrbitCanvas.width;
+            const h = bioOrbitCanvas.height;
+            const cx = w / 2;
+            const cy = h / 2;
+
+            orbitCtx.strokeStyle = isAuthorized ? "rgba(0, 255, 102, 0.15)" : "rgba(0, 242, 255, 0.15)";
+            orbitCtx.lineWidth = 1;
+
+            molecularParticles.forEach(p => {
+                p.angle += p.speed;
+                const cosT = Math.cos(p.tilt);
+                const sinT = Math.sin(p.tilt);
+
+                const unrotX = Math.cos(p.angle) * (w * p.radiusX);
+                const unrotY = Math.sin(p.angle) * (h * p.radiusY);
+
+                const x = cx + (unrotX * cosT - unrotY * sinT);
+                const y = cy + (unrotX * sinT + unrotY * cosT);
+
+                orbitCtx.fillStyle = isAuthorized ? "#00ff66" : "#00f2ff";
+                orbitCtx.shadowBlur = 10;
+                orbitCtx.shadowColor = isAuthorized ? "#00ff66" : "#00f2ff";
+
+                orbitCtx.beginPath();
+                orbitCtx.arc(x, y, p.size, 0, Math.PI * 2);
+                orbitCtx.fill();
+                orbitCtx.shadowBlur = 0;
+            });
+
+            if (!isAuthorized) {
+                requestAnimationFrame(renderMolecularOrbits);
+            }
+        }
 
         const DICTIONARY = [
             "ACTIVATE", "ACCESS", "ACCOUNT", "ACTION", "ACTIVE", "ADD", "ADDRESS", "ADVANCED", "AGAIN", "AGENT",
@@ -1006,7 +1075,6 @@
 
         document.getElementById('btn_toggle_mode').onclick = () => setInputMode(currentModeIndex + 1);
 
-        // SPEECH RECOGNITION (MIC)
         let recognition = null;
         let isRecording = false;
 
@@ -1329,17 +1397,30 @@
             }
         });
 
-        // HOLOGRAPHIC MESH CONSTELLATION RENDERER
-        function drawHolographicMesh(landmarks) {
+        function drawHolographicMesh(landmarks, box) {
             bioCtx.clearRect(0, 0, bioMeshCanvas.width, bioMeshCanvas.height);
             if (!landmarks || landmarks.length === 0) return;
 
             const w = bioMeshCanvas.width;
             const h = bioMeshCanvas.height;
+
             const pts = landmarks.map(pt => ({
                 x: (1 - pt.x) * w,
                 y: pt.y * h
             }));
+
+            if (pts.length >= 6) {
+                const nose = pts[2];
+                const leftEye = pts[0];
+                const rightEye = pts[1];
+                const mouth = pts[3];
+
+                const bridge = { x: (leftEye.x + rightEye.x) / 2, y: (leftEye.y + rightEye.y) / 2 };
+                const chin = { x: mouth.x, y: mouth.y + (mouth.y - nose.y) * 0.9 };
+                const forehead = { x: bridge.x, y: bridge.y - (nose.y - bridge.y) * 1.5 };
+
+                pts.push(bridge, chin, forehead);
+            }
 
             bioCtx.strokeStyle = isAuthorized ? "rgba(0, 255, 102, 0.45)" : "rgba(0, 242, 255, 0.45)";
             bioCtx.fillStyle = isAuthorized ? "#00ff66" : "#00f2ff";
@@ -1349,7 +1430,7 @@
             for (let i = 0; i < pts.length; i++) {
                 for (let j = i + 1; j < pts.length; j++) {
                     const dist = Math.hypot(pts[i].x - pts[j].x, pts[i].y - pts[j].y);
-                    if (dist < 120) {
+                    if (dist < w * 0.38) {
                         bioCtx.moveTo(pts[i].x, pts[i].y);
                         bioCtx.lineTo(pts[j].x, pts[j].y);
                     }
@@ -1360,11 +1441,13 @@
             pts.forEach(p => {
                 bioCtx.beginPath();
                 bioCtx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+                bioCtx.shadowBlur = 8;
+                bioCtx.shadowColor = isAuthorized ? "#00ff66" : "#00f2ff";
                 bioCtx.fill();
+                bioCtx.shadowBlur = 0;
             });
         }
 
-        // MEDIAPIPE FACE DETECTION (BIOMETRIC SCANNER)
         const faceDetection = new FaceDetection({
             locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/${file}`
         });
@@ -1378,7 +1461,7 @@
                 lastFaceDetectedTime = Date.now();
                 const detection = results.detections[0];
                 if (detection.landmarks) {
-                    drawHolographicMesh(detection.landmarks);
+                    drawHolographicMesh(detection.landmarks, detection.boundingBox);
                 }
 
                 if (!isAuthorized) {
@@ -1404,7 +1487,6 @@
             } else {
                 bioCtx.clearRect(0, 0, bioMeshCanvas.width, bioMeshCanvas.height);
 
-                // 6.0-SECOND AUTO-LOCKOUT THRESHOLD
                 if (isAuthorized && (Date.now() - lastFaceDetectedTime > FACE_LOCK_TIMEOUT)) {
                     isAuthorized = false;
                     scanProgress = 0;
@@ -1415,6 +1497,7 @@
                     statSec.innerText = "LOCKED";
                     statSec.className = "stat-val sec-locked";
                     securityShield.classList.remove('unlocked');
+                    renderMolecularOrbits();
                     playSecurityChime(false);
                 } else if (!isAuthorized) {
                     scanProgress = Math.max(0, scanProgress - 1.5);
@@ -1425,7 +1508,6 @@
             }
         });
 
-        // MEDIAPIPE HANDS PIPELINE
         const hands = new Hands({locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`});
         hands.setOptions({ 
             maxNumHands: 1,
@@ -1533,12 +1615,13 @@
             }
         });
 
-        // SYSTEM INITIALIZATION & DUAL-MODEL CAMERA RUNNER
         startBtn.onclick = async () => {
             startBtn.style.display = 'none';
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             initGPSLocation();
             renderTerminal();
+            resizeCanvases();
+            renderMolecularOrbits();
 
             const constraints = {
                 video: {
@@ -1552,7 +1635,9 @@
             try {
                 const stream = await navigator.mediaDevices.getUserMedia(constraints);
                 videoElement.srcObject = stream;
+                bioLiveVideo.srcObject = stream;
                 await videoElement.play();
+                await bioLiveVideo.play();
 
                 let frameFlip = 0;
                 const processFrame = async () => {
