@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="G-BOARD V8.0 - Biometric Face Authorized Spatial Vision OS">
-    <title>G-BOARD | BIOMETRIC OS V8.0</title>
+    <meta name="description" content="G-BOARD V8.1 - Holographic Circular Biometric Face Mesh & Spatial Vision OS">
+    <title>G-BOARD | CIRCULAR BIOMETRIC OS V8.1</title>
     
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/face_detection.js" crossorigin="anonymous"></script>
@@ -65,24 +65,24 @@
             height: 100vh; 
             object-fit: cover; 
             transform: scaleX(-1); 
-            opacity: 0.2; 
+            opacity: 0.22; 
             z-index: -1; 
-            filter: contrast(120%) brightness(85%); 
+            filter: contrast(125%) brightness(85%); 
         }
 
-        /* BIOMETRIC SECURITY OVERLAY SHIELD */
+        /* BIOMETRIC SECURITY SHIELD */
         #security_shield {
             position: fixed;
             inset: 0;
-            background: rgba(2, 6, 10, 0.75);
-            -webkit-backdrop-filter: blur(18px);
-            backdrop-filter: blur(18px);
+            background: radial-gradient(circle at center, rgba(3, 15, 25, 0.75) 0%, rgba(1, 4, 8, 0.95) 100%);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
             z-index: 180;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
+            transition: opacity 0.5s cubic-bezier(0.2, 0, 0, 1), visibility 0.5s ease;
         }
 
         #security_shield.unlocked {
@@ -91,79 +91,116 @@
             pointer-events: none;
         }
 
-        /* HOLOGRAPHIC BIOMETRIC SCANNER HUD */
-        #bio_scanner_frame {
-            position: absolute;
-            width: 240px;
-            height: 280px;
-            border: 2px solid var(--neon);
-            border-radius: 12px;
-            box-shadow: 0 0 30px var(--glow), inset 0 0 25px rgba(0, 242, 255, 0.15);
+        /* CIRCULAR HOLOGRAPHIC BIOMETRIC APERTURE */
+        #bio_aperture_wrapper {
+            position: relative;
+            width: 290px;
+            height: 290px;
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 12px;
-            transition: border-color 0.2s, box-shadow 0.2s;
+            align-items: center;
+            justify-content: center;
         }
 
-        #bio_scanner_frame.authorized {
-            border-color: var(--success);
-            box-shadow: 0 0 40px rgba(0, 255, 102, 0.8), inset 0 0 30px rgba(0, 255, 102, 0.2);
-        }
-
-        .bio-corner {
-            width: 16px;
-            height: 16px;
-            border-color: var(--neon);
+        #bio_mesh_canvas {
             position: absolute;
-        }
-        .bio-corner.tl { top: -2px; left: -2px; border-top: 4px solid var(--neon); border-left: 4px solid var(--neon); }
-        .bio-corner.tr { top: -2px; right: -2px; border-top: 4px solid var(--neon); border-right: 4px solid var(--neon); }
-        .bio-corner.bl { bottom: -2px; left: -2px; border-bottom: 4px solid var(--neon); border-left: 4px solid var(--neon); }
-        .bio-corner.br { bottom: -2px; right: -2px; border-bottom: 4px solid var(--neon); border-right: 4px solid var(--neon); }
-
-        #bio_laser {
-            position: absolute;
-            left: 0;
             width: 100%;
-            height: 3px;
-            background: var(--neon);
-            box-shadow: 0 0 14px var(--neon);
-            animation: laserScan 2s ease-in-out infinite;
+            height: 100%;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 5;
         }
 
-        @keyframes laserScan {
-            0% { top: 5%; opacity: 0.2; }
-            50% { top: 92%; opacity: 1; }
-            100% { top: 5%; opacity: 0.2; }
+        .bio-ring-outer {
+            position: absolute;
+            inset: 0;
+            border: 2px dashed var(--neon);
+            border-radius: 50%;
+            animation: rotateClockwise 12s linear infinite;
+            box-shadow: 0 0 25px var(--glow), inset 0 0 25px rgba(0, 242, 255, 0.15);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .bio-ring-middle {
+            position: absolute;
+            inset: 16px;
+            border: 1px solid rgba(0, 242, 255, 0.3);
+            border-top: 3px solid var(--neon);
+            border-bottom: 3px solid var(--neon);
+            border-radius: 50%;
+            animation: rotateCounterClockwise 8s linear infinite;
+            transition: border-color 0.3s;
+        }
+
+        .bio-ring-inner {
+            position: absolute;
+            inset: 32px;
+            border: 1px dotted var(--neon);
+            border-radius: 50%;
+            opacity: 0.7;
+        }
+
+        #bio_radar_sweep {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, rgba(0, 242, 255, 0.35) 0deg, transparent 65deg);
+            animation: radarSweep 2.8s linear infinite;
+            pointer-events: none;
+        }
+
+        #bio_aperture_wrapper.authorized .bio-ring-outer,
+        #bio_aperture_wrapper.authorized .bio-ring-middle {
+            border-color: var(--success);
+            box-shadow: 0 0 45px rgba(0, 255, 102, 0.9), inset 0 0 35px rgba(0, 255, 102, 0.25);
+        }
+
+        #bio_aperture_wrapper.authorized #bio_radar_sweep {
+            background: conic-gradient(from 0deg, rgba(0, 255, 102, 0.45) 0deg, transparent 65deg);
+        }
+
+        @keyframes rotateClockwise {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes rotateCounterClockwise {
+            from { transform: rotate(360deg); }
+            to { transform: rotate(0deg); }
+        }
+
+        @keyframes radarSweep {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         #bio_status_text {
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.82rem;
-            letter-spacing: 2px;
+            font-size: 0.84rem;
+            letter-spacing: 2.5px;
             font-weight: 800;
             color: var(--neon);
             text-align: center;
-            margin-top: 320px;
-            text-shadow: 0 0 10px var(--glow);
+            margin-top: 28px;
+            text-shadow: 0 0 12px var(--glow);
+            transition: color 0.3s;
         }
 
         #bio_progress_bar {
-            width: 240px;
+            width: 260px;
             height: 6px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-            margin-top: 12px;
+            border-radius: 4px;
+            margin-top: 14px;
             overflow: hidden;
+            border: 1px solid var(--dim-neon);
         }
 
         #bio_progress_fill {
             width: 0%;
             height: 100%;
             background: var(--neon);
-            box-shadow: 0 0 10px var(--neon);
-            transition: width 0.1s linear, background-color 0.2s;
+            box-shadow: 0 0 12px var(--neon);
+            transition: width 0.08s linear, background-color 0.3s;
         }
 
         /* ROBOTIC HUD RETICLE */
@@ -210,10 +247,7 @@
         #finger_cursor .reticle-core::before { top: -6px; left: 4px; width: 2px; height: 4px; }
         #finger_cursor .reticle-core::after { left: -6px; top: 4px; height: 2px; width: 4px; }
 
-        #finger_cursor.hovering {
-            width: 44px;
-            height: 44px;
-        }
+        #finger_cursor.hovering { width: 44px; height: 44px; }
         #finger_cursor.hovering .reticle-bracket {
             border-style: solid;
             border-width: 2px;
@@ -286,6 +320,8 @@
         .stat-line { margin-bottom: 2px; display: flex; justify-content: space-between; gap: 6px; }
         .stat-label { opacity: 0.8; }
         .stat-val { font-weight: bold; color: #ffffff; text-align: right; }
+        .sec-locked { color: var(--alert); }
+        .sec-auth { color: var(--success); }
 
         #workspace {
             width: 100vw;
@@ -328,11 +364,7 @@
             justify-content: center;
         }
 
-        .predict-pill.empty {
-            opacity: 0.45;
-            border-style: dashed;
-        }
-
+        .predict-pill.empty { opacity: 0.45; border-style: dashed; }
         .predict-pill.hover, .predict-pill:hover {
             background: var(--neon);
             color: #000000;
@@ -456,9 +488,7 @@
             transition: background 0.1s;
             border-radius: 2px;
         }
-        .terminal-segment:hover {
-            background: rgba(0, 242, 255, 0.2);
-        }
+        .terminal-segment:hover { background: rgba(0, 242, 255, 0.2); }
 
         .terminal-caret {
             display: inline-block;
@@ -536,20 +566,8 @@
             align-items: center;
         }
 
-        .dock-close-btn {
-            background: none;
-            border: none;
-            color: var(--neon);
-            font-size: 1rem;
-            cursor: pointer;
-        }
-
-        .control-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 10px;
-        }
+        .dock-close-btn { background: none; border: none; color: var(--neon); font-size: 1rem; cursor: pointer; }
+        .control-group { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
 
         .sidebar-btn {
             background: rgba(255, 255, 255, 0.06);
@@ -603,18 +621,20 @@
     <button id="start_btn" aria-label="Launch G-BOARD Operating System">LAUNCH G-BOARD OS</button>
     <video id="video_input"></video>
 
+    <!-- HOLOGRAPHIC CIRCULAR BIOMETRIC APERTURE -->
     <div id="security_shield">
-        <div id="bio_scanner_frame">
-            <div class="bio-corner tl"></div>
-            <div class="bio-corner tr"></div>
-            <div class="bio-corner bl"></div>
-            <div class="bio-corner br"></div>
-            <div id="bio_laser"></div>
+        <div id="bio_aperture_wrapper">
+            <div class="bio-ring-outer"></div>
+            <div class="bio-ring-middle"></div>
+            <div class="bio-ring-inner"></div>
+            <div id="bio_radar_sweep"></div>
+            <canvas id="bio_mesh_canvas" width="290" height="290"></canvas>
         </div>
-        <div id="bio_status_text">INITIALIZING BIOMETRIC SCANNER...</div>
+        <div id="bio_status_text">ALIGN FACE WITHIN APERTURE</div>
         <div id="bio_progress_bar"><div id="bio_progress_fill"></div></div>
     </div>
     
+    <!-- ROBOTIC RETICLE CURSOR -->
     <div id="finger_cursor">
         <div class="reticle-bracket"></div>
         <div class="reticle-core"></div>
@@ -628,7 +648,7 @@
             <span>SYS: ONLINE</span>
             <span id="fps_counter" class="fps-display">60 FPS</span>
         </div>
-        <div class="stat-line"><span class="stat-label">SECURITY:</span> <span id="stat_sec" class="stat-val" style="color:var(--alert);">LOCKED</span></div>
+        <div class="stat-line"><span class="stat-label">SECURITY:</span> <span id="stat_sec" class="stat-val sec-locked">LOCKED</span></div>
         <div class="stat-line"><span class="stat-label">INPUT MODE:</span> <span id="stat_mode" class="stat-val">AUTO DUAL</span></div>
         <div class="stat-line"><span class="stat-label">TIME:</span> <span id="stat_time" class="stat-val">--:--:--</span></div>
         <div class="stat-line"><span class="stat-label">LOCATION:</span> <span id="stat_loc" class="stat-val">LOCATING...</span></div>
@@ -692,12 +712,15 @@
         const sidebarDock = document.getElementById('sidebar_dock');
         
         const securityShield = document.getElementById('security_shield');
-        const bioScannerFrame = document.getElementById('bio_scanner_frame');
+        const bioApertureWrapper = document.getElementById('bio_aperture_wrapper');
+        const bioMeshCanvas = document.getElementById('bio_mesh_canvas');
+        const bioCtx = bioMeshCanvas.getContext('2d');
         const bioStatusText = document.getElementById('bio_status_text');
         const bioProgressFill = document.getElementById('bio_progress_fill');
         const statSec = document.getElementById('stat_sec');
 
-        // BIOMETRIC STATE
+        // BIOMETRIC CONFIGURATION: 6.0-SECOND SAFE LOCKOUT THRESHOLD
+        const FACE_LOCK_TIMEOUT = 6000;
         let isAuthorized = false;
         let scanProgress = 0;
         let lastFaceDetectedTime = 0;
@@ -1306,6 +1329,41 @@
             }
         });
 
+        // HOLOGRAPHIC MESH CONSTELLATION RENDERER
+        function drawHolographicMesh(landmarks) {
+            bioCtx.clearRect(0, 0, bioMeshCanvas.width, bioMeshCanvas.height);
+            if (!landmarks || landmarks.length === 0) return;
+
+            const w = bioMeshCanvas.width;
+            const h = bioMeshCanvas.height;
+            const pts = landmarks.map(pt => ({
+                x: (1 - pt.x) * w,
+                y: pt.y * h
+            }));
+
+            bioCtx.strokeStyle = isAuthorized ? "rgba(0, 255, 102, 0.45)" : "rgba(0, 242, 255, 0.45)";
+            bioCtx.fillStyle = isAuthorized ? "#00ff66" : "#00f2ff";
+            bioCtx.lineWidth = 1.2;
+
+            bioCtx.beginPath();
+            for (let i = 0; i < pts.length; i++) {
+                for (let j = i + 1; j < pts.length; j++) {
+                    const dist = Math.hypot(pts[i].x - pts[j].x, pts[i].y - pts[j].y);
+                    if (dist < 120) {
+                        bioCtx.moveTo(pts[i].x, pts[i].y);
+                        bioCtx.lineTo(pts[j].x, pts[j].y);
+                    }
+                }
+            }
+            bioCtx.stroke();
+
+            pts.forEach(p => {
+                bioCtx.beginPath();
+                bioCtx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+                bioCtx.fill();
+            });
+        }
+
         // MEDIAPIPE FACE DETECTION (BIOMETRIC SCANNER)
         const faceDetection = new FaceDetection({
             locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/${file}`
@@ -1318,20 +1376,24 @@
         faceDetection.onResults((results) => {
             if (results.detections && results.detections.length > 0) {
                 lastFaceDetectedTime = Date.now();
+                const detection = results.detections[0];
+                if (detection.landmarks) {
+                    drawHolographicMesh(detection.landmarks);
+                }
 
                 if (!isAuthorized) {
                     scanProgress += 2.5;
                     bioProgressFill.style.width = `${Math.min(100, scanProgress)}%`;
-                    bioStatusText.innerText = `SCANNING BIOMETRICS: ${Math.round(scanProgress)}%`;
+                    bioStatusText.innerText = `BIOMETRIC MESH SCAN: ${Math.round(scanProgress)}%`;
 
                     if (scanProgress >= 100) {
                         isAuthorized = true;
-                        bioScannerFrame.classList.add('authorized');
+                        bioApertureWrapper.classList.add('authorized');
                         bioStatusText.innerText = "BIOMETRIC MATCH CONFIRMED - ACCESS GRANTED";
                         bioStatusText.style.color = "var(--success)";
                         bioProgressFill.style.backgroundColor = "var(--success)";
                         statSec.innerText = "AUTHORIZED";
-                        statSec.style.color = "var(--success)";
+                        statSec.className = "stat-val sec-auth";
                         playSecurityChime(true);
 
                         setTimeout(() => {
@@ -1340,22 +1402,24 @@
                     }
                 }
             } else {
-                // If face leaves camera for > 3.0 seconds, auto-lock OS
-                if (isAuthorized && (Date.now() - lastFaceDetectedTime > 3000)) {
+                bioCtx.clearRect(0, 0, bioMeshCanvas.width, bioMeshCanvas.height);
+
+                // 6.0-SECOND AUTO-LOCKOUT THRESHOLD
+                if (isAuthorized && (Date.now() - lastFaceDetectedTime > FACE_LOCK_TIMEOUT)) {
                     isAuthorized = false;
                     scanProgress = 0;
                     bioProgressFill.style.width = "0%";
-                    bioScannerFrame.classList.remove('authorized');
-                    bioStatusText.innerText = "SECURITY SHIELD ACTIVATED - NO USER DETECTED";
+                    bioApertureWrapper.classList.remove('authorized');
+                    bioStatusText.innerText = "SECURITY LOCKDOWN - NO USER DETECTED";
                     bioStatusText.style.color = "var(--alert)";
                     statSec.innerText = "LOCKED";
-                    statSec.style.color = "var(--alert)";
+                    statSec.className = "stat-val sec-locked";
                     securityShield.classList.remove('unlocked');
                     playSecurityChime(false);
                 } else if (!isAuthorized) {
                     scanProgress = Math.max(0, scanProgress - 1.5);
                     bioProgressFill.style.width = `${scanProgress}%`;
-                    bioStatusText.innerText = "ALIGN FACE TO INITIATE SCAN";
+                    bioStatusText.innerText = "ALIGN FACE WITHIN APERTURE";
                     bioStatusText.style.color = "var(--neon)";
                 }
             }
@@ -1493,7 +1557,6 @@
                 let frameFlip = 0;
                 const processFrame = async () => {
                     if (videoElement.readyState >= 2) {
-                        // Alternate face & hand frames to maintain smooth 60 FPS
                         frameFlip++;
                         if (frameFlip % 2 === 0) {
                             await faceDetection.send({ image: videoElement });
