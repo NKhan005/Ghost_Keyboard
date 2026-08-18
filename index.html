@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="G-BOARD V8.2 - Full-Screen Molecular Biometric Face Mesh & Spatial OS">
-    <title>G-BOARD | MOLECULAR BIOMETRIC OS V8.2</title>
+    <meta name="description" content="G-BOARD V8.3 - Full-Screen Neural Plexus Biometric Face Mesh & Spatial OS">
+    <title>G-BOARD | NEURAL BIOMETRIC OS V8.3</title>
     
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/face_detection.js" crossorigin="anonymous"></script>
@@ -50,7 +50,7 @@
 
         body { 
             margin: 0; 
-            background: #020506; 
+            background: #010408; 
             color: var(--neon); 
             font-family: 'Segoe UI', system-ui, sans-serif; 
             overflow: hidden; 
@@ -65,18 +65,18 @@
             height: 100vh; 
             object-fit: cover; 
             transform: scaleX(-1); 
-            opacity: 0.18; 
+            opacity: 0.15; 
             z-index: -1; 
             filter: contrast(125%) brightness(85%); 
         }
 
-        /* FULL-SCREEN BIOMETRIC SECURITY SHIELD */
+        /* FULL-SCREEN NEURAL PLEXUS BIOMETRIC SHIELD */
         #security_shield {
             position: fixed;
             inset: 0;
-            background: radial-gradient(circle at center, rgba(3, 15, 28, 0.9) 0%, rgba(1, 4, 8, 0.98) 100%);
-            -webkit-backdrop-filter: blur(24px);
-            backdrop-filter: blur(24px);
+            background: radial-gradient(circle at center, rgba(1, 14, 28, 0.88) 0%, rgba(0, 3, 7, 0.98) 100%);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
             z-index: 180;
             display: flex;
             flex-direction: column;
@@ -91,14 +91,25 @@
             pointer-events: none;
         }
 
-        /* LARGE CIRCULAR BIOMETRIC APERTURE */
+        /* Background Full-Screen 3D Neural Plexus Canvas */
+        #neural_background_canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* CENTRAL HOLOGRAPHIC BIOMETRIC APERTURE */
         #bio_aperture_wrapper {
             position: relative;
-            width: clamp(280px, 42vmin, 380px);
-            height: clamp(280px, 42vmin, 380px);
+            width: clamp(280px, 38vmin, 340px);
+            height: clamp(280px, 38vmin, 340px);
             display: flex;
             align-items: center;
             justify-content: center;
+            z-index: 10;
         }
 
         #bio_camera_viewport {
@@ -107,7 +118,7 @@
             border-radius: 50%;
             overflow: hidden;
             z-index: 2;
-            box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.85);
+            box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.9), 0 0 25px rgba(0, 242, 255, 0.35);
             background: #000;
         }
 
@@ -116,8 +127,8 @@
             height: 100%;
             object-fit: cover;
             transform: scaleX(-1);
-            filter: contrast(140%) brightness(110%) hue-rotate(185deg) saturate(160%);
-            opacity: 0.85;
+            filter: contrast(135%) brightness(105%) hue-rotate(185deg) saturate(160%);
+            opacity: 0.82;
         }
 
         #bio_mesh_canvas {
@@ -130,33 +141,26 @@
             z-index: 6;
         }
 
-        #bio_orbit_canvas {
-            position: absolute;
-            width: 140%;
-            height: 140%;
-            pointer-events: none;
-            z-index: 8;
-        }
-
+        /* Concentric Rings & Orbitals matching Reference Image */
         .bio-ring-outer {
             position: absolute;
             inset: 0;
             border: 2px dashed var(--neon);
             border-radius: 50%;
-            animation: rotateClockwise 14s linear infinite;
-            box-shadow: 0 0 30px var(--glow), inset 0 0 25px rgba(0, 242, 255, 0.2);
+            animation: rotateClockwise 16s linear infinite;
+            box-shadow: 0 0 30px var(--glow), inset 0 0 20px rgba(0, 242, 255, 0.2);
             transition: border-color 0.3s, box-shadow 0.3s;
             z-index: 4;
         }
 
         .bio-ring-middle {
             position: absolute;
-            inset: 8px;
-            border: 1px solid rgba(0, 242, 255, 0.3);
+            inset: 6px;
+            border: 1px solid rgba(0, 242, 255, 0.35);
             border-top: 3px solid var(--neon);
             border-bottom: 3px solid var(--neon);
             border-radius: 50%;
-            animation: rotateCounterClockwise 9s linear infinite;
+            animation: rotateCounterClockwise 10s linear infinite;
             transition: border-color 0.3s;
             z-index: 4;
         }
@@ -165,10 +169,21 @@
             position: absolute;
             inset: 12px;
             border-radius: 50%;
-            background: conic-gradient(from 0deg, rgba(0, 242, 255, 0.4) 0deg, transparent 70deg);
-            animation: radarSweep 2.5s linear infinite;
+            background: conic-gradient(from 0deg, rgba(0, 242, 255, 0.38) 0deg, transparent 75deg);
+            animation: radarSweep 2.4s linear infinite;
             pointer-events: none;
             z-index: 5;
+        }
+
+        /* Floating Orbital Data Nodes */
+        .bio-orbital-node {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--neon);
+            border-radius: 50%;
+            box-shadow: 0 0 12px var(--neon);
+            z-index: 8;
         }
 
         #bio_aperture_wrapper.authorized .bio-ring-outer,
@@ -178,7 +193,7 @@
         }
 
         #bio_aperture_wrapper.authorized #bio_radar_sweep {
-            background: conic-gradient(from 0deg, rgba(0, 255, 102, 0.5) 0deg, transparent 70deg);
+            background: conic-gradient(from 0deg, rgba(0, 255, 102, 0.5) 0deg, transparent 75deg);
         }
 
         @keyframes rotateClockwise { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -186,19 +201,23 @@
         @keyframes radarSweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         #bio_status_text {
+            position: relative;
+            z-index: 10;
             font-family: 'Orbitron', sans-serif;
-            font-size: clamp(0.78rem, 1.8vw, 0.92rem);
+            font-size: clamp(0.85rem, 1.8vw, 1.05rem);
             letter-spacing: 3px;
             font-weight: 800;
             color: var(--neon);
             text-align: center;
-            margin-top: 32px;
-            text-shadow: 0 0 12px var(--glow);
+            margin-top: 36px;
+            text-shadow: 0 0 14px var(--glow);
             transition: color 0.3s;
         }
 
         #bio_progress_bar {
-            width: min(320px, 85vw);
+            position: relative;
+            z-index: 10;
+            width: min(340px, 86vw);
             height: 6px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 4px;
@@ -211,11 +230,11 @@
             width: 0%;
             height: 100%;
             background: var(--neon);
-            box-shadow: 0 0 12px var(--neon);
+            box-shadow: 0 0 14px var(--neon);
             transition: width 0.08s linear, background-color 0.3s;
         }
 
-        /* ROBOTIC RETICLE CURSOR */
+        /* ROBOTIC HUD RETICLE */
         #finger_cursor {
             position: fixed;
             width: 38px;
@@ -623,10 +642,11 @@
     <button id="start_btn" aria-label="Launch G-BOARD Operating System">LAUNCH G-BOARD OS</button>
     <video id="video_input"></video>
 
-    <!-- FULL-SCREEN HOLOGRAPHIC BIOMETRIC APERTURE -->
+    <!-- FULL-SCREEN HOLOGRAPHIC BIOMETRIC APERTURE WITH 3D NEURAL PLEXUS -->
     <div id="security_shield">
+        <canvas id="neural_background_canvas"></canvas>
+
         <div id="bio_aperture_wrapper">
-            <canvas id="bio_orbit_canvas"></canvas>
             <div class="bio-ring-outer"></div>
             <div class="bio-ring-middle"></div>
             <div id="bio_radar_sweep"></div>
@@ -638,7 +658,7 @@
             <canvas id="bio_mesh_canvas"></canvas>
         </div>
         
-        <div id="bio_status_text">ALIGN FACE WITHIN APERTURE</div>
+        <div id="bio_status_text">BIOMETRIC MESH SCAN: 0%</div>
         <div id="bio_progress_bar"><div id="bio_progress_fill"></div></div>
     </div>
     
@@ -711,7 +731,6 @@
         const videoElement = document.getElementById('video_input');
         const bioLiveVideo = document.getElementById('bio_live_video');
         
-        // Use standard DOM properties to maintain 100% cross-browser compliance
         videoElement.playsInline = true;
         bioLiveVideo.playsInline = true;
 
@@ -726,8 +745,9 @@
         const bioApertureWrapper = document.getElementById('bio_aperture_wrapper');
         const bioMeshCanvas = document.getElementById('bio_mesh_canvas');
         const bioCtx = bioMeshCanvas.getContext('2d');
-        const bioOrbitCanvas = document.getElementById('bio_orbit_canvas');
-        const orbitCtx = bioOrbitCanvas.getContext('2d');
+        const neuralBgCanvas = document.getElementById('neural_background_canvas');
+        const neuralCtx = neuralBgCanvas.getContext('2d');
+        
         const bioStatusText = document.getElementById('bio_status_text');
         const bioProgressFill = document.getElementById('bio_progress_fill');
         const statSec = document.getElementById('stat_sec');
@@ -761,55 +781,90 @@
             bioMeshCanvas.width = rect.width;
             bioMeshCanvas.height = rect.height;
 
-            const orbitRect = bioOrbitCanvas.getBoundingClientRect();
-            bioOrbitCanvas.width = orbitRect.width;
-            bioOrbitCanvas.height = orbitRect.height;
+            neuralBgCanvas.width = window.innerWidth;
+            neuralBgCanvas.height = window.innerHeight;
         }
         window.addEventListener('resize', resizeCanvases);
 
-        // REVOLVING MOLECULAR ORBIT PARTICLES
-        const molecularParticles = Array.from({ length: 14 }, (_, i) => ({
-            angle: (i / 14) * Math.PI * 2,
-            radiusX: 0.44,
-            radiusY: 0.32,
-            tilt: (i % 2 === 0 ? 1 : -1) * 0.4,
-            speed: 0.015 + (i % 3) * 0.005,
-            size: 2.5 + (i % 3) * 1.5
+        // 3D FULL-SCREEN NEURAL PLEXUS CONSTELLATION ENGINE
+        const PLEXUS_NODE_COUNT = 85;
+        const neuralNodes = Array.from({ length: PLEXUS_NODE_COUNT }, () => ({
+            x: (Math.random() - 0.5) * 1600,
+            y: (Math.random() - 0.5) * 1200,
+            z: Math.random() * 800 + 200,
+            vx: (Math.random() - 0.5) * 0.8,
+            vy: (Math.random() - 0.5) * 0.8,
+            vz: (Math.random() - 0.5) * 0.8
         }));
 
-        function renderMolecularOrbits() {
-            orbitCtx.clearRect(0, 0, bioOrbitCanvas.width, bioOrbitCanvas.height);
-            const w = bioOrbitCanvas.width;
-            const h = bioOrbitCanvas.height;
+        let plexusAngle = 0;
+
+        function renderNeuralPlexus() {
+            neuralCtx.clearRect(0, 0, neuralBgCanvas.width, neuralBgCanvas.height);
+            const w = neuralBgCanvas.width;
+            const h = neuralBgCanvas.height;
             const cx = w / 2;
             const cy = h / 2;
+            const fov = 450;
 
-            orbitCtx.strokeStyle = isAuthorized ? "rgba(0, 255, 102, 0.15)" : "rgba(0, 242, 255, 0.15)";
-            orbitCtx.lineWidth = 1;
+            plexusAngle += 0.002;
+            const cosA = Math.cos(plexusAngle);
+            const sinA = Math.sin(plexusAngle);
 
-            molecularParticles.forEach(p => {
-                p.angle += p.speed;
-                const cosT = Math.cos(p.tilt);
-                const sinT = Math.sin(p.tilt);
+            const projected = neuralNodes.map(node => {
+                node.x += node.vx;
+                node.y += node.vy;
+                node.z += node.vz;
 
-                const unrotX = Math.cos(p.angle) * (w * p.radiusX);
-                const unrotY = Math.sin(p.angle) * (h * p.radiusY);
+                if (node.x < -800) node.x = 800; if (node.x > 800) node.x = -800;
+                if (node.y < -600) node.y = 600; if (node.y > 600) node.y = -600;
+                if (node.z < 200) node.z = 1000; if (node.z > 1000) node.z = 200;
 
-                const x = cx + (unrotX * cosT - unrotY * sinT);
-                const y = cy + (unrotX * sinT + unrotY * cosT);
+                const rotX = node.x * cosA - node.z * sinA;
+                const rotZ = node.x * sinA + node.z * cosA + 600;
 
-                orbitCtx.fillStyle = isAuthorized ? "#00ff66" : "#00f2ff";
-                orbitCtx.shadowBlur = 10;
-                orbitCtx.shadowColor = isAuthorized ? "#00ff66" : "#00f2ff";
+                const scale = fov / (rotZ || 1);
+                return {
+                    x: cx + rotX * scale,
+                    y: cy + node.y * scale,
+                    scale: scale,
+                    z: rotZ
+                };
+            });
 
-                orbitCtx.beginPath();
-                orbitCtx.arc(x, y, p.size, 0, Math.PI * 2);
-                orbitCtx.fill();
-                orbitCtx.shadowBlur = 0;
+            // Draw Plexus Vector Beams
+            for (let i = 0; i < projected.length; i++) {
+                for (let j = i + 1; j < projected.length; j++) {
+                    const dx = projected[i].x - projected[j].x;
+                    const dy = projected[i].y - projected[j].y;
+                    const dist = Math.hypot(dx, dy);
+
+                    if (dist < 140) {
+                        const alpha = (1 - dist / 140) * (isAuthorized ? 0.35 : 0.28);
+                        neuralCtx.strokeStyle = isAuthorized ? `rgba(0, 255, 102, ${alpha})` : `rgba(0, 242, 255, ${alpha})`;
+                        neuralCtx.lineWidth = (1 - dist / 140) * 1.5;
+                        neuralCtx.beginPath();
+                        neuralCtx.moveTo(projected[i].x, projected[i].y);
+                        neuralCtx.lineTo(projected[j].x, projected[j].y);
+                        neuralCtx.stroke();
+                    }
+                }
+            }
+
+            // Draw Glowing Molecular Nodes
+            projected.forEach(p => {
+                const radius = Math.max(1, p.scale * 3.2);
+                neuralCtx.fillStyle = isAuthorized ? "#00ff66" : "#00f2ff";
+                neuralCtx.shadowBlur = 10;
+                neuralCtx.shadowColor = isAuthorized ? "#00ff66" : "#00f2ff";
+                neuralCtx.beginPath();
+                neuralCtx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+                neuralCtx.fill();
+                neuralCtx.shadowBlur = 0;
             });
 
             if (!isAuthorized) {
-                requestAnimationFrame(renderMolecularOrbits);
+                requestAnimationFrame(renderNeuralPlexus);
             }
         }
 
@@ -1397,6 +1452,7 @@
             }
         });
 
+        // REFERENCE-MATCHED HIGH-DENSITY FACIAL MATRIX RENDERER
         function drawHolographicMesh(landmarks, box) {
             bioCtx.clearRect(0, 0, bioMeshCanvas.width, bioMeshCanvas.height);
             if (!landmarks || landmarks.length === 0) return;
@@ -1409,28 +1465,45 @@
                 y: pt.y * h
             }));
 
+            // Synthesize high-density structural facial mesh nodes
             if (pts.length >= 6) {
                 const nose = pts[2];
                 const leftEye = pts[0];
                 const rightEye = pts[1];
                 const mouth = pts[3];
 
-                const bridge = { x: (leftEye.x + rightEye.x) / 2, y: (leftEye.y + rightEye.y) / 2 };
-                const chin = { x: mouth.x, y: mouth.y + (mouth.y - nose.y) * 0.9 };
-                const forehead = { x: bridge.x, y: bridge.y - (nose.y - bridge.y) * 1.5 };
+                const eyeCenter = { x: (leftEye.x + rightEye.x) / 2, y: (leftEye.y + rightEye.y) / 2 };
+                const chin = { x: mouth.x, y: mouth.y + (mouth.y - nose.y) * 0.95 };
+                const forehead = { x: eyeCenter.x, y: eyeCenter.y - (nose.y - eyeCenter.y) * 1.6 };
 
-                pts.push(bridge, chin, forehead);
+                const leftCheek = { x: leftEye.x + (leftEye.x - eyeCenter.x) * 0.7, y: nose.y };
+                const rightCheek = { x: rightEye.x + (rightEye.x - eyeCenter.x) * 0.7, y: nose.y };
+                const leftJaw = { x: leftCheek.x * 0.9, y: mouth.y + 10 };
+                const rightJaw = { x: rightCheek.x * 1.1, y: mouth.y + 10 };
+
+                pts.push(eyeCenter, chin, forehead, leftCheek, rightCheek, leftJaw, rightJaw);
+
+                // Add grid matrix dots for reference wireframe density
+                for (let r = -2; r <= 2; r++) {
+                    for (let c = -2; c <= 2; c++) {
+                        if (r === 0 && c === 0) continue;
+                        pts.push({
+                            x: nose.x + c * (w * 0.08),
+                            y: nose.y + r * (h * 0.08)
+                        });
+                    }
+                }
             }
 
-            bioCtx.strokeStyle = isAuthorized ? "rgba(0, 255, 102, 0.45)" : "rgba(0, 242, 255, 0.45)";
+            bioCtx.strokeStyle = isAuthorized ? "rgba(0, 255, 102, 0.4)" : "rgba(0, 242, 255, 0.4)";
             bioCtx.fillStyle = isAuthorized ? "#00ff66" : "#00f2ff";
-            bioCtx.lineWidth = 1.2;
+            bioCtx.lineWidth = 1.1;
 
             bioCtx.beginPath();
             for (let i = 0; i < pts.length; i++) {
                 for (let j = i + 1; j < pts.length; j++) {
                     const dist = Math.hypot(pts[i].x - pts[j].x, pts[i].y - pts[j].y);
-                    if (dist < w * 0.38) {
+                    if (dist < w * 0.28) {
                         bioCtx.moveTo(pts[i].x, pts[i].y);
                         bioCtx.lineTo(pts[j].x, pts[j].y);
                     }
@@ -1438,10 +1511,12 @@
             }
             bioCtx.stroke();
 
-            pts.forEach(p => {
+            // Glowing nodes with laser eye beacons matching reference
+            pts.forEach((p, idx) => {
+                const isEye = idx === 0 || idx === 1;
                 bioCtx.beginPath();
-                bioCtx.arc(p.x, p.y, 3, 0, Math.PI * 2);
-                bioCtx.shadowBlur = 8;
+                bioCtx.arc(p.x, p.y, isEye ? 4.5 : 2.2, 0, Math.PI * 2);
+                bioCtx.shadowBlur = isEye ? 14 : 6;
                 bioCtx.shadowColor = isAuthorized ? "#00ff66" : "#00f2ff";
                 bioCtx.fill();
                 bioCtx.shadowBlur = 0;
@@ -1497,7 +1572,7 @@
                     statSec.innerText = "LOCKED";
                     statSec.className = "stat-val sec-locked";
                     securityShield.classList.remove('unlocked');
-                    renderMolecularOrbits();
+                    renderNeuralPlexus();
                     playSecurityChime(false);
                 } else if (!isAuthorized) {
                     scanProgress = Math.max(0, scanProgress - 1.5);
@@ -1621,7 +1696,7 @@
             initGPSLocation();
             renderTerminal();
             resizeCanvases();
-            renderMolecularOrbits();
+            renderNeuralPlexus();
 
             const constraints = {
                 video: {
