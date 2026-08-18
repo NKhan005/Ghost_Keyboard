@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="G-BOARD V7.6 - Hypertech Robotic Vision Keyboard & Dynamic Prompt OS">
-    <title>G-BOARD | HYPERTECH OS V7.6</title>
+    <meta name="description" content="G-BOARD V8.0 - Biometric Face Authorized Spatial Vision OS">
+    <title>G-BOARD | BIOMETRIC OS V8.0</title>
     
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/face_detection.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
 
     <style>
@@ -16,6 +17,7 @@
             --neon: #00f2ff; 
             --glow: rgba(0, 242, 255, 0.6);
             --alert: #ff3b3b; 
+            --success: #00ff66;
             --dim-neon: rgba(0, 242, 255, 0.2); 
             --panel-bg: rgba(3, 15, 20, 0.88);
             --key-text: #00f2ff;
@@ -68,7 +70,103 @@
             filter: contrast(120%) brightness(85%); 
         }
 
-        /* HYPER-TECH MULTI-LAYER ROBOTIC HUD RETICLE */
+        /* BIOMETRIC SECURITY OVERLAY SHIELD */
+        #security_shield {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 6, 10, 0.75);
+            -webkit-backdrop-filter: blur(18px);
+            backdrop-filter: blur(18px);
+            z-index: 180;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        #security_shield.unlocked {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* HOLOGRAPHIC BIOMETRIC SCANNER HUD */
+        #bio_scanner_frame {
+            position: absolute;
+            width: 240px;
+            height: 280px;
+            border: 2px solid var(--neon);
+            border-radius: 12px;
+            box-shadow: 0 0 30px var(--glow), inset 0 0 25px rgba(0, 242, 255, 0.15);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 12px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        #bio_scanner_frame.authorized {
+            border-color: var(--success);
+            box-shadow: 0 0 40px rgba(0, 255, 102, 0.8), inset 0 0 30px rgba(0, 255, 102, 0.2);
+        }
+
+        .bio-corner {
+            width: 16px;
+            height: 16px;
+            border-color: var(--neon);
+            position: absolute;
+        }
+        .bio-corner.tl { top: -2px; left: -2px; border-top: 4px solid var(--neon); border-left: 4px solid var(--neon); }
+        .bio-corner.tr { top: -2px; right: -2px; border-top: 4px solid var(--neon); border-right: 4px solid var(--neon); }
+        .bio-corner.bl { bottom: -2px; left: -2px; border-bottom: 4px solid var(--neon); border-left: 4px solid var(--neon); }
+        .bio-corner.br { bottom: -2px; right: -2px; border-bottom: 4px solid var(--neon); border-right: 4px solid var(--neon); }
+
+        #bio_laser {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--neon);
+            box-shadow: 0 0 14px var(--neon);
+            animation: laserScan 2s ease-in-out infinite;
+        }
+
+        @keyframes laserScan {
+            0% { top: 5%; opacity: 0.2; }
+            50% { top: 92%; opacity: 1; }
+            100% { top: 5%; opacity: 0.2; }
+        }
+
+        #bio_status_text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.82rem;
+            letter-spacing: 2px;
+            font-weight: 800;
+            color: var(--neon);
+            text-align: center;
+            margin-top: 320px;
+            text-shadow: 0 0 10px var(--glow);
+        }
+
+        #bio_progress_bar {
+            width: 240px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin-top: 12px;
+            overflow: hidden;
+        }
+
+        #bio_progress_fill {
+            width: 0%;
+            height: 100%;
+            background: var(--neon);
+            box-shadow: 0 0 10px var(--neon);
+            transition: width 0.1s linear, background-color 0.2s;
+        }
+
+        /* ROBOTIC HUD RETICLE */
         #finger_cursor {
             position: fixed;
             width: 38px;
@@ -81,7 +179,6 @@
             transition: width 0.1s ease, height 0.1s ease;
         }
 
-        /* Outer Rotating Tech Brackets */
         #finger_cursor .reticle-bracket {
             position: absolute;
             inset: 0;
@@ -91,7 +188,6 @@
             transition: border-color 0.15s ease;
         }
 
-        /* Inner Crosshair Target */
         #finger_cursor .reticle-core {
             position: absolute;
             top: 50%;
@@ -105,7 +201,6 @@
             transition: all 0.15s ease;
         }
 
-        /* Corner Target Hooks */
         #finger_cursor .reticle-core::before,
         #finger_cursor .reticle-core::after {
             content: '';
@@ -115,7 +210,6 @@
         #finger_cursor .reticle-core::before { top: -6px; left: 4px; width: 2px; height: 4px; }
         #finger_cursor .reticle-core::after { left: -6px; top: 4px; height: 2px; width: 4px; }
 
-        /* Lock State on Key Hover */
         #finger_cursor.hovering {
             width: 44px;
             height: 44px;
@@ -126,7 +220,6 @@
             box-shadow: 0 0 14px var(--neon);
         }
 
-        /* Pinched / Trigger State */
         #finger_cursor.locked .reticle-bracket {
             border-color: #00ff66;
             box-shadow: 0 0 20px #00ff66;
@@ -322,7 +415,6 @@
             transition: width 0.04s linear; 
         }
 
-        /* DYNAMIC AUTO-EXPANDING LLM PROMPT MATRIX CONTAINER */
         #terminal_container {
             position: fixed;
             bottom: 12px;
@@ -355,7 +447,6 @@
             line-height: 1.45;
         }
 
-        /* Modern Cyber Scrollbar */
         #terminal_log::-webkit-scrollbar { width: 5px; }
         #terminal_log::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
         #terminal_log::-webkit-scrollbar-thumb { background: var(--neon); border-radius: 4px; }
@@ -369,7 +460,6 @@
             background: rgba(0, 242, 255, 0.2);
         }
 
-        /* ROBOTIC ACTIVE BLOCK CARET */
         .terminal-caret {
             display: inline-block;
             width: 9px;
@@ -512,6 +602,18 @@
 
     <button id="start_btn" aria-label="Launch G-BOARD Operating System">LAUNCH G-BOARD OS</button>
     <video id="video_input"></video>
+
+    <div id="security_shield">
+        <div id="bio_scanner_frame">
+            <div class="bio-corner tl"></div>
+            <div class="bio-corner tr"></div>
+            <div class="bio-corner bl"></div>
+            <div class="bio-corner br"></div>
+            <div id="bio_laser"></div>
+        </div>
+        <div id="bio_status_text">INITIALIZING BIOMETRIC SCANNER...</div>
+        <div id="bio_progress_bar"><div id="bio_progress_fill"></div></div>
+    </div>
     
     <div id="finger_cursor">
         <div class="reticle-bracket"></div>
@@ -526,6 +628,7 @@
             <span>SYS: ONLINE</span>
             <span id="fps_counter" class="fps-display">60 FPS</span>
         </div>
+        <div class="stat-line"><span class="stat-label">SECURITY:</span> <span id="stat_sec" class="stat-val" style="color:var(--alert);">LOCKED</span></div>
         <div class="stat-line"><span class="stat-label">INPUT MODE:</span> <span id="stat_mode" class="stat-val">AUTO DUAL</span></div>
         <div class="stat-line"><span class="stat-label">TIME:</span> <span id="stat_time" class="stat-val">--:--:--</span></div>
         <div class="stat-line"><span class="stat-label">LOCATION:</span> <span id="stat_loc" class="stat-val">LOCATING...</span></div>
@@ -588,7 +691,17 @@
         const fpsCounter = document.getElementById('fps_counter');
         const sidebarDock = document.getElementById('sidebar_dock');
         
-        // BUFFER & CARET NAVIGATION STATE
+        const securityShield = document.getElementById('security_shield');
+        const bioScannerFrame = document.getElementById('bio_scanner_frame');
+        const bioStatusText = document.getElementById('bio_status_text');
+        const bioProgressFill = document.getElementById('bio_progress_fill');
+        const statSec = document.getElementById('stat_sec');
+
+        // BIOMETRIC STATE
+        let isAuthorized = false;
+        let scanProgress = 0;
+        let lastFaceDetectedTime = 0;
+
         let rawBuffer = "";
         let caretPos = 0;
 
@@ -695,14 +808,33 @@
             "THE": ["system", "matrix", "user"]
         };
 
-        // RENDER TERMINAL WITH DIRECT CLICKABLE CARET NAVIGATION
+        function playSecurityChime(isSuccess) {
+            if (!audioCtx) return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                if (isSuccess) {
+                    osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15);
+                } else {
+                    osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.2);
+                }
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.2);
+            } catch (e) {}
+        }
+
         function renderTerminal() {
             terminalLog.innerHTML = "";
-            
             const before = rawBuffer.slice(0, caretPos);
             const after = rawBuffer.slice(caretPos);
 
-            // Segment before caret
             if (before.length > 0) {
                 for (let i = 0; i < before.length; i++) {
                     const span = document.createElement('span');
@@ -713,12 +845,10 @@
                 }
             }
 
-            // Blinking Robotic Block Caret
             const caretSpan = document.createElement('span');
             caretSpan.className = 'terminal-caret';
             terminalLog.appendChild(caretSpan);
 
-            // Segment after caret
             if (after.length > 0) {
                 for (let i = 0; i < after.length; i++) {
                     const idx = caretPos + i;
@@ -730,7 +860,6 @@
                 }
             }
 
-            // Auto-scroll to active caret
             terminalLog.scrollTop = terminalLog.scrollHeight;
             updateMetrics();
             updatePredictionRibbon();
@@ -749,6 +878,7 @@
         terminalLog.onclick = () => setCaret(rawBuffer.length);
 
         function insertTextAtCaret(text) {
+            if (!isAuthorized) return;
             if (!startTime) startTime = Date.now();
             rawBuffer = rawBuffer.slice(0, caretPos) + text + rawBuffer.slice(caretPos);
             caretPos += text.length;
@@ -756,6 +886,7 @@
         }
 
         function deleteCharBeforeCaret() {
+            if (!isAuthorized) return;
             if (caretPos > 0) {
                 rawBuffer = rawBuffer.slice(0, caretPos - 1) + rawBuffer.slice(caretPos);
                 caretPos--;
@@ -814,6 +945,7 @@
         }
 
         function injectPrediction(word) {
+            if (!isAuthorized) return;
             playSpatialClick(0);
             const left = rawBuffer.slice(0, caretPos);
             const right = rawBuffer.slice(caretPos);
@@ -984,7 +1116,6 @@
             }
         }
 
-        // FULL QWERTY MATRIX WITH DEDICATED NAV KEYS
         const qwertyRows = [
             [
                 { primary: "`", shift: "~" }, { primary: "1", shift: "!" }, { primary: "2", shift: "@" }, 
@@ -1097,6 +1228,7 @@
         }
 
         function handleKeyExecution(el, spatialPanX = 0) {
+            if (!isAuthorized) return;
             if (el.classList.contains('predict-pill')) {
                 injectPrediction(el.innerText);
                 return;
@@ -1147,8 +1279,8 @@
             }
         }
 
-        // PHYSICAL KEYBOARD NAVIGATION & TYPING
         window.addEventListener('keydown', (e) => {
+            if (!isAuthorized) return;
             const currentMode = INPUT_MODES[currentModeIndex];
             if (currentMode === "VISION ONLY") return;
 
@@ -1174,7 +1306,62 @@
             }
         });
 
-        // HIGH-SPEED VISION TRACKING PIPELINE
+        // MEDIAPIPE FACE DETECTION (BIOMETRIC SCANNER)
+        const faceDetection = new FaceDetection({
+            locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/${file}`
+        });
+        faceDetection.setOptions({
+            model: 'short',
+            minDetectionConfidence: 0.5
+        });
+
+        faceDetection.onResults((results) => {
+            if (results.detections && results.detections.length > 0) {
+                lastFaceDetectedTime = Date.now();
+
+                if (!isAuthorized) {
+                    scanProgress += 2.5;
+                    bioProgressFill.style.width = `${Math.min(100, scanProgress)}%`;
+                    bioStatusText.innerText = `SCANNING BIOMETRICS: ${Math.round(scanProgress)}%`;
+
+                    if (scanProgress >= 100) {
+                        isAuthorized = true;
+                        bioScannerFrame.classList.add('authorized');
+                        bioStatusText.innerText = "BIOMETRIC MATCH CONFIRMED - ACCESS GRANTED";
+                        bioStatusText.style.color = "var(--success)";
+                        bioProgressFill.style.backgroundColor = "var(--success)";
+                        statSec.innerText = "AUTHORIZED";
+                        statSec.style.color = "var(--success)";
+                        playSecurityChime(true);
+
+                        setTimeout(() => {
+                            securityShield.classList.add('unlocked');
+                        }, 700);
+                    }
+                }
+            } else {
+                // If face leaves camera for > 3.0 seconds, auto-lock OS
+                if (isAuthorized && (Date.now() - lastFaceDetectedTime > 3000)) {
+                    isAuthorized = false;
+                    scanProgress = 0;
+                    bioProgressFill.style.width = "0%";
+                    bioScannerFrame.classList.remove('authorized');
+                    bioStatusText.innerText = "SECURITY SHIELD ACTIVATED - NO USER DETECTED";
+                    bioStatusText.style.color = "var(--alert)";
+                    statSec.innerText = "LOCKED";
+                    statSec.style.color = "var(--alert)";
+                    securityShield.classList.remove('unlocked');
+                    playSecurityChime(false);
+                } else if (!isAuthorized) {
+                    scanProgress = Math.max(0, scanProgress - 1.5);
+                    bioProgressFill.style.width = `${scanProgress}%`;
+                    bioStatusText.innerText = "ALIGN FACE TO INITIATE SCAN";
+                    bioStatusText.style.color = "var(--neon)";
+                }
+            }
+        });
+
+        // MEDIAPIPE HANDS PIPELINE
         const hands = new Hands({locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`});
         hands.setOptions({ 
             maxNumHands: 1,
@@ -1195,6 +1382,11 @@
                 fpsCounter.innerText = `${frameCount} FPS`;
                 frameCount = 0;
                 lastFrameTime = now;
+            }
+
+            if (!isAuthorized) {
+                cursor.style.display = 'none';
+                return;
             }
 
             const currentMode = INPUT_MODES[currentModeIndex];
@@ -1277,6 +1469,7 @@
             }
         });
 
+        // SYSTEM INITIALIZATION & DUAL-MODEL CAMERA RUNNER
         startBtn.onclick = async () => {
             startBtn.style.display = 'none';
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -1297,9 +1490,16 @@
                 videoElement.srcObject = stream;
                 await videoElement.play();
 
+                let frameFlip = 0;
                 const processFrame = async () => {
                     if (videoElement.readyState >= 2) {
-                        await hands.send({image: videoElement});
+                        // Alternate face & hand frames to maintain smooth 60 FPS
+                        frameFlip++;
+                        if (frameFlip % 2 === 0) {
+                            await faceDetection.send({ image: videoElement });
+                        } else {
+                            await hands.send({ image: videoElement });
+                        }
                     }
                     const now = new Date();
                     document.getElementById('stat_time').innerText = now.toLocaleTimeString([], {hour12:false});
@@ -1307,7 +1507,7 @@
                 };
                 requestAnimationFrame(processFrame);
             } catch (err) {
-                alert("Camera Access Required for Spatial Typing.");
+                alert("Camera Access Required to Enable Biometric Gate.");
             }
         };
     </script>
