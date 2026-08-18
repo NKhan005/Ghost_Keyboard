@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="G-BOARD V7.5 - Precision Input Mode Isolation & Robotic Reticle OS">
-    <title>G-BOARD | PRECISION OS V7.5</title>
+    <meta name="description" content="G-BOARD V7.6 - Hypertech Robotic Vision Keyboard & Dynamic Prompt OS">
+    <title>G-BOARD | HYPERTECH OS V7.6</title>
     
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400;600;800&display=swap');
         
         :root { 
             --neon: #00f2ff; 
             --glow: rgba(0, 242, 255, 0.6);
             --alert: #ff3b3b; 
             --dim-neon: rgba(0, 242, 255, 0.2); 
-            --panel-bg: rgba(3, 15, 20, 0.85);
+            --panel-bg: rgba(3, 15, 20, 0.88);
             --key-text: #00f2ff;
         }
 
@@ -25,7 +25,7 @@
             --neon: #ffb700;
             --glow: rgba(255, 183, 0, 0.6);
             --dim-neon: rgba(255, 183, 0, 0.2);
-            --panel-bg: rgba(20, 15, 3, 0.85);
+            --panel-bg: rgba(20, 15, 3, 0.88);
             --key-text: #ffb700;
         }
 
@@ -33,7 +33,7 @@
             --neon: #ff0055;
             --glow: rgba(255, 0, 85, 0.6);
             --dim-neon: rgba(255, 0, 85, 0.2);
-            --panel-bg: rgba(20, 3, 10, 0.85);
+            --panel-bg: rgba(20, 3, 10, 0.88);
             --key-text: #ff0055;
         }
 
@@ -68,51 +68,74 @@
             filter: contrast(120%) brightness(85%); 
         }
 
-        /* ROBOTIC CYBER RETICLE CURSOR */
+        /* HYPER-TECH MULTI-LAYER ROBOTIC HUD RETICLE */
         #finger_cursor {
             position: fixed;
-            width: 32px;
-            height: 32px;
+            width: 38px;
+            height: 38px;
             pointer-events: none;
             z-index: 150;
             display: none;
             transform: translate(-50%, -50%);
             will-change: left, top;
-            transition: transform 0.05s ease-out;
+            transition: width 0.1s ease, height 0.1s ease;
         }
 
-        #finger_cursor::before {
-            content: '';
+        /* Outer Rotating Tech Brackets */
+        #finger_cursor .reticle-bracket {
             position: absolute;
             inset: 0;
             border: 2px dashed var(--neon);
             border-radius: 50%;
-            animation: spinReticle 4s linear infinite;
+            animation: spinReticle 6s linear infinite;
+            transition: border-color 0.15s ease;
         }
 
-        #finger_cursor::after {
-            content: '+';
+        /* Inner Crosshair Target */
+        #finger_cursor .reticle-core {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 14px;
-            font-weight: 900;
-            color: var(--neon);
-            text-shadow: 0 0 6px var(--neon);
+            width: 10px;
+            height: 10px;
+            border: 1px solid var(--neon);
+            border-radius: 2px;
+            background: rgba(0, 242, 255, 0.25);
+            transition: all 0.15s ease;
         }
 
-        #finger_cursor.locked::before {
-            border-color: #00ff66;
+        /* Corner Target Hooks */
+        #finger_cursor .reticle-core::before,
+        #finger_cursor .reticle-core::after {
+            content: '';
+            position: absolute;
+            background: var(--neon);
+        }
+        #finger_cursor .reticle-core::before { top: -6px; left: 4px; width: 2px; height: 4px; }
+        #finger_cursor .reticle-core::after { left: -6px; top: 4px; height: 2px; width: 4px; }
+
+        /* Lock State on Key Hover */
+        #finger_cursor.hovering {
+            width: 44px;
+            height: 44px;
+        }
+        #finger_cursor.hovering .reticle-bracket {
             border-style: solid;
-            box-shadow: 0 0 16px #00ff66;
+            border-width: 2px;
+            box-shadow: 0 0 14px var(--neon);
         }
 
-        #finger_cursor.locked::after {
-            color: #00ff66;
-            content: '●';
-            font-size: 10px;
+        /* Pinched / Trigger State */
+        #finger_cursor.locked .reticle-bracket {
+            border-color: #00ff66;
+            box-shadow: 0 0 20px #00ff66;
+            animation-duration: 1.5s;
+        }
+        #finger_cursor.locked .reticle-core {
+            background: #00ff66;
+            border-color: #00ff66;
+            transform: translate(-50%, -50%) rotate(45deg);
         }
 
         @keyframes spinReticle {
@@ -126,9 +149,9 @@
             left: 50%; 
             transform: translateX(-50%); 
             font-family: 'Orbitron', sans-serif; 
-            font-size: clamp(1.3rem, 2.8vw, 2.2rem); 
+            font-size: clamp(1.2rem, 2.5vw, 2rem); 
             font-weight: 900; 
-            letter-spacing: clamp(6px, 1.2vw, 14px); 
+            letter-spacing: clamp(5px, 1.2vw, 12px); 
             text-shadow: 0 0 20px var(--glow); 
             z-index: 100;
             color: #ffffff; 
@@ -142,7 +165,7 @@
             position: fixed; 
             top: 15px; 
             right: 15px; 
-            width: min(280px, 85vw); 
+            width: min(270px, 85vw); 
             padding: 8px 12px; 
             background: var(--panel-bg); 
             -webkit-backdrop-filter: blur(10px);
@@ -179,6 +202,7 @@
             justify-content: center;
             align-items: center;
             gap: 6px;
+            padding-bottom: 90px;
         }
 
         #prediction_ribbon {
@@ -205,7 +229,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            min-height: 34px;
+            min-height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -227,7 +251,7 @@
         #keyboard_overlay { 
             display: flex; 
             flex-direction: column; 
-            gap: clamp(3px, 0.8vh, 6px); 
+            gap: clamp(3px, 0.7vh, 5px); 
             padding: clamp(6px, 1.2vw, 12px); 
             background: rgba(2, 18, 24, 0.65); 
             -webkit-backdrop-filter: blur(16px);
@@ -243,7 +267,7 @@
         
         .key { 
             flex: 1;
-            height: clamp(34px, 5.2vh, 44px); 
+            height: clamp(32px, 5vh, 42px); 
             border: 1px solid rgba(255, 255, 255, 0.18); 
             display: flex; 
             flex-direction: column;
@@ -269,8 +293,9 @@
         .key.k-caps { flex: 1.5; }
         .key.k-enter { flex: 1.8; background: rgba(0, 242, 255, 0.12); }
         .key.k-shift { flex: 2.1; }
-        .key.k-space { flex: 6.5; border-bottom: 3px solid var(--neon); }
-        .key.k-fn { flex: 1.4; background: rgba(255, 255, 255, 0.08); font-size: 0.72em; }
+        .key.k-nav { flex: 0.9; background: rgba(0, 242, 255, 0.1); }
+        .key.k-space { flex: 5.5; border-bottom: 3px solid var(--neon); }
+        .key.k-fn { flex: 1.3; background: rgba(255, 255, 255, 0.08); font-size: 0.72em; }
         .key.k-active { background: var(--neon); color: #000; }
         .key.k-recording { background: var(--alert) !important; color: #fff !important; animation: pulse 1s infinite; }
 
@@ -297,36 +322,63 @@
             transition: width 0.04s linear; 
         }
 
-        /* ROBOTIC TERMINAL LOG WITH BLINKING BLOCK CARET */
-        #terminal_log { 
-            position: fixed; 
-            bottom: 12px; 
-            left: 50%; 
-            transform: translateX(-50%); 
-            width: min(94vw, 920px); 
-            padding: 10px 18px; 
-            background: rgba(2, 10, 14, 0.95); 
-            border-left: 5px solid var(--neon); 
-            border-radius: 0 6px 6px 0;
-            font-family: 'JetBrains Mono', monospace; 
-            font-size: clamp(0.95rem, 1.8vw, 1.25rem); 
-            white-space: pre-wrap;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.8);
-            min-height: 50px; 
-            max-height: 85px;
-            overflow-y: auto;
-            display: flex; 
-            align-items: center;
+        /* DYNAMIC AUTO-EXPANDING LLM PROMPT MATRIX CONTAINER */
+        #terminal_container {
+            position: fixed;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: min(94vw, 920px);
+            background: rgba(2, 10, 14, 0.95);
+            border: 1px solid var(--dim-neon);
+            border-left: 5px solid var(--neon);
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.85);
+            z-index: 90;
+            display: flex;
+            flex-direction: column;
+            transition: border-color 0.2s ease;
         }
 
+        #terminal_log { 
+            width: 100%;
+            padding: 12px 18px; 
+            font-family: 'JetBrains Mono', monospace; 
+            font-size: clamp(0.92rem, 1.6vw, 1.15rem); 
+            white-space: pre-wrap;
+            word-break: break-word;
+            min-height: 52px; 
+            max-height: 200px;
+            overflow-y: auto;
+            color: #ffffff;
+            cursor: text;
+            line-height: 1.45;
+        }
+
+        /* Modern Cyber Scrollbar */
+        #terminal_log::-webkit-scrollbar { width: 5px; }
+        #terminal_log::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
+        #terminal_log::-webkit-scrollbar-thumb { background: var(--neon); border-radius: 4px; }
+
+        .terminal-segment {
+            cursor: pointer;
+            transition: background 0.1s;
+            border-radius: 2px;
+        }
+        .terminal-segment:hover {
+            background: rgba(0, 242, 255, 0.2);
+        }
+
+        /* ROBOTIC ACTIVE BLOCK CARET */
         .terminal-caret {
             display: inline-block;
-            width: 8px;
-            height: 1.2em;
+            width: 9px;
+            height: 1.18em;
             background: var(--neon);
-            margin-left: 2px;
+            box-shadow: 0 0 10px var(--neon);
+            margin: 0 1px;
             vertical-align: middle;
-            animation: caretBlink 1s infinite;
+            animation: caretBlink 0.9s infinite;
         }
 
         @keyframes caretBlink {
@@ -460,7 +512,11 @@
 
     <button id="start_btn" aria-label="Launch G-BOARD Operating System">LAUNCH G-BOARD OS</button>
     <video id="video_input"></video>
-    <div id="finger_cursor"></div>
+    
+    <div id="finger_cursor">
+        <div class="reticle-bracket"></div>
+        <div class="reticle-core"></div>
+    </div>
     
     <button id="btn_sidebar_toggle" aria-label="Toggle Functional Configuration Sidebar">⚙ CONFIG</button>
     <h1 id="main_title">G - BOARD</h1>
@@ -475,7 +531,7 @@
         <div class="stat-line"><span class="stat-label">LOCATION:</span> <span id="stat_loc" class="stat-val">LOCATING...</span></div>
         <div class="stat-line"><span class="stat-label">WEATHER:</span> <span id="stat_temp" class="stat-val">--°C</span></div>
         <div class="stat-line"><span class="stat-label">SPEED:</span> <span id="stat_wpm" class="stat-val">0 WPM</span></div>
-        <div class="stat-line"><span class="stat-label">CHARS:</span> <span id="stat_chars" class="stat-val">0</span></div>
+        <div class="stat-line"><span class="stat-label">CHARS / POS:</span> <span id="stat_chars" class="stat-val">0 (0)</span></div>
     </div>
 
     <div id="workspace">
@@ -487,7 +543,9 @@
         <div id="keyboard_overlay"></div>
     </div>
 
-    <div id="terminal_log"><span id="typed_text"></span><span class="terminal-caret"></span></div>
+    <div id="terminal_container">
+        <div id="terminal_log"></div>
+    </div>
 
     <div id="sidebar_dock">
         <div class="dock-header">
@@ -523,14 +581,17 @@
         videoElement.setAttribute('playsinline', '');
         videoElement.setAttribute('muted', '');
 
-        const typedText = document.getElementById('typed_text');
+        const terminalLog = document.getElementById('terminal_log');
         const keyboard = document.getElementById('keyboard_overlay');
         const startBtn = document.getElementById('start_btn');
         const cursor = document.getElementById('finger_cursor');
         const fpsCounter = document.getElementById('fps_counter');
         const sidebarDock = document.getElementById('sidebar_dock');
         
-        // INPUT MODE CONTROLLER: 'AUTO' | 'VISION' | 'PHYSICAL'
+        // BUFFER & CARET NAVIGATION STATE
+        let rawBuffer = "";
+        let caretPos = 0;
+
         const INPUT_MODES = ['AUTO', 'VISION ONLY', 'PHYSICAL ONLY'];
         let currentModeIndex = 0;
 
@@ -539,7 +600,6 @@
         let audioCtx = null;
         let cachedInteractables = [];
 
-        let charCount = 0;
         let startTime = null;
         const synth = window.speechSynthesis;
         const themes = ['cyan', 'amber', 'crimson'];
@@ -635,14 +695,81 @@
             "THE": ["system", "matrix", "user"]
         };
 
-        function getRawToken() {
-            const raw = typedText.innerText;
-            if (!raw.trim()) return "";
-            const tokens = raw.split(/\s+/);
+        // RENDER TERMINAL WITH DIRECT CLICKABLE CARET NAVIGATION
+        function renderTerminal() {
+            terminalLog.innerHTML = "";
+            
+            const before = rawBuffer.slice(0, caretPos);
+            const after = rawBuffer.slice(caretPos);
+
+            // Segment before caret
+            if (before.length > 0) {
+                for (let i = 0; i < before.length; i++) {
+                    const span = document.createElement('span');
+                    span.className = 'terminal-segment';
+                    span.innerText = before[i];
+                    span.onclick = (e) => { e.stopPropagation(); setCaret(i); };
+                    terminalLog.appendChild(span);
+                }
+            }
+
+            // Blinking Robotic Block Caret
+            const caretSpan = document.createElement('span');
+            caretSpan.className = 'terminal-caret';
+            terminalLog.appendChild(caretSpan);
+
+            // Segment after caret
+            if (after.length > 0) {
+                for (let i = 0; i < after.length; i++) {
+                    const idx = caretPos + i;
+                    const span = document.createElement('span');
+                    span.className = 'terminal-segment';
+                    span.innerText = after[i];
+                    span.onclick = (e) => { e.stopPropagation(); setCaret(idx + 1); };
+                    terminalLog.appendChild(span);
+                }
+            }
+
+            // Auto-scroll to active caret
+            terminalLog.scrollTop = terminalLog.scrollHeight;
+            updateMetrics();
+            updatePredictionRibbon();
+        }
+
+        function setCaret(pos) {
+            caretPos = Math.max(0, Math.min(rawBuffer.length, pos));
+            playSpatialClick(0);
+            renderTerminal();
+        }
+
+        function moveCaret(offset) {
+            setCaret(caretPos + offset);
+        }
+
+        terminalLog.onclick = () => setCaret(rawBuffer.length);
+
+        function insertTextAtCaret(text) {
+            if (!startTime) startTime = Date.now();
+            rawBuffer = rawBuffer.slice(0, caretPos) + text + rawBuffer.slice(caretPos);
+            caretPos += text.length;
+            renderTerminal();
+        }
+
+        function deleteCharBeforeCaret() {
+            if (caretPos > 0) {
+                rawBuffer = rawBuffer.slice(0, caretPos - 1) + rawBuffer.slice(caretPos);
+                caretPos--;
+                renderTerminal();
+            }
+        }
+
+        function getActiveTokenBeforeCaret() {
+            const left = rawBuffer.slice(0, caretPos);
+            if (!left) return "";
+            const tokens = left.split(/\s+/);
             return tokens[tokens.length - 1];
         }
 
-        // SMART CASING HELPER
         function formatWordCase(template, targetWord) {
             if (!template) return targetWord.toLowerCase();
             if (template === template.toUpperCase() && template.length > 1) {
@@ -655,14 +782,15 @@
         }
 
         function updatePredictionRibbon() {
-            const rawToken = getRawToken();
-            const raw = typedText.innerText;
-            const endsWithSpace = raw.endsWith(" ") || raw.endsWith("\u00A0");
+            const rawToken = getActiveTokenBeforeCaret();
+            const left = rawBuffer.slice(0, caretPos);
+            const endsWithSpace = left.endsWith(" ") || left.endsWith("\n");
             
             let matches = [];
 
             if (endsWithSpace) {
-                const prev = rawToken.toUpperCase();
+                const prevTokens = left.trim().split(/\s+/);
+                const prev = prevTokens.length > 0 ? prevTokens[prevTokens.length - 1].toUpperCase() : "";
                 const bigramMatches = BIGRAMS[prev] || ["system", "online", "command"];
                 matches = bigramMatches.map(w => formatWordCase(rawToken, w));
             } else if (rawToken.length > 0) {
@@ -687,20 +815,21 @@
 
         function injectPrediction(word) {
             playSpatialClick(0);
-            let raw = typedText.innerText;
-            const endsWithSpace = raw.endsWith(" ") || raw.endsWith("\u00A0");
+            const left = rawBuffer.slice(0, caretPos);
+            const right = rawBuffer.slice(caretPos);
+            const endsWithSpace = left.endsWith(" ") || left.endsWith("\n");
             
-            if (endsWithSpace || !raw.trim()) {
-                typedText.innerText = (raw.trim() ? raw.trim() + " " : "") + word + " ";
+            if (endsWithSpace || !left.trim()) {
+                rawBuffer = left + word + " " + right;
+                caretPos = left.length + word.length + 1;
             } else {
-                const tokens = raw.split(/\s+/);
-                tokens.pop();
-                tokens.push(word);
-                typedText.innerText = tokens.join(" ") + " ";
+                const lastSpaceIdx = left.lastIndexOf(" ");
+                const prefix = lastSpaceIdx !== -1 ? left.slice(0, lastSpaceIdx + 1) : "";
+                rawBuffer = prefix + word + " " + right;
+                caretPos = prefix.length + word.length + 1;
             }
 
-            updateMetrics();
-            updatePredictionRibbon();
+            renderTerminal();
         }
 
         for (let i = 0; i < 3; i++) {
@@ -708,7 +837,6 @@
             pill.onclick = () => injectPrediction(pill.innerText);
         }
 
-        // INPUT MODE SWITCHER
         function setInputMode(modeIndex) {
             currentModeIndex = modeIndex % INPUT_MODES.length;
             const mode = INPUT_MODES[currentModeIndex];
@@ -735,9 +863,7 @@
 
             recognition.onresult = (event) => {
                 const transcript = event.results[0][0].transcript;
-                typedText.innerText = (typedText.innerText.trim() ? typedText.innerText + " " : "") + transcript;
-                updateMetrics();
-                updatePredictionRibbon();
+                insertTextAtCaret(" " + transcript + " ");
             };
 
             recognition.onend = () => {
@@ -804,18 +930,16 @@
         }
 
         function copyBuffer() {
-            const raw = typedText.innerText;
-            navigator.clipboard.writeText(raw).then(() => {
+            navigator.clipboard.writeText(rawBuffer).then(() => {
                 alert("Terminal Buffer Copied to Clipboard!");
             });
         }
 
         function exportBuffer() {
-            const raw = typedText.innerText;
-            const blob = new Blob([raw], { type: 'text/plain;charset=utf-8' });
+            const blob = new Blob([rawBuffer], { type: 'text/plain;charset=utf-8' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = `G-BOARD_LOG_${Date.now()}.txt`;
+            link.download = `G-BOARD_PROMPT_${Date.now()}.txt`;
             link.click();
         }
 
@@ -860,6 +984,7 @@
             }
         }
 
+        // FULL QWERTY MATRIX WITH DEDICATED NAV KEYS
         const qwertyRows = [
             [
                 { primary: "`", shift: "~" }, { primary: "1", shift: "!" }, { primary: "2", shift: "@" }, 
@@ -892,6 +1017,8 @@
                 { primary: "/", shift: "?" }, { primary: "CLR", class: "k-backspace", special: true }
             ],
             [
+                { primary: "◀", class: "k-nav", special: true },
+                { primary: "▶", class: "k-nav", special: true },
                 { primary: "MIC", class: "k-fn", special: true },
                 { primary: "SPEAK", class: "k-fn", special: true },
                 { primary: "SPACE", class: "k-space", special: true },
@@ -939,7 +1066,7 @@
                 });
                 keyboard.appendChild(rowDiv);
             });
-            cachedInteractables = Array.from(document.querySelectorAll('.key, .predict-pill'));
+            cachedInteractables = Array.from(document.querySelectorAll('.key, .predict-pill, .terminal-segment'));
         }
 
         buildKeyboard();
@@ -949,20 +1076,19 @@
         document.getElementById('btn_toggle_theme').onclick = cycleTheme;
         document.getElementById('btn_export_doc').onclick = exportBuffer;
         document.getElementById('btn_clear_buffer').onclick = () => {
-            typedText.innerText = "";
+            rawBuffer = "";
+            caretPos = 0;
             startTime = null;
-            updateMetrics();
-            updatePredictionRibbon();
+            renderTerminal();
         };
 
         function updateMetrics() {
-            const rawText = typedText.innerText;
-            charCount = rawText.length;
-            document.getElementById('stat_chars').innerText = charCount;
+            const len = rawBuffer.length;
+            document.getElementById('stat_chars').innerText = `${len} (${caretPos})`;
 
-            if (charCount > 0 && startTime) {
+            if (len > 0 && startTime) {
                 const minutes = (Date.now() - startTime) / 60000;
-                const words = charCount / 5;
+                const words = len / 5;
                 const wpm = minutes > 0 ? Math.round(words / minutes) : 0;
                 document.getElementById('stat_wpm').innerText = `${wpm} WPM`;
             } else {
@@ -986,70 +1112,65 @@
             } else if (key === "SHIFT") {
                 isShift = !isShift;
                 buildKeyboard();
+            } else if (key === "◀") {
+                moveCaret(-1);
+            } else if (key === "▶") {
+                moveCaret(1);
             } else if (key === "BKSP") {
-                let t = typedText.innerText;
-                if (t.length > 0) typedText.innerText = t.slice(0, -1);
-                updateMetrics();
-                updatePredictionRibbon();
+                deleteCharBeforeCaret();
             } else if (key === "CLR") {
-                typedText.innerText = "";
+                rawBuffer = "";
+                caretPos = 0;
                 startTime = null;
-                updateMetrics();
-                updatePredictionRibbon();
+                renderTerminal();
             } else if (key === "TAB") {
-                typedText.innerHTML += "&nbsp;&nbsp;&nbsp;&nbsp;";
+                insertTextAtCaret("    ");
             } else if (key === "ENTER") {
-                typedText.innerText += "\n";
+                insertTextAtCaret("\n");
             } else if (key === "SPACE") {
-                if (!startTime) startTime = Date.now();
-                typedText.innerHTML += "&nbsp;";
-                updateMetrics();
-                updatePredictionRibbon();
+                insertTextAtCaret(" ");
             } else if (key === "MIC") {
                 toggleSpeechRecognition();
             } else if (key === "SPEAK") {
-                speakText(typedText.innerText);
+                speakText(rawBuffer);
             } else if (key === "COPY") {
                 copyBuffer();
             } else {
-                if (!startTime) startTime = Date.now();
                 const uppercase = isCaps !== isShift;
                 const charToAdd = uppercase ? (shiftKey && key.match(/[a-z]/i) ? shiftKey : (isShift ? shiftKey : key)) : key;
-                typedText.innerText += charToAdd;
+                insertTextAtCaret(charToAdd);
                 
                 if (isShift) {
                     isShift = false;
                     buildKeyboard();
                 }
-                updateMetrics();
-                updatePredictionRibbon();
             }
         }
 
-        // PHYSICAL KEYBOARD LISTENER WITH MODE ENFORCEMENT
+        // PHYSICAL KEYBOARD NAVIGATION & TYPING
         window.addEventListener('keydown', (e) => {
             const currentMode = INPUT_MODES[currentModeIndex];
-            if (currentMode === "VISION ONLY") return; // Strict Mode Lock
+            if (currentMode === "VISION ONLY") return;
 
-            if (e.key === "Backspace") {
-                let t = typedText.innerText;
-                if (t.length > 0) typedText.innerText = t.slice(0, -1);
+            if (e.key === "ArrowLeft") {
+                e.preventDefault();
+                moveCaret(-1);
+            } else if (e.key === "ArrowRight") {
+                e.preventDefault();
+                moveCaret(1);
+            } else if (e.key === "Backspace") {
+                deleteCharBeforeCaret();
                 playSpatialClick(0);
-                updateMetrics();
-                updatePredictionRibbon();
             } else if (e.key === "Enter") {
-                typedText.innerText += "\n";
+                insertTextAtCaret("\n");
                 playSpatialClick(0);
             } else if (e.key === "Tab") {
                 e.preventDefault();
-                typedText.innerHTML += "&nbsp;&nbsp;&nbsp;&nbsp;";
+                insertTextAtCaret("    ");
                 playSpatialClick(0);
-            } else if (e.key.length === 1) {
-                if (!startTime) startTime = Date.now();
-                typedText.innerText += e.key;
+            } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
+                insertTextAtCaret(e.key);
                 playSpatialClick(0);
-                updateMetrics();
-                updatePredictionRibbon();
             }
         });
 
@@ -1079,11 +1200,12 @@
             const currentMode = INPUT_MODES[currentModeIndex];
             if (currentMode === "PHYSICAL ONLY") {
                 cursor.style.display = 'none';
-                return; // Vision Interaction Blocked in Physical Mode
+                return;
             }
 
             cachedInteractables.forEach(k => k.classList.remove('hover'));
             cursor.style.display = 'none';
+            cursor.classList.remove('hovering');
 
             if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
                 const landmarks = results.multiHandLandmarks[0];
@@ -1102,15 +1224,20 @@
 
                 const el = document.elementFromPoint(x, y);
 
-                if (el && (el.classList.contains('key') || el.classList.contains('predict-pill'))) {
+                if (el && (el.classList.contains('key') || el.classList.contains('predict-pill') || el.classList.contains('terminal-segment'))) {
                     el.classList.add('hover');
+                    cursor.classList.add('hovering');
                     const spatialPanX = (x / window.innerWidth) * 2 - 1;
 
                     if (pinchDist < 38) {
                         cursor.classList.add('locked');
                         if (!isPinching) {
                             isPinching = true;
-                            handleKeyExecution(el, spatialPanX);
+                            if (el.classList.contains('terminal-segment')) {
+                                el.click();
+                            } else {
+                                handleKeyExecution(el, spatialPanX);
+                            }
                         }
                     } else {
                         isPinching = false;
@@ -1130,7 +1257,11 @@
                                     if (fill) fill.style.width = "0%";
                                 }
                             } else if (duration >= TRIGGER_DWELL) {
-                                handleKeyExecution(el, spatialPanX);
+                                if (el.classList.contains('terminal-segment')) {
+                                    el.click();
+                                } else {
+                                    handleKeyExecution(el, spatialPanX);
+                                }
                                 hoverStartTime = Date.now();
                             }
                         }
@@ -1150,6 +1281,7 @@
             startBtn.style.display = 'none';
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             initGPSLocation();
+            renderTerminal();
 
             const constraints = {
                 video: {
