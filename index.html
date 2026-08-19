@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="G-BOARD V9.1.0 - Spatial Matrix OS with Particle FX and Gesture Engine">
-    <title>G-BOARD | SPATIAL OS V9.1.0</title>
+    <meta name="description" content="G-BOARD V9.1.1 - Complete Spatial Matrix OS with Shortcuts & Particle Engine">
+    <title>G-BOARD | SPATIAL OS V9.1.1</title>
     
-    <!-- Computer Vision & Engine CDNs -->
+    <!-- Core Computer Vision & Engine CDNs -->
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/face_detection.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
@@ -83,7 +83,7 @@
             z-index: 120;
         }
 
-        /* BIOMETRIC SECURITY SHIELD */
+        /* FULL-SCREEN BIOMETRIC SECURITY SHIELD */
         #security_shield {
             position: fixed;
             inset: 0;
@@ -226,7 +226,7 @@
             transition: width 0.08s linear, background-color 0.3s;
         }
 
-        /* RETICLE CURSOR */
+        /* ROBOTIC HUD RETICLE */
         #finger_cursor {
             position: fixed;
             width: 38px;
@@ -308,6 +308,7 @@
             white-space: nowrap;
         }
 
+        /* REAL-TIME TECH RSS TICKER TAPE */
         #rss_ticker_bar {
             position: fixed;
             top: 0;
@@ -347,6 +348,7 @@
             100% { transform: translateX(-100%); }
         }
 
+        /* TELEMETRY HUD & LIVE GPS RADAR */
         #telemetry_box { 
             position: fixed; 
             top: 32px; 
@@ -581,6 +583,12 @@
         .terminal-segment { cursor: pointer; transition: background 0.1s; border-radius: 2px; }
         .terminal-segment:hover { background: rgba(0, 242, 255, 0.2); }
 
+        .terminal-segment.selected {
+            background: var(--neon) !important;
+            color: #000000 !important;
+            box-shadow: 0 0 8px var(--neon);
+        }
+
         .terminal-caret {
             display: inline-block;
             width: 9px;
@@ -594,6 +602,7 @@
 
         @keyframes caretBlink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
 
+        /* COMMAND SIDEBAR DOCK */
         #sidebar_dock {
             position: fixed;
             top: 0;
@@ -903,6 +912,7 @@
 
         let rawBuffer = "";
         let caretPos = 0;
+        let isBufferSelected = false;
 
         const INPUT_MODES = ['AUTO', 'VISION ONLY', 'PHYSICAL ONLY'];
         let currentModeIndex = 0;
@@ -1332,6 +1342,7 @@
                 for (let i = 0; i < before.length; i++) {
                     const span = document.createElement('span');
                     span.className = 'terminal-segment';
+                    if (isBufferSelected) span.classList.add('selected');
                     span.innerText = before[i];
                     span.onclick = (e) => { e.stopPropagation(); setCaret(i); };
                     terminalLog.appendChild(span);
@@ -1347,6 +1358,7 @@
                     const idx = caretPos + i;
                     const span = document.createElement('span');
                     span.className = 'terminal-segment';
+                    if (isBufferSelected) span.classList.add('selected');
                     span.innerText = after[i];
                     span.onclick = (e) => { e.stopPropagation(); setCaret(idx + 1); };
                     terminalLog.appendChild(span);
@@ -1359,6 +1371,7 @@
         }
 
         function setCaret(pos) {
+            clearBufferSelection();
             caretPos = Math.max(0, Math.min(rawBuffer.length, pos));
             playSpatialClick(0);
             renderTerminal();
@@ -1370,8 +1383,30 @@
 
         terminalLog.onclick = () => setCaret(rawBuffer.length);
 
+        function selectAllBuffer() {
+            if (rawBuffer.length === 0) return;
+            isBufferSelected = true;
+            const segments = document.querySelectorAll('.terminal-segment');
+            segments.forEach(s => s.classList.add('selected'));
+            statGesture.innerText = "ALL SELECTED";
+            speakText("All Selected");
+        }
+
+        function clearBufferSelection() {
+            if (isBufferSelected) {
+                isBufferSelected = false;
+                const segments = document.querySelectorAll('.terminal-segment');
+                segments.forEach(s => s.classList.remove('selected'));
+            }
+        }
+
         function insertTextAtCaret(text) {
             if (!isAuthorized) return;
+            if (isBufferSelected) {
+                rawBuffer = "";
+                caretPos = 0;
+                clearBufferSelection();
+            }
             if (!startTime) startTime = Date.now();
             rawBuffer = rawBuffer.slice(0, caretPos) + text + rawBuffer.slice(caretPos);
             caretPos += text.length;
@@ -1381,6 +1416,14 @@
 
         function deleteCharBeforeCaret() {
             if (!isAuthorized) return;
+            if (isBufferSelected) {
+                rawBuffer = "";
+                caretPos = 0;
+                startTime = null;
+                clearBufferSelection();
+                renderTerminal();
+                return;
+            }
             if (caretPos > 0) {
                 rawBuffer = rawBuffer.slice(0, caretPos - 1) + rawBuffer.slice(caretPos);
                 caretPos--;
@@ -1442,6 +1485,7 @@
         function injectPrediction(word) {
             if (!isAuthorized) return;
             playSpatialClick(0);
+            clearBufferSelection();
             const left = rawBuffer.slice(0, caretPos);
             const right = rawBuffer.slice(caretPos);
             const endsWithSpace = left.endsWith(" ") || left.endsWith("\n");
@@ -1482,7 +1526,7 @@
                 } else if (q.includes("who are you") || q.includes("identity")) {
                     reply = "I am STARK AI, the neural coprocessor integrated into your Ghost_Keyboard OS.";
                 } else if (q.includes("help") || q.includes("command")) {
-                    reply = "Commands: /ai <prompt>, CLR (Flush), SPEAK (Readout), MIC (STT), NUM (Symbol Matrix).";
+                    reply = "Commands: /ai <prompt>, CLR (Flush), SPEAK (Readout), MIC (STT), NUM (Symbol Matrix), Ctrl+A (Select All).";
                 } else if (q.includes("time") || q.includes("date")) {
                     reply = `Current local timestamp: ${new Date().toLocaleTimeString()} ${new Date().toLocaleDateString()}.`;
                 } else {
@@ -1818,6 +1862,7 @@
             rawBuffer = "";
             caretPos = 0;
             startTime = null;
+            clearBufferSelection();
             renderTerminal();
         };
 
@@ -1884,6 +1929,7 @@
                 rawBuffer = "";
                 caretPos = 0;
                 startTime = null;
+                clearBufferSelection();
                 renderTerminal();
             } else if (key === "TAB") {
                 insertTextAtCaret("    ");
@@ -1913,21 +1959,77 @@
             }
         }
 
-        window.addEventListener('keydown', (e) => {
+        // PHYSICAL KEYBOARD SHORTCUTS ENGINE
+        window.addEventListener('keydown', async (e) => {
             if (!isAuthorized) return;
             const currentMode = INPUT_MODES[currentModeIndex];
-            if (currentMode === "PHYSICAL ONLY") return;
+            if (currentMode === "VISION ONLY") return;
 
+            // 1. CTRL + A / CMD + A -> SELECT ALL
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'a' || e.key === 'A')) {
+                e.preventDefault();
+                selectAllBuffer();
+                playSpatialClick(0);
+                return;
+            }
+
+            // 2. CTRL + C -> COPY BUFFER
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'C')) {
+                e.preventDefault();
+                copyBuffer();
+                return;
+            }
+
+            // 3. CTRL + V -> PASTE CLIPBOARD
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'v' || e.key === 'V')) {
+                e.preventDefault();
+                try {
+                    const clipboardText = await navigator.clipboard.readText();
+                    if (isBufferSelected) {
+                        rawBuffer = clipboardText;
+                        caretPos = rawBuffer.length;
+                        clearBufferSelection();
+                    } else {
+                        insertTextAtCaret(clipboardText);
+                    }
+                    renderTerminal();
+                    playSpatialClick(0);
+                } catch (err) {
+                    console.log("Clipboard read blocked:", err);
+                }
+                return;
+            }
+
+            // 4. CTRL + BACKSPACE -> DELETE WORD
+            if ((e.ctrlKey || e.metaKey) && e.key === "Backspace") {
+                e.preventDefault();
+                deleteLastWord();
+                playSpatialClick(0);
+                return;
+            }
+
+            // Regular Navigation / Typing
             if (e.key === "ArrowLeft") {
                 e.preventDefault();
+                clearBufferSelection();
                 moveCaret(-1);
             } else if (e.key === "ArrowRight") {
                 e.preventDefault();
+                clearBufferSelection();
                 moveCaret(1);
             } else if (e.key === "Backspace") {
-                deleteCharBeforeCaret();
+                if (isBufferSelected) {
+                    rawBuffer = "";
+                    caretPos = 0;
+                    startTime = null;
+                    clearBufferSelection();
+                    renderTerminal();
+                } else {
+                    deleteCharBeforeCaret();
+                }
                 playSpatialClick(0);
             } else if (e.key === "Enter") {
+                clearBufferSelection();
                 if (rawBuffer.includes('/ai')) {
                     queryStarkAI(rawBuffer);
                 } else {
@@ -1936,9 +2038,15 @@
                 playSpatialClick(0);
             } else if (e.key === "Tab") {
                 e.preventDefault();
+                clearBufferSelection();
                 insertTextAtCaret("    ");
                 playSpatialClick(0);
             } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
+                if (isBufferSelected) {
+                    rawBuffer = "";
+                    caretPos = 0;
+                    clearBufferSelection();
+                }
                 insertTextAtCaret(e.key);
                 playSpatialClick(0);
             }
@@ -2016,8 +2124,6 @@
         let isPinching = false;
         const TRIGGER_DWELL = 0.65;
 
-        // GESTURE TRACKING REGISTERS
-        let prevWristX = null;
         let prevWristY = null;
         let lastGestureTime = 0;
 
@@ -2078,26 +2184,16 @@
                     return;
                 }
 
-                // GESTURE 2: RAPID HORIZONTAL SWIPE LEFT (DELETE WORD)
-                const currentWristX = (1 - wrist.x) * window.innerWidth;
+                // GESTURE 2: PINCH-FLICK DOWN (TOGGLE HUD BAR)
                 const currentWristY = wrist.y * window.innerHeight;
-
-                if (prevWristX !== null && (Date.now() - lastGestureTime > 900)) {
-                    const deltaX = currentWristX - prevWristX;
+                if (prevWristY !== null && (Date.now() - lastGestureTime > 1000)) {
                     const deltaY = currentWristY - prevWristY;
-
-                    if (deltaX < -180 && Math.abs(deltaY) < 80) {
-                        statGesture.innerText = "SWIPE LEFT: DEL WORD";
-                        deleteLastWord();
-                        lastGestureTime = Date.now();
-                    } else if (deltaY > 150 && Math.abs(deltaX) < 80) {
-                        statGesture.innerText = "FLICK DOWN: TOGGLE HUD";
+                    if (deltaY > 180) {
+                        statGesture.innerText = "FLICK: HUD TOGGLE";
                         toggleKeyboardVisibility();
                         lastGestureTime = Date.now();
                     }
                 }
-
-                prevWristX = currentWristX;
                 prevWristY = currentWristY;
 
                 const el = document.elementFromPoint(x, y);
@@ -2156,7 +2252,6 @@
             } else {
                 currentKey = null;
                 isPinching = false;
-                prevWristX = null;
                 prevWristY = null;
                 statGesture.innerText = "IDLE";
             }
