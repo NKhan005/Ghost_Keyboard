@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="G-BOARD V9.0.1 - Complete Spatial Command Matrix Operating System">
-    <title>G-BOARD | SPATIAL OS V9.0.1</title>
+    <meta name="description" content="G-BOARD V9.1.0 - Spatial Matrix OS with Particle FX and Gesture Engine">
+    <title>G-BOARD | SPATIAL OS V9.1.0</title>
     
-    <!-- Core Computer Vision & Communication CDNs -->
+    <!-- Computer Vision & Engine CDNs -->
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/face_detection.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
@@ -73,7 +73,17 @@
             filter: contrast(125%) brightness(85%); 
         }
 
-        /* FULL-SCREEN BIOMETRIC SECURITY SHIELD */
+        /* PARTICLE FX CANVAS */
+        #fx_canvas {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 120;
+        }
+
+        /* BIOMETRIC SECURITY SHIELD */
         #security_shield {
             position: fixed;
             inset: 0;
@@ -92,7 +102,6 @@
             pointer-events: none;
         }
 
-        /* 3D NEURAL PLEXUS CANVAS */
         #neural_background_canvas {
             position: absolute;
             inset: 0;
@@ -102,7 +111,6 @@
             z-index: 1;
         }
 
-        /* CIRCULAR BIOMETRIC APERTURE */
         #bio_aperture_wrapper {
             position: relative;
             width: clamp(270px, 36vmin, 340px);
@@ -218,7 +226,7 @@
             transition: width 0.08s linear, background-color 0.3s;
         }
 
-        /* ROBOTIC HUD RETICLE */
+        /* RETICLE CURSOR */
         #finger_cursor {
             position: fixed;
             width: 38px;
@@ -300,7 +308,6 @@
             white-space: nowrap;
         }
 
-        /* REAL-TIME TECH RSS TICKER TAPE */
         #rss_ticker_bar {
             position: fixed;
             top: 0;
@@ -340,7 +347,6 @@
             100% { transform: translateX(-100%); }
         }
 
-        /* TELEMETRY HUD & LIVE GPS RADAR */
         #telemetry_box { 
             position: fixed; 
             top: 32px; 
@@ -387,15 +393,8 @@
             border-top: 1px dashed var(--neon-dim);
         }
 
-        .radar-label-title {
-            font-weight: bold;
-            color: var(--neon);
-        }
-
-        .radar-label-coords {
-            font-size: 0.55rem;
-            opacity: 0.7;
-        }
+        .radar-label-title { font-weight: bold; color: var(--neon); }
+        .radar-label-coords { font-size: 0.55rem; opacity: 0.7; }
 
         #gps_radar_canvas {
             width: 48px;
@@ -414,6 +413,13 @@
             align-items: center;
             gap: 6px;
             padding-bottom: 95px;
+            transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1), opacity 0.3s ease;
+        }
+
+        #workspace.minimized {
+            transform: translateY(180px) scale(0.9);
+            opacity: 0.2;
+            pointer-events: none;
         }
 
         #prediction_ribbon {
@@ -501,9 +507,10 @@
         .key.k-enter { flex: 1.8; background: rgba(0, 242, 255, 0.12); }
         .key.k-shift { flex: 2.1; }
         .key.k-nav { flex: 0.9; background: rgba(0, 242, 255, 0.1); }
-        .key.k-space { flex: 5.5; border-bottom: 3px solid var(--neon); }
+        .key.k-space { flex: 5.2; border-bottom: 3px solid var(--neon); }
         .key.k-fn { flex: 1.3; background: rgba(255, 255, 255, 0.08); font-size: 0.72em; }
         .key.k-ai { flex: 1.3; background: rgba(189, 0, 255, 0.15); border-color: var(--ai-purple); color: #e48fff; }
+        .key.k-sym { flex: 1.2; background: rgba(0, 242, 255, 0.12); }
         .key.k-active { background: var(--neon); color: #000; }
         .key.k-recording { background: var(--alert) !important; color: #fff !important; animation: pulse 1s infinite; }
 
@@ -587,7 +594,6 @@
 
         @keyframes caretBlink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
 
-        /* COMMAND SIDEBAR DOCK */
         #sidebar_dock {
             position: fixed;
             top: 0;
@@ -680,7 +686,6 @@
         .ai-purple-label { color: var(--ai-purple); }
         .center-btn-content { justify-content: center; }
 
-        /* WEBRTC PAIRING MODAL */
         #webrtc_modal {
             position: fixed;
             top: 50%;
@@ -701,16 +706,8 @@
 
         #webrtc_modal.open { display: flex; }
 
-        .modal-heading {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 800;
-            color: var(--neon);
-        }
-
-        .modal-subtext {
-            font-size: 0.75rem;
-            opacity: 0.85;
-        }
+        .modal-heading { font-family: 'Orbitron', sans-serif; font-weight: 800; color: var(--neon); }
+        .modal-subtext { font-size: 0.75rem; opacity: 0.85; }
 
         .peer-id-badge {
             background: rgba(0, 242, 255, 0.1);
@@ -720,6 +717,7 @@
             font-size: 0.9rem;
             letter-spacing: 1px;
             color: #ffffff;
+            cursor: pointer;
         }
 
         #start_btn { 
@@ -747,8 +745,8 @@
 
     <button id="start_btn" aria-label="Launch G-BOARD Operating System">LAUNCH G-BOARD MATRIX</button>
     <video id="video_input"></video>
+    <canvas id="fx_canvas"></canvas>
 
-    <!-- TECH RSS TICKER TAPE -->
     <div id="rss_ticker_bar">
         <span class="ticker-tag">NET:RSS</span>
         <span class="ticker-content" id="rss_ticker_stream">INITIALIZING GLOBAL TELEMETRY FEED... NEURAL MATRIX SYNC 100%... QUANTUM ENCRYPTION ACTIVE... STARK AI SYSTEM READY...</span>
@@ -773,13 +771,12 @@
         <div id="bio_progress_bar"><div id="bio_progress_fill"></div></div>
     </div>
     
-    <!-- ROBOTIC RETICLE CURSOR -->
     <div id="finger_cursor">
         <div class="reticle-bracket"></div>
         <div class="reticle-core"></div>
     </div>
     
-    <button id="btn_sidebar_toggle" aria-label="Toggle Functional Configuration Sidebar">⚙ CONFIG</button>
+    <button id="btn_sidebar_toggle" aria-label="Toggle Configuration Dock">⚙ CONFIG</button>
     <h1 id="main_title">G - BOARD</h1>
 
     <div id="telemetry_box">
@@ -788,6 +785,7 @@
             <span id="fps_counter" class="fps-display">60 FPS</span>
         </div>
         <div class="stat-line"><span class="stat-label">SECURITY:</span> <span id="stat_sec" class="stat-val sec-locked">LOCKED</span></div>
+        <div class="stat-line"><span class="stat-label">GESTURE HUD:</span> <span id="stat_gesture" class="stat-val">IDLE</span></div>
         <div class="stat-line"><span class="stat-label">INPUT MODE:</span> <span id="stat_mode" class="stat-val">AUTO DUAL</span></div>
         <div class="stat-line"><span class="stat-label">TIME:</span> <span id="stat_time" class="stat-val">--:--:--</span></div>
         <div class="stat-line"><span class="stat-label">LOCATION:</span> <span id="stat_loc" class="stat-val">LOCATING...</span></div>
@@ -860,20 +858,20 @@
     <!-- WEBRTC SMARTPHONE GYROSCOPE MODAL -->
     <div id="webrtc_modal">
         <div class="modal-heading">SMARTPHONE GYRO BRIDGE</div>
-        <div class="modal-subtext">Scan or enter this Peer ID on your mobile browser to use device tilt as an air-mouse:</div>
-        <div class="peer-id-badge" id="lbl_peer_id">CONNECTING...</div>
+        <div class="modal-subtext">Peer ID channel armed for companion pairing:</div>
+        <div class="peer-id-badge" id="lbl_peer_id" title="Click to Copy">CONNECTING...</div>
         <button class="sidebar-btn center-btn-content" id="btn_close_webrtc">CLOSE PAIRING</button>
     </div>
 
     <script>
         const videoElement = document.getElementById('video_input');
         const bioLiveVideo = document.getElementById('bio_live_video');
-        
         videoElement.playsInline = true;
         bioLiveVideo.playsInline = true;
 
         const terminalLog = document.getElementById('terminal_log');
         const keyboard = document.getElementById('keyboard_overlay');
+        const workspace = document.getElementById('workspace');
         const startBtn = document.getElementById('start_btn');
         const cursor = document.getElementById('finger_cursor');
         const fpsCounter = document.getElementById('fps_counter');
@@ -885,10 +883,14 @@
         const neuralCtx = neuralBgCanvas.getContext('2d');
         const gpsRadarCanvas = document.getElementById('gps_radar_canvas');
         const radarCtx = gpsRadarCanvas.getContext('2d');
+
+        const fxCanvas = document.getElementById('fx_canvas');
+        const fxCtx = fxCanvas.getContext('2d');
         
         const bioStatusText = document.getElementById('bio_status_text');
         const bioProgressFill = document.getElementById('bio_progress_fill');
         const statSec = document.getElementById('stat_sec');
+        const statGesture = document.getElementById('stat_gesture');
 
         const webrtcModal = document.getElementById('webrtc_modal');
         const lblPeerId = document.getElementById('lbl_peer_id');
@@ -907,6 +909,8 @@
 
         let isShift = false;
         let isCaps = false;
+        let isSymbolLayer = false;
+        let isKeyboardMinimized = false;
         let audioCtx = null;
         let cachedInteractables = [];
 
@@ -916,7 +920,6 @@
 
         // DYNAMIC HEATMAP METRICS
         const keyHitCounts = {};
-
         function recordKeyHit(keyChar) {
             if (!keyChar) return;
             keyHitCounts[keyChar] = (keyHitCounts[keyChar] || 0) + 1;
@@ -926,7 +929,53 @@
             }
         }
 
-        // INLINE WEB WORKER: LEVENSHTEIN AUTOCORRECT & SLM
+        // KINETIC CYBERPUNK PARTICLE ENGINE
+        const particles = [];
+        function emitKeyParticles(x, y) {
+            const themeColor = getComputedStyle(document.body).getPropertyValue('--neon').trim() || '#00f2ff';
+            for (let i = 0; i < 18; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 5 + 2;
+                particles.push({
+                    x: x,
+                    y: y,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    life: 1.0,
+                    decay: Math.random() * 0.04 + 0.02,
+                    size: Math.random() * 3.5 + 1.5,
+                    color: themeColor
+                });
+            }
+        }
+
+        function renderParticleFX() {
+            fxCtx.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.life -= p.decay;
+
+                if (p.life <= 0) {
+                    particles.splice(i, 1);
+                    continue;
+                }
+
+                fxCtx.fillStyle = p.color;
+                fxCtx.globalAlpha = p.life;
+                fxCtx.shadowBlur = 10;
+                fxCtx.shadowColor = p.color;
+                fxCtx.beginPath();
+                fxCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                fxCtx.fill();
+                fxCtx.shadowBlur = 0;
+            }
+            fxCtx.globalAlpha = 1.0;
+            requestAnimationFrame(renderParticleFX);
+        }
+
+        // INLINE WEB WORKER: LEVENSHTEIN AUTOCORRECT
         const workerCode = `
             const DICTIONARY = [
                 "ACTIVATE", "ACCESS", "ACCOUNT", "ACTION", "ACTIVE", "ADD", "ADDRESS", "ADVANCED", "AGAIN", "AGENT",
@@ -1133,17 +1182,18 @@
 
         const themes = ['cyan', 'amber', 'crimson'];
         let currentThemeIndex = 0;
-
         let lastFrameTime = performance.now();
         let frameCount = 0;
 
         function resizeCanvases() {
             neuralBgCanvas.width = window.innerWidth;
             neuralBgCanvas.height = window.innerHeight;
+            fxCanvas.width = window.innerWidth;
+            fxCanvas.height = window.innerHeight;
         }
         window.addEventListener('resize', resizeCanvases);
 
-        // 3D NEURAL PLEXUS FIELD
+        // 3D NEURAL PLEXUS
         const PLEXUS_NODE_COUNT = 220;
         const neuralNodes = Array.from({ length: PLEXUS_NODE_COUNT }, () => ({
             x: (Math.random() - 0.5) * 3600,
@@ -1155,7 +1205,6 @@
         }));
 
         let plexusAngle = 0;
-
         function renderNeuralPlexus() {
             neuralCtx.clearRect(0, 0, neuralBgCanvas.width, neuralBgCanvas.height);
             const w = neuralBgCanvas.width;
@@ -1223,7 +1272,7 @@
             }
         }
 
-        // HOLOGRAPHIC GPS RADAR CANVAS
+        // HOLOGRAPHIC GPS RADAR
         let radarSweepAngle = 0;
         function renderGpsRadar() {
             radarCtx.clearRect(0, 0, 48, 48);
@@ -1339,6 +1388,31 @@
             }
         }
 
+        function deleteLastWord() {
+            if (!isAuthorized || caretPos === 0) return;
+            const left = rawBuffer.slice(0, caretPos);
+            const right = rawBuffer.slice(caretPos);
+            const trimmed = left.replace(/\s+$/, '');
+            const lastSpaceIdx = trimmed.lastIndexOf(' ');
+            const newLeft = lastSpaceIdx !== -1 ? trimmed.slice(0, lastSpaceIdx + 1) : '';
+            
+            rawBuffer = newLeft + right;
+            caretPos = newLeft.length;
+            renderTerminal();
+            speakText("Word Deleted");
+        }
+
+        function toggleKeyboardVisibility() {
+            isKeyboardMinimized = !isKeyboardMinimized;
+            if (isKeyboardMinimized) {
+                workspace.classList.add('minimized');
+                statGesture.innerText = "MINIMIZED";
+            } else {
+                workspace.classList.remove('minimized');
+                statGesture.innerText = "EXPANDED";
+            }
+        }
+
         function getActiveTokenBeforeCaret() {
             const left = rawBuffer.slice(0, caretPos);
             if (!left) return "";
@@ -1362,7 +1436,6 @@
             const left = rawBuffer.slice(0, caretPos);
             const prevTokens = left.trim().split(/\s+/);
             const prevWord = prevTokens.length > 1 ? prevTokens[prevTokens.length - 2] : "";
-
             nlpWorker.postMessage({ rawToken, prevWord });
         }
 
@@ -1391,7 +1464,6 @@
             pill.onclick = () => injectPrediction(pill.innerText);
         }
 
-        // STARK AI CYBERPUNK ASSISTANT TERMINAL ENGINE
         function queryStarkAI(promptText) {
             const query = promptText.replace('/ai', '').trim();
             if (!query) {
@@ -1406,11 +1478,11 @@
                 const q = query.toLowerCase();
 
                 if (q.includes("status") || q.includes("system")) {
-                    reply = "G-BOARD Core V9.0 running nominal at 60 FPS. Biometrics active, GPS lock confirmed.";
+                    reply = "G-BOARD Core V9.1 running nominal at 60 FPS. Biometrics active, GPS lock confirmed.";
                 } else if (q.includes("who are you") || q.includes("identity")) {
                     reply = "I am STARK AI, the neural coprocessor integrated into your Ghost_Keyboard OS.";
                 } else if (q.includes("help") || q.includes("command")) {
-                    reply = "Commands: /ai <prompt>, CLR (Flush), SPEAK (Readout), MIC (STT), COPY (Clipboard).";
+                    reply = "Commands: /ai <prompt>, CLR (Flush), SPEAK (Readout), MIC (STT), NUM (Symbol Matrix).";
                 } else if (q.includes("time") || q.includes("date")) {
                     reply = `Current local timestamp: ${new Date().toLocaleTimeString()} ${new Date().toLocaleDateString()}.`;
                 } else {
@@ -1438,10 +1510,8 @@
 
         document.getElementById('btn_toggle_mode').onclick = () => setInputMode(currentModeIndex + 1);
 
-        // SPEECH RECOGNITION (MIC)
         let recognition = null;
         let isRecording = false;
-
         if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
             const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
             recognition = new SpeechRec();
@@ -1477,7 +1547,6 @@
             }
         }
 
-        // BINAURAL 3D AUDIO CLICK ENGINE
         function playSpatialClick(normalizedX = 0) {
             if (!audioCtx) return;
             try {
@@ -1563,31 +1632,66 @@
             }
         }
 
-        // PEERJS WEBRTC SMARTPHONE GYROSCOPIC MOUSE
+        // PEERJS WEBRTC SMARTPHONE GYRO BRIDGE
         let peer = null;
         function initWebRTCBridge() {
-            peer = new Peer();
+            if (peer && !peer.destroyed) return;
+
+            peer = new Peer({
+                config: {
+                    iceServers: [
+                        { urls: 'stun:stun.l.google.com:19302' },
+                        { urls: 'stun:global.stun.twilio.com:3478' }
+                    ]
+                }
+            });
+
             peer.on('open', (id) => {
-                lblPeerId.innerText = `ID: ${id}`;
-                document.getElementById('rss_ticker_stream').innerText = `PEER LINK READY [${id}]... SMARTPHONE GYROSCOPE CHANNEL ACTIVE...`;
+                lblPeerId.innerText = id;
+                document.getElementById('rss_ticker_stream').innerText = `PEER LINK READY: [${id}]... SMARTPHONE GYRO RECEIVER ARMED...`;
             });
 
             peer.on('connection', (conn) => {
+                webrtcModal.classList.remove('open');
+                speakText("Mobile Gyroscopic Controller Paired");
+
                 conn.on('data', (data) => {
                     if (data && data.x !== undefined && data.y !== undefined) {
-                        cursor.style.display = 'block';
-                        cursor.style.left = `${data.x * window.innerWidth}px`;
-                        cursor.style.top = `${data.y * window.innerHeight}px`;
+                        const targetX = data.x * window.innerWidth;
+                        const targetY = data.y * window.innerHeight;
 
-                        if (data.click) {
-                            const el = document.elementFromPoint(data.x * window.innerWidth, data.y * window.innerHeight);
-                            if (el && el.click) el.click();
+                        cursor.style.display = 'block';
+                        cursor.style.left = `${targetX}px`;
+                        cursor.style.top = `${targetY}px`;
+
+                        cachedInteractables.forEach(k => k.classList.remove('hover'));
+                        const el = document.elementFromPoint(targetX, targetY);
+
+                        if (el && (el.classList.contains('key') || el.classList.contains('predict-pill') || el.classList.contains('terminal-segment'))) {
+                            el.classList.add('hover');
+                            cursor.classList.add('hovering');
+
+                            if (data.click) {
+                                cursor.classList.add('locked');
+                                const normX = (targetX / window.innerWidth) * 2 - 1;
+                                handleKeyExecution(el, normX);
+                                emitKeyParticles(targetX, targetY);
+                                setTimeout(() => cursor.classList.remove('locked'), 200);
+                            }
+                        } else {
+                            cursor.classList.remove('hovering');
                         }
                     }
                 });
             });
+
+            peer.on('error', (err) => {
+                console.error("PeerJS Error:", err);
+                lblPeerId.innerText = "RETRYING...";
+            });
         }
 
+        // QWERTY & SYMBOL MATRICES
         const qwertyRows = [
             [
                 { primary: "`", shift: "~" }, { primary: "1", shift: "!" }, { primary: "2", shift: "@" }, 
@@ -1622,17 +1726,47 @@
             [
                 { primary: "◀", class: "k-nav", special: true },
                 { primary: "▶", class: "k-nav", special: true },
+                { primary: "NUM", class: "k-sym", special: true },
                 { primary: "AI", class: "k-ai", special: true },
                 { primary: "MIC", class: "k-fn", special: true },
-                { primary: "SPEAK", class: "k-fn", special: true },
                 { primary: "SPACE", class: "k-space", special: true },
+                { primary: "SPEAK", class: "k-fn", special: true },
                 { primary: "COPY", class: "k-fn", special: true }
+            ]
+        ];
+
+        const symbolRows = [
+            [
+                { primary: "1" }, { primary: "2" }, { primary: "3" }, { primary: "4" }, { primary: "5" },
+                { primary: "6" }, { primary: "7" }, { primary: "8" }, { primary: "9" }, { primary: "0" },
+                { primary: "BKSP", class: "k-backspace", special: true }
+            ],
+            [
+                { primary: "!" }, { primary: "@" }, { primary: "#" }, { primary: "$" }, { primary: "%" },
+                { primary: "^" }, { primary: "&" }, { primary: "*" }, { primary: "(" }, { primary: ")" },
+                { primary: "_" }, { primary: "+" }
+            ],
+            [
+                { primary: "{" }, { primary: "}" }, { primary: "[" }, { primary: "]" }, { primary: "<" },
+                { primary: ">" }, { primary: ":" }, { primary: ";" }, { primary: "\"" }, { primary: "'" },
+                { primary: "ENTER", class: "k-enter", special: true }
+            ],
+            [
+                { primary: "\\" }, { primary: "|" }, { primary: "/" }, { primary: "?" }, { primary: "~" },
+                { primary: "`" }, { primary: "=" }, { primary: "-" }, { primary: "CLR", class: "k-backspace", special: true }
+            ],
+            [
+                { primary: "ABC", class: "k-sym", special: true },
+                { primary: "SPACE", class: "k-space", special: true },
+                { primary: "AI", class: "k-ai", special: true }
             ]
         ];
 
         function buildKeyboard() {
             keyboard.innerHTML = "";
-            qwertyRows.forEach(row => {
+            const activeMatrix = isSymbolLayer ? symbolRows : qwertyRows;
+
+            activeMatrix.forEach(row => {
                 const rowDiv = document.createElement('div');
                 rowDiv.className = 'row';
 
@@ -1660,10 +1794,11 @@
 
                     if (keyObj.primary === "CLR") btn.innerHTML += '<div id="clr_fill"></div>';
 
-                    btn.onclick = () => {
+                    btn.onclick = (e) => {
                         const rect = btn.getBoundingClientRect();
                         const normX = ((rect.left + rect.width / 2) / window.innerWidth) * 2 - 1;
                         handleKeyExecution(btn, normX);
+                        emitKeyParticles(e.clientX || (rect.left + rect.width / 2), e.clientY || (rect.top + rect.height / 2));
                     };
 
                     rowDiv.appendChild(btn);
@@ -1688,9 +1823,15 @@
 
         document.getElementById('btn_open_webrtc').onclick = () => {
             webrtcModal.classList.add('open');
-            if (!peer) initWebRTCBridge();
+            initWebRTCBridge();
         };
         document.getElementById('btn_close_webrtc').onclick = () => webrtcModal.classList.remove('open');
+        lblPeerId.onclick = () => {
+            if (lblPeerId.innerText && !lblPeerId.innerText.includes('CONNECTING')) {
+                navigator.clipboard.writeText(lblPeerId.innerText);
+                alert("Peer ID copied to clipboard!");
+            }
+        };
 
         document.getElementById('btn_trigger_ai').onclick = () => {
             const left = rawBuffer.slice(0, caretPos);
@@ -1727,6 +1868,9 @@
                 buildKeyboard();
             } else if (key === "SHIFT") {
                 isShift = !isShift;
+                buildKeyboard();
+            } else if (key === "NUM" || key === "ABC") {
+                isSymbolLayer = !isSymbolLayer;
                 buildKeyboard();
             } else if (key === "AI") {
                 queryStarkAI(rawBuffer.slice(0, caretPos));
@@ -1772,7 +1916,7 @@
         window.addEventListener('keydown', (e) => {
             if (!isAuthorized) return;
             const currentMode = INPUT_MODES[currentModeIndex];
-            if (currentMode === "VISION ONLY") return;
+            if (currentMode === "PHYSICAL ONLY") return;
 
             if (e.key === "ArrowLeft") {
                 e.preventDefault();
@@ -1800,7 +1944,7 @@
             }
         });
 
-        // MEDIAPIPE FACE DETECTION PIPELINE
+        // MEDIAPIPE FACE RECOGNITION
         const faceDetection = new FaceDetection({
             locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/${file}`
         });
@@ -1858,6 +2002,7 @@
             }
         });
 
+        // HAND TRACKING & MULTI-GESTURE RECOGNITION PIPELINE
         const hands = new Hands({locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`});
         hands.setOptions({ 
             maxNumHands: 1,
@@ -1870,6 +2015,11 @@
         let hoverStartTime = 0;
         let isPinching = false;
         const TRIGGER_DWELL = 0.65;
+
+        // GESTURE TRACKING REGISTERS
+        let prevWristX = null;
+        let prevWristY = null;
+        let lastGestureTime = 0;
 
         hands.onResults((results) => {
             frameCount++;
@@ -1898,6 +2048,7 @@
             if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
                 const landmarks = results.multiHandLandmarks[0];
                 const indexTip = landmarks[8];
+                const wrist = landmarks[0];
 
                 const x = (1 - indexTip.x) * window.innerWidth;
                 const y = indexTip.y * window.innerHeight;
@@ -1909,6 +2060,45 @@
                 const dx = (landmarks[8].x - landmarks[4].x) * window.innerWidth;
                 const dy = (landmarks[8].y - landmarks[4].y) * window.innerHeight;
                 const pinchDist = Math.hypot(dx, dy);
+
+                // GESTURE 1: FULL OPEN PALM FREEZE
+                const middleTip = landmarks[12];
+                const ringTip = landmarks[16];
+                const pinkyTip = landmarks[20];
+                const isOpenPalm = (
+                    indexTip.y < landmarks[6].y &&
+                    middleTip.y < landmarks[10].y &&
+                    ringTip.y < landmarks[14].y &&
+                    pinkyTip.y < landmarks[18].y
+                );
+
+                if (isOpenPalm) {
+                    statGesture.innerText = "OPEN PALM: FREEZE";
+                    cursor.classList.remove('hovering');
+                    return;
+                }
+
+                // GESTURE 2: RAPID HORIZONTAL SWIPE LEFT (DELETE WORD)
+                const currentWristX = (1 - wrist.x) * window.innerWidth;
+                const currentWristY = wrist.y * window.innerHeight;
+
+                if (prevWristX !== null && (Date.now() - lastGestureTime > 900)) {
+                    const deltaX = currentWristX - prevWristX;
+                    const deltaY = currentWristY - prevWristY;
+
+                    if (deltaX < -180 && Math.abs(deltaY) < 80) {
+                        statGesture.innerText = "SWIPE LEFT: DEL WORD";
+                        deleteLastWord();
+                        lastGestureTime = Date.now();
+                    } else if (deltaY > 150 && Math.abs(deltaX) < 80) {
+                        statGesture.innerText = "FLICK DOWN: TOGGLE HUD";
+                        toggleKeyboardVisibility();
+                        lastGestureTime = Date.now();
+                    }
+                }
+
+                prevWristX = currentWristX;
+                prevWristY = currentWristY;
 
                 const el = document.elementFromPoint(x, y);
 
@@ -1925,6 +2115,7 @@
                                 el.click();
                             } else {
                                 handleKeyExecution(el, spatialPanX);
+                                emitKeyParticles(x, y);
                             }
                         }
                     } else {
@@ -1941,6 +2132,7 @@
                                 if (fill) fill.style.width = Math.min((duration / 1.1) * 100, 100) + "%";
                                 if (duration >= 1.1) {
                                     handleKeyExecution(el, spatialPanX);
+                                    emitKeyParticles(x, y);
                                     hoverStartTime = Date.now();
                                     if (fill) fill.style.width = "0%";
                                 }
@@ -1949,6 +2141,7 @@
                                     el.click();
                                 } else {
                                     handleKeyExecution(el, spatialPanX);
+                                    emitKeyParticles(x, y);
                                 }
                                 hoverStartTime = Date.now();
                             }
@@ -1958,10 +2151,14 @@
                     cursor.classList.remove('locked');
                     currentKey = null;
                     isPinching = false;
+                    statGesture.innerText = "AIR TRACKING";
                 }
             } else {
                 currentKey = null;
                 isPinching = false;
+                prevWristX = null;
+                prevWristY = null;
+                statGesture.innerText = "IDLE";
             }
         });
 
@@ -1974,6 +2171,8 @@
             loadVoices();
             renderNeuralPlexus();
             renderGpsRadar();
+            renderParticleFX();
+            initWebRTCBridge();
 
             const constraints = {
                 video: {
