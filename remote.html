@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G-BOARD | GYRO CONTROLLER</title>
+    <script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=JetBrains+Mono:wght@600&display=swap');
+        
+        * { 
+            box-sizing: border-box; 
+            touch-action: none; 
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none; 
+            margin: 0; 
+            padding: 0; 
+        }
+
+        body {
+            background: #020b14;
+            color: #00f2ff;
+            font-family: 'Orbitron', sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px;
+            overflow: hidden;
+        }
+
+        .header { text-align: center; margin-top: 10px; }
+        .header h1 { font-size: 1.3rem; letter-spacing: 3px; }
+        .status { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; opacity: 0.75; margin-top: 6px; }
+
+        #connect_box {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        input {
+            background: rgba(0, 242, 255, 0.08);
+            border: 1px solid #00f2ff;
+            color: #ffffff;
+            font-family: 'JetBrains Mono', monospace;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            text-align: center;
+            outline: none;
+        }
+
+        button {
+            background: #00f2ff;
+            color: #000000;
+            border: none;
+            padding: 15px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 0.95rem;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.4);
+            cursor: pointer;
+        }
+
+        #trackpad {
+            display: none;
+            width: 100%;
+            height: 60vh;
+            border: 2px dashed rgba(0, 242, 255, 0.4);
+            border-radius: 12px;
+            background: rgba(0, 242, 255, 0.03);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 12px;
+        }
+
+        #trackpad.active { display: flex; }
+
+        .trackpad-hint {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .trigger-btn {
+            width: 80%;
+            height: 70px;
+            background: rgba(0, 255, 102, 0.15);
+            border: 2px solid #00ff66;
+            color: #00ff66;
+            box-shadow: 0 0 20px rgba(0, 255, 102, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>G-BOARD GYRO</h1>
+        <div class="status" id="lbl_status">READY FOR PAIRING</div>
+    </div>
+
+    <!-- PAIRING SCREEN -->
+    <div id="connect_box">
+        <input type="text" id="target_peer_id" placeholder="PASTE DESKTOP PEER ID HERE">
+        <button id="btn_pair">CONNECT TO G-BOARD</button>
+    </div>
+
+    <!-- ACTIVE AIR-MOUSE PAD -->
+    <div id="trackpad">
+        <div class="trackpad-hint">TILT PHONE TO MOVE RETICLE</div>
+        <button class="trigger-btn" id="btn_trigger">CLICK / TRIGGER</button>
+    </div>
+
+    <script>
+        const peer = new Peer();
+        let conn = null;
+        const lblStatus = document.getElementById('lbl_status');
+        const connectBox = document.getElementById('connect_box');
+        const trackpad = document.getElementById('trackpad');
+        const btnPair = document.getElementById('btn_pair');
+        const btnTrigger = document.getElementById('btn_trigger');
+        const inputPeer = document.getElementById('target_peer_id');
+
+        let posX = 0.5;
+        let posY = 0.5;
+
+        btnPair.onclick = () => {
+            const destId = inputPeer.value.trim().replace('ID: ', '');
+            if (!destId) {
+                alert("Please enter the Peer ID shown on your Desktop screen.");
+                return;
+            }
+
+            lblStatus.innerText = "CONNECTING...";
+            conn = peer.connect(destId);
+
+            conn.on('open', () => {
+                lblStatus.innerText = "LINKED: GYRO STREAM ONLINE";
+                lblStatus.style.color = "#00ff66";
+                connectBox.style.display = "none";
+                trackpad.classList.add('active');
+
+                // Request Gyroscope Permission (iOS 13+ & Modern Android)
+                if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+                    DeviceOrientationEvent.requestPermission()
+                        .then(res => {
+                            if (res === 'granted') window.addEventListener('deviceorientation', handleGyro);
+                        })
+                        .catch(console.error);
+                } else {
+                    window.addEventListener('deviceorientation', handleGyro);
+                }
+            });
+
+            conn.on('close', () => {
+                lblStatus.innerText = "DISCONNECTED";
+                lblStatus.style.color = "#ff3b3b";
+                connectBox.style.display = "flex";
+                trackpad.classList.remove('active');
+            });
+        };
+
+        function handleGyro(e) {
+            if (!conn || !conn.open) return;
+
+            // gamma: Left-to-Right tilt (-90 to 90)
+            // beta:  Front-to-Back tilt (-180 to 180)
+            const gamma = e.gamma || 0;
+            const beta = e.beta || 0;
+
+            // Map tilt range into normalized 0.0 - 1.0 coordinates
+            posX = Math.min(Math.max((gamma + 30) / 60, 0), 1);
+            posY = Math.min(Math.max((beta - 20) / 50, 0), 1);
+
+            conn.send({ x: posX, y: posY, click: false });
+        }
+
+        btnTrigger.onclick = () => {
+            if (conn && conn.open) {
+                conn.send({ x: posX, y: posY, click: true });
+                if (navigator.vibrate) navigator.vibrate(40);
+            }
+        };
+    </script>
+</body>
+</html>
