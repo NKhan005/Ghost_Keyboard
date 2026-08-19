@@ -34,13 +34,13 @@
 
         .header { text-align: center; margin-top: 10px; }
         .header h1 { font-size: 1.3rem; letter-spacing: 3px; }
-        .status { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; opacity: 0.75; margin-top: 6px; }
+        .status { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #ffb700; margin-top: 8px; }
 
         #connect_box {
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 14px;
         }
 
         input {
@@ -48,9 +48,9 @@
             border: 1px solid #00f2ff;
             color: #ffffff;
             font-family: 'JetBrains Mono', monospace;
-            padding: 14px;
+            padding: 16px;
             border-radius: 8px;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             text-align: center;
             outline: none;
         }
@@ -59,7 +59,7 @@
             background: #00f2ff;
             color: #000000;
             border: none;
-            padding: 15px;
+            padding: 16px;
             font-family: 'Orbitron', sans-serif;
             font-weight: 900;
             font-size: 0.95rem;
@@ -71,7 +71,7 @@
         #trackpad {
             display: none;
             width: 100%;
-            height: 60vh;
+            height: 65vh;
             border: 2px dashed rgba(0, 242, 255, 0.4);
             border-radius: 12px;
             background: rgba(0, 242, 255, 0.03);
@@ -79,23 +79,30 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            gap: 12px;
+            gap: 16px;
         }
 
         #trackpad.active { display: flex; }
 
         .trackpad-hint {
-            font-size: 0.8rem;
-            opacity: 0.8;
+            font-size: 0.85rem;
+            opacity: 0.85;
+            line-height: 1.4;
+        }
+
+        .telemetry-readout {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: #00ff66;
         }
 
         .trigger-btn {
-            width: 80%;
-            height: 70px;
-            background: rgba(0, 255, 102, 0.15);
+            width: 85%;
+            height: 75px;
+            background: rgba(0, 255, 102, 0.2);
             border: 2px solid #00ff66;
             color: #00ff66;
-            box-shadow: 0 0 20px rgba(0, 255, 102, 0.3);
+            box-shadow: 0 0 25px rgba(0, 255, 102, 0.4);
         }
     </style>
 </head>
@@ -108,20 +115,30 @@
 
     <!-- PAIRING SCREEN -->
     <div id="connect_box">
-        <input type="text" id="target_peer_id" placeholder="PASTE DESKTOP PEER ID HERE">
-        <button id="btn_pair">CONNECT TO G-BOARD</button>
+        <input type="text" id="target_peer_id" placeholder="ENTER PEER ID HERE" autocomplete="off" spellcheck="false">
+        <button id="btn_pair">CONNECT & ENABLE GYRO</button>
     </div>
 
     <!-- ACTIVE AIR-MOUSE PAD -->
     <div id="trackpad">
-        <div class="trackpad-hint">TILT PHONE TO MOVE RETICLE</div>
+        <div class="trackpad-hint">TILT PHONE TO CONTROL CURSOR</div>
+        <div class="telemetry-readout" id="lbl_gyro_data">X: 50% | Y: 50%</div>
         <button class="trigger-btn" id="btn_trigger">CLICK / TRIGGER</button>
     </div>
 
     <script>
-        const peer = new Peer();
+        const peer = new Peer({
+            config: {
+                iceServers: [
+                    { urls: 'stun:stun.l.google.com:19302' },
+                    { urls: 'stun:global.stun.twilio.com:3478' }
+                ]
+            }
+        });
+
         let conn = null;
         const lblStatus = document.getElementById('lbl_status');
+        const lblGyro = document.getElementById('lbl_gyro_data');
         const connectBox = document.getElementById('connect_box');
         const trackpad = document.getElementById('trackpad');
         const btnPair = document.getElementById('btn_pair');
@@ -131,32 +148,49 @@
         let posX = 0.5;
         let posY = 0.5;
 
-        btnPair.onclick = () => {
-            const destId = inputPeer.value.trim().replace('ID: ', '');
+        btnPair.onclick = async () => {
+            let destId = inputPeer.value.trim();
             if (!destId) {
-                alert("Please enter the Peer ID shown on your Desktop screen.");
+                alert("Please enter the Peer ID from your laptop screen.");
                 return;
             }
 
-            lblStatus.innerText = "CONNECTING...";
-            conn = peer.connect(destId);
+            if (destId.startsWith("ID:")) {
+                destId = destId.replace("ID:", "").trim();
+            }
+
+            lblStatus.innerText = "REQUESTING SENSORS & CONNECTING...";
+            lblStatus.style.color = "#00f2ff";
+
+            // Universal Mobile Gyro Handshake (iOS Safari, Android Chrome/Edge)
+            if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+                try {
+                    const permissionState = await DeviceOrientationEvent.requestPermission();
+                    if (permissionState === 'granted') {
+                        window.addEventListener('deviceorientation', handleGyro, true);
+                    } else {
+                        alert("Motion permission denied by device.");
+                    }
+                } catch (err) {
+                    console.error("DeviceOrientation permission error:", err);
+                }
+            } else {
+                window.addEventListener('deviceorientation', handleGyro, true);
+            }
+
+            conn = peer.connect(destId, { reliable: true });
 
             conn.on('open', () => {
                 lblStatus.innerText = "LINKED: GYRO STREAM ONLINE";
                 lblStatus.style.color = "#00ff66";
                 connectBox.style.display = "none";
                 trackpad.classList.add('active');
+            });
 
-                // Request Gyroscope Permission (iOS 13+ & Modern Android)
-                if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-                    DeviceOrientationEvent.requestPermission()
-                        .then(res => {
-                            if (res === 'granted') window.addEventListener('deviceorientation', handleGyro);
-                        })
-                        .catch(console.error);
-                } else {
-                    window.addEventListener('deviceorientation', handleGyro);
-                }
+            conn.on('error', () => {
+                lblStatus.innerText = "CONNECTION FAILED";
+                lblStatus.style.color = "#ff3b3b";
+                alert("Could not connect to Peer ID. Make sure G-BOARD is open on your desktop.");
             });
 
             conn.on('close', () => {
@@ -170,22 +204,20 @@
         function handleGyro(e) {
             if (!conn || !conn.open) return;
 
-            // gamma: Left-to-Right tilt (-90 to 90)
-            // beta:  Front-to-Back tilt (-180 to 180)
             const gamma = e.gamma || 0;
             const beta = e.beta || 0;
 
-            // Map tilt range into normalized 0.0 - 1.0 coordinates
-            posX = Math.min(Math.max((gamma + 30) / 60, 0), 1);
-            posY = Math.min(Math.max((beta - 20) / 50, 0), 1);
+            posX = Math.min(Math.max((gamma + 25) / 50, 0.05), 0.95);
+            posY = Math.min(Math.max((beta - 25) / 45, 0.05), 0.95);
 
+            lblGyro.innerText = `X: ${Math.round(posX * 100)}% | Y: ${Math.round(posY * 100)}%`;
             conn.send({ x: posX, y: posY, click: false });
         }
 
         btnTrigger.onclick = () => {
             if (conn && conn.open) {
                 conn.send({ x: posX, y: posY, click: true });
-                if (navigator.vibrate) navigator.vibrate(40);
+                if (navigator.vibrate) navigator.vibrate(50);
             }
         };
     </script>
