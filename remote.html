@@ -110,12 +110,12 @@
 
     <div class="header">
         <h1>G-BOARD GYRO</h1>
-        <div class="status" id="lbl_status">READY FOR PAIRING</div>
+        <div class="status" id="lbl_status">INITIALIZING PEER ENGINE...</div>
     </div>
 
     <!-- PAIRING SCREEN -->
     <div id="connect_box">
-        <input type="text" id="target_peer_id" placeholder="ENTER PEER ID HERE" autocomplete="off" spellcheck="false">
+        <input type="text" id="target_peer_id" placeholder="PASTE DESKTOP PEER ID" autocomplete="off" spellcheck="false">
         <button id="btn_pair">CONNECT & ENABLE GYRO</button>
     </div>
 
@@ -127,16 +127,6 @@
     </div>
 
     <script>
-        const peer = new Peer({
-            config: {
-                iceServers: [
-                    { urls: 'stun:stun.l.google.com:19302' },
-                    { urls: 'stun:global.stun.twilio.com:3478' }
-                ]
-            }
-        });
-
-        let conn = null;
         const lblStatus = document.getElementById('lbl_status');
         const lblGyro = document.getElementById('lbl_gyro_data');
         const connectBox = document.getElementById('connect_box');
@@ -145,13 +135,41 @@
         const btnTrigger = document.getElementById('btn_trigger');
         const inputPeer = document.getElementById('target_peer_id');
 
+        let peer = null;
+        let conn = null;
         let posX = 0.5;
         let posY = 0.5;
 
+        function initMobilePeer() {
+            peer = new Peer({
+                debug: 1,
+                config: {
+                    iceServers: [
+                        { urls: 'stun:stun.l.google.com:19302' },
+                        { urls: 'stun:stun1.l.google.com:19302' },
+                        { urls: 'stun:stun2.l.google.com:19302' }
+                    ]
+                }
+            });
+
+            peer.on('open', () => {
+                lblStatus.innerText = "READY FOR PAIRING";
+                lblStatus.style.color = "#00f2ff";
+            });
+
+            peer.on('error', (err) => {
+                console.error("Mobile PeerJS Error:", err);
+                lblStatus.innerText = "BROKER ERROR - RETRYING";
+                lblStatus.style.color = "#ff3b3b";
+            });
+        }
+
+        initMobilePeer();
+
         btnPair.onclick = async () => {
-            let destId = inputPeer.value.trim();
+            let destId = inputPeer.value.trim().replace(/\s+/g, '');
             if (!destId) {
-                alert("Please enter the Peer ID from your laptop screen.");
+                alert("Please paste the Peer ID shown in G-BOARD on your laptop.");
                 return;
             }
 
@@ -159,42 +177,55 @@
                 destId = destId.replace("ID:", "").trim();
             }
 
-            lblStatus.innerText = "REQUESTING SENSORS & CONNECTING...";
-            lblStatus.style.color = "#00f2ff";
+            lblStatus.innerText = "ESTABLISHING WEBRTC TUNNEL...";
+            lblStatus.style.color = "#ffb700";
 
-            // Universal Mobile Gyro Handshake (iOS Safari, Android Chrome/Edge)
+            // 1. Request Motion Permissions on iOS Safari
             if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
                 try {
-                    const permissionState = await DeviceOrientationEvent.requestPermission();
-                    if (permissionState === 'granted') {
+                    const permission = await DeviceOrientationEvent.requestPermission();
+                    if (permission === 'granted') {
                         window.addEventListener('deviceorientation', handleGyro, true);
-                    } else {
-                        alert("Motion permission denied by device.");
                     }
-                } catch (err) {
-                    console.error("DeviceOrientation permission error:", err);
+                } catch (e) {
+                    console.log("Motion sensor permission notice:", e);
                 }
             } else {
                 window.addEventListener('deviceorientation', handleGyro, true);
             }
 
-            conn = peer.connect(destId, { reliable: true });
+            // 2. Connect to Desktop Peer
+            if (conn) conn.close();
+
+            conn = peer.connect(destId, {
+                reliable: true
+            });
+
+            // Handshake safety timeout (8 seconds)
+            const connectionTimeout = setTimeout(() => {
+                if (!conn || !conn.open) {
+                    lblStatus.innerText = "CONNECTION TIMED OUT";
+                    lblStatus.style.color = "#ff3b3b";
+                }
+            }, 8000);
 
             conn.on('open', () => {
+                clearTimeout(connectionTimeout);
                 lblStatus.innerText = "LINKED: GYRO STREAM ONLINE";
                 lblStatus.style.color = "#00ff66";
                 connectBox.style.display = "none";
                 trackpad.classList.add('active');
             });
 
-            conn.on('error', () => {
+            conn.on('error', (err) => {
+                clearTimeout(connectionTimeout);
                 lblStatus.innerText = "CONNECTION FAILED";
                 lblStatus.style.color = "#ff3b3b";
-                alert("Could not connect to Peer ID. Make sure G-BOARD is open on your desktop.");
+                console.error("Connection Error:", err);
             });
 
             conn.on('close', () => {
-                lblStatus.innerText = "DISCONNECTED";
+                lblStatus.innerText = "SESSION DISCONNECTED";
                 lblStatus.style.color = "#ff3b3b";
                 connectBox.style.display = "flex";
                 trackpad.classList.remove('active');
@@ -204,9 +235,10 @@
         function handleGyro(e) {
             if (!conn || !conn.open) return;
 
-            const gamma = e.gamma || 0;
-            const beta = e.beta || 0;
+            const gamma = e.gamma || 0; // Roll: Left/Right (-90 to +90)
+            const beta = e.beta || 0;   // Pitch: Forward/Back (-180 to +180)
 
+            // Normalized calibration for natural hand posture
             posX = Math.min(Math.max((gamma + 25) / 50, 0.05), 0.95);
             posY = Math.min(Math.max((beta - 25) / 45, 0.05), 0.95);
 
@@ -217,7 +249,7 @@
         btnTrigger.onclick = () => {
             if (conn && conn.open) {
                 conn.send({ x: posX, y: posY, click: true });
-                if (navigator.vibrate) navigator.vibrate(50);
+                if (navigator.vibrate) navigator.vibrate(40);
             }
         };
     </script>
