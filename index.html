@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="G-BOARD V8.7 - Clean Neural Biometric OS with Gated Female Voice Authorization">
-    <title>G-BOARD | NEURAL BIOMETRIC OS V8.7</title>
+    <meta name="description" content="G-BOARD V9.0.1 - Complete Spatial Command Matrix Operating System">
+    <title>G-BOARD | SPATIAL OS V9.0.1</title>
     
+    <!-- Core Computer Vision & Communication CDNs -->
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/face_detection.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.2/dist/peerjs.min.js"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;600;800&display=swap');
@@ -19,7 +21,8 @@
             --glow: rgba(0, 242, 255, 0.65);
             --alert: #ff3b3b; 
             --success: #00ff66;
-            --panel-bg: rgba(2, 12, 22, 0.9);
+            --ai-purple: #bd00ff;
+            --panel-bg: rgba(2, 12, 22, 0.92);
             --key-text: #00f2ff;
         }
 
@@ -27,7 +30,7 @@
             --neon: #ffb700;
             --neon-dim: rgba(255, 183, 0, 0.25);
             --glow: rgba(255, 183, 0, 0.65);
-            --panel-bg: rgba(20, 15, 3, 0.9);
+            --panel-bg: rgba(20, 15, 3, 0.92);
             --key-text: #ffb700;
         }
 
@@ -35,7 +38,7 @@
             --neon: #ff0055;
             --neon-dim: rgba(255, 0, 85, 0.25);
             --glow: rgba(255, 0, 85, 0.65);
-            --panel-bg: rgba(20, 3, 10, 0.9);
+            --panel-bg: rgba(20, 3, 10, 0.92);
             --key-text: #ff0055;
         }
 
@@ -70,7 +73,7 @@
             filter: contrast(125%) brightness(85%); 
         }
 
-        /* FULL-SCREEN NEURAL SHIELD */
+        /* FULL-SCREEN BIOMETRIC SECURITY SHIELD */
         #security_shield {
             position: fixed;
             inset: 0;
@@ -89,7 +92,7 @@
             pointer-events: none;
         }
 
-        /* EDGE-TO-EDGE 3D NEURAL PLEXUS CANVAS */
+        /* 3D NEURAL PLEXUS CANVAS */
         #neural_background_canvas {
             position: absolute;
             inset: 0;
@@ -99,7 +102,7 @@
             z-index: 1;
         }
 
-        /* CLEAN CIRCULAR BIOMETRIC APERTURE */
+        /* CIRCULAR BIOMETRIC APERTURE */
         #bio_aperture_wrapper {
             position: relative;
             width: clamp(270px, 36vmin, 340px);
@@ -129,7 +132,6 @@
             opacity: 0.95;
         }
 
-        /* UNIFORM CONCENTRIC APERTURE RINGS */
         .bio-ring-outer {
             position: absolute;
             inset: 0;
@@ -181,7 +183,6 @@
         @keyframes rotateCounterClockwise { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
         @keyframes radarSweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* STATUS TEXT & PROGRESS BAR */
         #bio_status_text {
             position: relative;
             z-index: 10;
@@ -283,11 +284,11 @@
 
         #main_title { 
             position: fixed; 
-            top: 10px; 
+            top: 28px; 
             left: 50%; 
             transform: translateX(-50%); 
             font-family: 'Orbitron', sans-serif; 
-            font-size: clamp(1.2rem, 2.5vw, 2rem); 
+            font-size: clamp(1.1rem, 2.3vw, 1.8rem); 
             font-weight: 900; 
             letter-spacing: clamp(5px, 1.2vw, 12px); 
             text-shadow: 0 0 20px var(--glow); 
@@ -299,28 +300,71 @@
             white-space: nowrap;
         }
 
+        /* REAL-TIME TECH RSS TICKER TAPE */
+        #rss_ticker_bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 22px;
+            background: rgba(1, 8, 16, 0.95);
+            border-bottom: 1px solid var(--neon-dim);
+            z-index: 110;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+        }
+
+        .ticker-tag {
+            background: var(--neon);
+            color: #000;
+            font-weight: 900;
+            padding: 2px 8px;
+            margin-right: 10px;
+            font-family: 'Orbitron', sans-serif;
+            flex-shrink: 0;
+        }
+
+        .ticker-content {
+            white-space: nowrap;
+            display: inline-block;
+            animation: marquee 35s linear infinite;
+            color: #ffffff;
+            opacity: 0.85;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(100vw); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* TELEMETRY HUD & LIVE GPS RADAR */
         #telemetry_box { 
             position: fixed; 
-            top: 15px; 
+            top: 32px; 
             right: 15px; 
-            width: min(270px, 85vw); 
-            padding: 8px 12px; 
+            width: min(285px, 85vw); 
+            padding: 10px 12px; 
             background: var(--panel-bg); 
-            -webkit-backdrop-filter: blur(10px);
-            backdrop-filter: blur(10px); 
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px); 
             border: 1px solid rgba(255, 255, 255, 0.15); 
             border-right: 4px solid var(--neon);
             border-radius: 6px; 
             font-family: 'JetBrains Mono', monospace; 
-            font-size: clamp(0.6rem, 1.4vw, 0.72rem); 
+            font-size: clamp(0.58rem, 1.3vw, 0.7rem); 
             z-index: 100;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
 
         .sys-status-header {
             color: var(--neon); 
             font-weight: bold; 
-            margin-bottom: 4px; 
             border-bottom: 1px solid var(--neon-dim); 
             padding-bottom: 3px;
             display: flex;
@@ -328,11 +372,38 @@
         }
 
         .fps-display { color: #ffffff; }
-        .stat-line { margin-bottom: 2px; display: flex; justify-content: space-between; gap: 6px; }
+        .stat-line { display: flex; justify-content: space-between; gap: 6px; }
         .stat-label { opacity: 0.8; }
         .stat-val { font-weight: bold; color: #ffffff; text-align: right; }
         .sec-locked { color: var(--alert); }
         .sec-auth { color: var(--success); }
+
+        #radar_container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 4px;
+            padding-top: 4px;
+            border-top: 1px dashed var(--neon-dim);
+        }
+
+        .radar-label-title {
+            font-weight: bold;
+            color: var(--neon);
+        }
+
+        .radar-label-coords {
+            font-size: 0.55rem;
+            opacity: 0.7;
+        }
+
+        #gps_radar_canvas {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 1px solid var(--neon);
+            background: rgba(0, 20, 30, 0.8);
+        }
 
         #workspace {
             width: 100vw;
@@ -342,7 +413,7 @@
             justify-content: center;
             align-items: center;
             gap: 6px;
-            padding-bottom: 90px;
+            padding-bottom: 95px;
         }
 
         #prediction_ribbon {
@@ -412,7 +483,7 @@
             border-radius: 4px; 
             font-weight: 700; 
             background: rgba(255, 255, 255, 0.04); 
-            transition: transform 0.06s ease, background 0.06s ease; 
+            transition: transform 0.06s ease, background 0.06s ease, box-shadow 0.1s ease; 
             font-family: 'Orbitron', 'JetBrains Mono', sans-serif; 
             font-size: clamp(0.68rem, 1.3vw, 0.85rem); 
             position: relative; 
@@ -432,6 +503,7 @@
         .key.k-nav { flex: 0.9; background: rgba(0, 242, 255, 0.1); }
         .key.k-space { flex: 5.5; border-bottom: 3px solid var(--neon); }
         .key.k-fn { flex: 1.3; background: rgba(255, 255, 255, 0.08); font-size: 0.72em; }
+        .key.k-ai { flex: 1.3; background: rgba(189, 0, 255, 0.15); border-color: var(--ai-purple); color: #e48fff; }
         .key.k-active { background: var(--neon); color: #000; }
         .key.k-recording { background: var(--alert) !important; color: #fff !important; animation: pulse 1s infinite; }
 
@@ -444,6 +516,11 @@
             transform: scale(1.05); 
             outline: none;
             z-index: 2;
+        }
+
+        .key.heatmap-boost {
+            border-color: #ffaa00;
+            box-shadow: inset 0 0 8px rgba(255, 170, 0, 0.3);
         }
         
         #clr_fill { 
@@ -479,11 +556,11 @@
             width: 100%;
             padding: 12px 18px; 
             font-family: 'JetBrains Mono', monospace; 
-            font-size: clamp(0.92rem, 1.6vw, 1.15rem); 
+            font-size: clamp(0.88rem, 1.5vw, 1.05rem); 
             white-space: pre-wrap;
             word-break: break-word;
             min-height: 52px; 
-            max-height: 200px;
+            max-height: 180px;
             overflow-y: auto;
             color: #ffffff;
             cursor: text;
@@ -510,32 +587,34 @@
 
         @keyframes caretBlink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
 
+        /* COMMAND SIDEBAR DOCK */
         #sidebar_dock {
             position: fixed;
             top: 0;
-            right: -280px;
-            width: 270px;
+            right: -320px;
+            width: 300px;
             height: 100vh;
             background: var(--panel-bg); 
             -webkit-backdrop-filter: blur(14px);
             backdrop-filter: blur(14px);
             border-left: 2px solid var(--neon);
-            box-shadow: -8px 0 30px rgba(0,0,0,0.8);
+            box-shadow: -8px 0 30px rgba(0,0,0,0.85);
             padding: 20px 16px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
             z-index: 160;
             transition: right 0.3s cubic-bezier(0.2, 0, 0, 1);
+            overflow-y: auto;
         }
 
         #sidebar_dock.open { right: 0; }
 
         #btn_sidebar_toggle {
             position: fixed;
-            top: 15px;
+            top: 30px;
             left: 15px;
-            background: rgba(2, 18, 24, 0.8);
+            background: rgba(2, 18, 24, 0.85);
             border: 1px solid var(--neon);
             color: var(--neon);
             padding: 8px 16px;
@@ -571,16 +650,16 @@
         }
 
         .dock-close-btn { background: none; border: none; color: var(--neon); font-size: 1rem; cursor: pointer; }
-        .control-group { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+        .control-group { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
 
         .sidebar-btn {
             background: rgba(255, 255, 255, 0.06);
             border: 1px solid var(--neon-dim);
             color: #ffffff;
-            padding: 12px 14px;
+            padding: 10px 12px;
             border-radius: 6px;
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-weight: 700;
             letter-spacing: 1px;
             cursor: pointer;
@@ -598,6 +677,50 @@
         }
 
         .mode-state-lbl { color: var(--neon); font-weight: bold; }
+        .ai-purple-label { color: var(--ai-purple); }
+        .center-btn-content { justify-content: center; }
+
+        /* WEBRTC PAIRING MODAL */
+        #webrtc_modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: min(380px, 90vw);
+            background: rgba(2, 14, 24, 0.96);
+            border: 2px solid var(--neon);
+            box-shadow: 0 0 40px var(--glow);
+            padding: 20px;
+            border-radius: 8px;
+            z-index: 195;
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+            text-align: center;
+        }
+
+        #webrtc_modal.open { display: flex; }
+
+        .modal-heading {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 800;
+            color: var(--neon);
+        }
+
+        .modal-subtext {
+            font-size: 0.75rem;
+            opacity: 0.85;
+        }
+
+        .peer-id-badge {
+            background: rgba(0, 242, 255, 0.1);
+            border: 1px dashed var(--neon);
+            padding: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            color: #ffffff;
+        }
 
         #start_btn { 
             position: fixed; 
@@ -622,8 +745,14 @@
 </head>
 <body>
 
-    <button id="start_btn" aria-label="Launch G-BOARD Operating System">LAUNCH G-BOARD OS</button>
+    <button id="start_btn" aria-label="Launch G-BOARD Operating System">LAUNCH G-BOARD MATRIX</button>
     <video id="video_input"></video>
+
+    <!-- TECH RSS TICKER TAPE -->
+    <div id="rss_ticker_bar">
+        <span class="ticker-tag">NET:RSS</span>
+        <span class="ticker-content" id="rss_ticker_stream">INITIALIZING GLOBAL TELEMETRY FEED... NEURAL MATRIX SYNC 100%... QUANTUM ENCRYPTION ACTIVE... STARK AI SYSTEM READY...</span>
+    </div>
 
     <!-- FULL-SCREEN HOLOGRAPHIC BIOMETRIC APERTURE -->
     <div id="security_shield">
@@ -665,6 +794,14 @@
         <div class="stat-line"><span class="stat-label">WEATHER:</span> <span id="stat_temp" class="stat-val">--°C</span></div>
         <div class="stat-line"><span class="stat-label">SPEED:</span> <span id="stat_wpm" class="stat-val">0 WPM</span></div>
         <div class="stat-line"><span class="stat-label">CHARS / POS:</span> <span id="stat_chars" class="stat-val">0 (0)</span></div>
+        
+        <div id="radar_container">
+            <div>
+                <div class="radar-label-title">GPS RADAR</div>
+                <div class="radar-label-coords" id="stat_coords">--° N, --° E</div>
+            </div>
+            <canvas id="gps_radar_canvas" width="48" height="48"></canvas>
+        </div>
     </div>
 
     <div id="workspace">
@@ -680,6 +817,7 @@
         <div id="terminal_log"></div>
     </div>
 
+    <!-- COMMAND SIDEBAR DOCK -->
     <div id="sidebar_dock">
         <div class="dock-header">
             <span>COMMAND DOCK</span>
@@ -697,6 +835,16 @@
                 <span id="lbl_theme_name">CYAN</span>
             </button>
 
+            <button class="sidebar-btn" id="btn_open_webrtc">
+                <span>PHONE GYRO MOUSE</span>
+                <span>PAIR</span>
+            </button>
+
+            <button class="sidebar-btn" id="btn_trigger_ai">
+                <span>STARK AI ASSIST</span>
+                <span class="ai-purple-label">QUERY</span>
+            </button>
+
             <button class="sidebar-btn" id="btn_export_doc">
                 <span>EXPORT BUFFER</span>
                 <span>.TXT</span>
@@ -707,6 +855,14 @@
                 <span>FLUSH</span>
             </button>
         </div>
+    </div>
+
+    <!-- WEBRTC SMARTPHONE GYROSCOPE MODAL -->
+    <div id="webrtc_modal">
+        <div class="modal-heading">SMARTPHONE GYRO BRIDGE</div>
+        <div class="modal-subtext">Scan or enter this Peer ID on your mobile browser to use device tilt as an air-mouse:</div>
+        <div class="peer-id-badge" id="lbl_peer_id">CONNECTING...</div>
+        <button class="sidebar-btn center-btn-content" id="btn_close_webrtc">CLOSE PAIRING</button>
     </div>
 
     <script>
@@ -727,10 +883,15 @@
         const bioApertureWrapper = document.getElementById('bio_aperture_wrapper');
         const neuralBgCanvas = document.getElementById('neural_background_canvas');
         const neuralCtx = neuralBgCanvas.getContext('2d');
+        const gpsRadarCanvas = document.getElementById('gps_radar_canvas');
+        const radarCtx = gpsRadarCanvas.getContext('2d');
         
         const bioStatusText = document.getElementById('bio_status_text');
         const bioProgressFill = document.getElementById('bio_progress_fill');
         const statSec = document.getElementById('stat_sec');
+
+        const webrtcModal = document.getElementById('webrtc_modal');
+        const lblPeerId = document.getElementById('lbl_peer_id');
 
         const FACE_LOCK_TIMEOUT = 6000;
         let isAuthorized = false;
@@ -753,6 +914,171 @@
         const synth = window.speechSynthesis;
         let availableVoices = [];
 
+        // DYNAMIC HEATMAP METRICS
+        const keyHitCounts = {};
+
+        function recordKeyHit(keyChar) {
+            if (!keyChar) return;
+            keyHitCounts[keyChar] = (keyHitCounts[keyChar] || 0) + 1;
+            const btn = document.getElementById(`k_${keyChar}`);
+            if (btn && keyHitCounts[keyChar] > 3) {
+                btn.classList.add('heatmap-boost');
+            }
+        }
+
+        // INLINE WEB WORKER: LEVENSHTEIN AUTOCORRECT & SLM
+        const workerCode = `
+            const DICTIONARY = [
+                "ACTIVATE", "ACCESS", "ACCOUNT", "ACTION", "ACTIVE", "ADD", "ADDRESS", "ADVANCED", "AGAIN", "AGENT",
+                "ALERT", "ALGORITHM", "ALLOW", "ALMOST", "ALONE", "ALREADY", "ALSO", "ALWAYS", "AMONG", "AMOUNT",
+                "ANALYZE", "ANDROID", "ANSWER", "ANY", "ANYONE", "ANYTHING", "APPLICATION", "APPLY", "AREA", "ARMOR",
+                "AROUND", "ARRAY", "ARTICLE", "ARTIFICIAL", "ASK", "ASSISTANT", "ATTACK", "AUDIO", "AUTHENTICATE", "AUTHORIZE",
+                "AUTO", "AVAILABLE", "BACK", "BACKUP", "BASE", "BASIC", "BATTERY", "BEAUTIFUL", "BECOME", "BEFORE",
+                "BEGIN", "BEHIND", "BELIEVE", "BETTER", "BETWEEN", "BINARY", "BIOMETRIC", "BLOCK", "BLUETOOTH", "BOARD",
+                "BODY", "BOOT", "BORDER", "BOT", "BOTH", "BRAIN", "BRANCH", "BREAK", "BRIDGE", "BROWSER",
+                "BUFFER", "BUILD", "BUILT", "BUSINESS", "BUTTON", "BYTE", "CALCULATE", "CALL", "CAMERA", "CANCEL",
+                "CAPACITY", "CAPTURE", "CARD", "CARE", "CARRY", "CASE", "CENTER", "CENTRAL", "CHAIN", "CHALLENGE",
+                "CHANGE", "CHANNEL", "CHARGE", "CHECK", "CHIP", "CIPHER", "CIRCUIT", "CITY", "CLASS", "CLEAN",
+                "CLEAR", "CLICK", "CLIENT", "CLONE", "CLOSE", "CLOUD", "CLUSTER", "CODE", "COGNITIVE", "COLLAPSE",
+                "COLLECT", "COLOR", "COMMAND", "COMMENCE", "COMMON", "COMMUNICATE", "COMPILE", "COMPLETE", "COMPLEX", "COMPONENT",
+                "COMPUTE", "COMPUTER", "CONFIG", "CONNECT", "CONSOLE", "CONSTANT", "CONTAIN", "CONTEXT", "CONTINUE", "CONTROL",
+                "CONVERT", "COOL", "COORDINATE", "COPY", "CORE", "CORRECT", "COUNT", "COURSE", "CRACK", "CREATE",
+                "CRIMSON", "CRITICAL", "CURRENT", "CURSOR", "CYBER", "CYBERPUNK", "CYBERSPACE", "CYCLE", "DATA", "DATABASE",
+                "DEBUG", "DECENTRALIZED", "DECIDE", "DECODE", "DEFAULT", "DEFENSE", "DEFINE", "DELETE", "DELIVERY", "DEPLOY",
+                "DESIGN", "DESKTOP", "DESTROY", "DETECT", "DEVELOP", "DEVICE", "DIAGNOSTIC", "DIALOG", "DICTIONARY", "DIGITAL",
+                "DIRECT", "DISABLE", "DISCONNECT", "DISPLAY", "DISTANCE", "DOCK", "DOCUMENT", "DOMAIN", "DOUBLE", "DOWNLOAD",
+                "DRIVE", "DRIVER", "DRONE", "DYNAMIC", "EARLY", "ECHO", "EDGE", "EDIT", "EFFECT", "EFFORT",
+                "ELECTRIC", "ELECTRONIC", "ELEMENT", "ELEVATE", "EMBED", "EMERGENCY", "EMIT", "ENABLE", "ENCRYPT", "END",
+                "ENERGY", "ENGINE", "ENHANCE", "ENTER", "ENTITY", "ENTRY", "ENVIRONMENT", "EQUIPMENT", "ERROR", "ESCAPE",
+                "EVENT", "EVERY", "EVERYONE", "EVERYTHING", "EXACT", "EXECUTE", "EXPAND", "EXPECT", "EXPORT", "EXTEND",
+                "EXTERNAL", "EXTREME", "EYE", "FACE", "FACTOR", "FAIL", "FAST", "FEATURE", "FEED", "FIELD",
+                "FILE", "FILTER", "FINAL", "FIND", "FINGER", "FIREWALL", "FIRMWARE", "FIRST", "FIX", "FLASH",
+                "FLIGHT", "FLOW", "FLUSH", "FOCUS", "FOLLOW", "FORCE", "FORECAST", "FORMAT", "FRAME", "FRAMEWORK",
+                "FREE", "FREQUENCY", "FRONT", "FULL", "FUNCTION", "FUTURE", "GAME", "GATE", "GATEWAY", "GATHER",
+                "GENERATE", "GESTURE", "GHOST", "GLOBAL", "GLOW", "GOAL", "GPS", "GRAPH", "GRAPHICS", "GRID",
+                "GROUP", "GROWTH", "GUARD", "GUIDE", "HACK", "HAND", "HARDWARE", "HEAD", "HEALTH", "HEATMAP",
+                "HELLO", "HELP", "HIDE", "HIGH", "HISTORY", "HOLD", "HOLOGRAPHIC", "HOME", "HOST", "HOTSPOT",
+                "HOVER", "HUD", "HUMAN", "HYPER", "IDENTIFY", "IDENTITY", "IMAGE", "IMMEDIATE", "IMPACT", "IMPLEMENT",
+                "IMPORT", "IMPROVE", "INDEX", "INDICATE", "INFO", "INFRASTRUCTURE", "INITIALIZE", "INITIATE", "INPUT", "INSIGHT",
+                "INSPECT", "INSTALL", "INSTANCE", "INSTANT", "INSTRUCTION", "INTEGRATE", "INTEL", "INTELLIGENCE", "INTENT", "INTERACTION",
+                "INTERFACE", "INTERNAL", "INTERNET", "INTERRUPT", "INTERVAL", "INVALID", "INVENT", "IP", "ISOLATE", "ITEM",
+                "JAVASCRIPT", "JOIN", "JOYSTICK", "JUMP", "KERNEL", "KEY", "KEYBOARD", "KEYSTROKE", "KILL", "KNOWLEDGE",
+                "LABEL", "LANDMARK", "LANGUAGE", "LASER", "LATENCY", "LAUNCH", "LAYER", "LAYOUT", "LEAD", "LEARN",
+                "LEAVE", "LEVEL", "LIBRARY", "LIGHT", "LIMIT", "LINE", "LINK", "LINUX", "LIST", "LISTEN",
+                "LIVE", "LOAD", "LOCAL", "LOCATE", "LOCATION", "LOCK", "LOG", "LOGIC", "LOGIN", "LOOP",
+                "MACHINE", "MAIN", "MAINTAIN", "MAJOR", "MAKE", "MANAGE", "MAP", "MARK", "MARKET", "MASTER",
+                "MATCH", "MATRIX", "MAXIMUM", "MEDIA", "MEDIAPIPE", "MEMORY", "MENU", "MESSAGE", "METRIC", "MICRO",
+                "MINIMUM", "MISSION", "MODE", "MODEL", "MODEM", "MODIFY", "MODULE", "MONITOR", "MOTION", "MOVE",
+                "MULTI", "MULTIMEDIA", "NAME", "NANOTECH", "NATIVE", "NAVIGATE", "NEAR", "NEED", "NEON", "NET",
+                "NETWORK", "NEURAL", "NODE", "NOISE", "NORMALIZE", "NOTE", "NOTIFICATION", "NULL", "NUMBER", "OBJECT",
+                "OBSERVE", "OFFLINE", "OFFSET", "ONLINE", "OPEN", "OPERATE", "OPERATION", "OPERATOR", "OPTIMIZE", "OPTION",
+                "ORBIT", "ORDER", "ORIENTATION", "ORIGIN", "OS", "OUTPUT", "OVERLAY", "OVERRIDE", "PACKET", "PAGE",
+                "PANEL", "PARAM", "PARAMETER", "PARSER", "PASSWORD", "PATH", "PATTERN", "PAUSE", "PEER", "PERCENT",
+                "PERFECT", "PERFORM", "PERFORMANCE", "PERMISSION", "PERSON", "PHONE", "PHOTO", "PHYSICAL", "PINCH", "PIPELINE",
+                "PIXEL", "PLATFORM", "PLAY", "PLUGIN", "POINT", "POINTER", "POLICY", "PORT", "POSITION", "POWER",
+                "PRECISION", "PREDICT", "PREFIX", "PREVIEW", "PRIMARY", "PRINT", "PRIORITY", "PRIVATE", "PROCESS", "PROCESSOR",
+                "PROFILE", "PROGRAM", "PROJECT", "PROMPT", "PROTECT", "PROTOCOL", "PROVIDER", "PUBLIC", "PULSE", "PUSH",
+                "QUANTUM", "QUERY", "QUEUE", "QUICK", "RADAR", "RADIO", "RADIUS", "RAM", "RANDOM", "RANGE",
+                "RATE", "RAW", "REACH", "REACT", "READ", "READY", "REAL", "REALTIME", "REBOOT", "RECEIVE",
+                "RECOGNIZE", "RECORD", "RECOVERY", "REDUCE", "REFRESH", "REGION", "REGISTER", "RELEASE", "RELOAD", "REMOTE",
+                "REMOVE", "RENDER", "REPEAT", "REPLACE", "REPORT", "REQUEST", "REQUIRE", "RESET", "RESOLUTION", "RESOURCE",
+                "RESPONSE", "RESTORE", "RESTRICT", "RESULT", "RETICLE", "RETURN", "REVERSE", "REVISION", "RIBBON", "ROBOT",
+                "ROOT", "ROTATE", "ROUTER", "ROUTINE", "ROW", "RULE", "RUN", "RUNTIME", "SAFE", "SAMPLE",
+                "SAVE", "SCALE", "SCAN", "SCANNER", "SCENARIO", "SCHEDULE", "SCREEN", "SCRIPT", "SCROLL", "SEARCH",
+                "SECURE", "SECURITY", "SEGMENT", "SELECT", "SEND", "SENSOR", "SEQUENCE", "SERIAL", "SERVE", "SERVER",
+                "SERVICE", "SESSION", "SET", "SETTINGS", "SHIFT", "SHORTCUT", "SHUTDOWN", "SIDEBAR", "SIGNAL", "SIGNATURE",
+                "SILENT", "SIMPLE", "SIMULATION", "SINGLE", "SITE", "SIZE", "SLM", "SMART", "SNAPSHOT", "SOCKET",
+                "SOFTWARE", "SOURCE", "SPACE", "SPATIAL", "SPEAK", "SPEECH", "SPEED", "STACK", "STANDARD", "STANDBY",
+                "START", "STATE", "STATIC", "STATISTICS", "STATUS", "STEREOSCOPIC", "STOP", "STORAGE", "STREAM", "STRING",
+                "STRUCTURE", "STYLE", "SUBMIT", "SUBSYSTEM", "SUCCESS", "SUGGESTION", "SUPERVISOR", "SUPPORT", "SURVEILLANCE", "SWITCH",
+                "SYNAPSE", "SYNCHRONIZE", "SYNTAX", "SYSTEM", "TAB", "TABLE", "TAG", "TARGET", "TASK", "TEAM",
+                "TECH", "TECHNOLOGY", "TELEMETRY", "TEMPERATURE", "TEMPLATE", "TERMINAL", "TEST", "TEXT", "THEME", "THREAD",
+                "THRESHOLD", "THUMB", "TIME", "TIMEOUT", "TIMER", "TITLE", "TOGGLE", "TOKEN", "TOOL", "TOOLKIT",
+                "TOP", "TOUCH", "TRACE", "TRACK", "TRACKING", "TRAFFIC", "TRANSFORM", "TRANSLATE", "TRANSMIT", "TRIGGER",
+                "TRUE", "TRY", "TUNNEL", "TYPE", "TYPING", "ULTRA", "UNAUTHORIZED", "UNDER", "UNIT", "UNKNOWN",
+                "UNLOCK", "UPDATE", "UPGRADE", "UPLOAD", "URL", "USER", "UTILITY", "VALIDATE", "VALUE", "VARIABLE",
+                "VECTOR", "VERIFY", "VERSION", "VIDEO", "VIEW", "VIEWPORT", "VIRTUAL", "VISION", "VOICE", "VOLUME",
+                "WAIT", "WARNING", "WATCH", "WAVE", "WEATHER", "WEB", "WEBCAM", "WEBGPU", "WEBRTC", "WEIGHT",
+                "WINDOW", "WIRELESS", "WORD", "WORK", "WORKER", "WORKSPACE", "WORLD", "WPM", "WRITE", "ZONE"
+            ];
+
+            const BIGRAMS = {
+                "HELLO": ["world", "there", "system"],
+                "ACTIVATE": ["system", "command", "protocol"],
+                "SYSTEM": ["online", "ready", "status"],
+                "CYBER": ["matrix", "security", "space"],
+                "START": ["engine", "process", "recording"],
+                "CLEAR": ["buffer", "log", "screen"],
+                "INPUT": ["mode", "device", "data"],
+                "OPEN": ["terminal", "console", "settings"],
+                "SECURITY": ["authorized", "enabled", "check"],
+                "THE": ["system", "matrix", "user"]
+            };
+
+            function levenshtein(a, b) {
+                const matrix = [];
+                for (let i = 0; i <= b.length; i++) matrix[i] = [i];
+                for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
+
+                for (let i = 1; i <= b.length; i++) {
+                    for (let j = 1; j <= a.length; j++) {
+                        if (b.charAt(i - 1) === a.charAt(j - 1)) {
+                            matrix[i][j] = matrix[i - 1][j - 1];
+                        } else {
+                            matrix[i][j] = Math.min(
+                                matrix[i - 1][j - 1] + 1,
+                                Math.min(matrix[i][j - 1] + 1, matrix[i - 1][j] + 1)
+                            );
+                        }
+                    }
+                }
+                return matrix[b.length][a.length];
+            }
+
+            self.onmessage = function(e) {
+                const { rawToken, prevWord } = e.data;
+                let matches = [];
+
+                if (!rawToken || rawToken.trim() === "") {
+                    if (prevWord && BIGRAMS[prevWord.toUpperCase()]) {
+                        matches = BIGRAMS[prevWord.toUpperCase()];
+                    } else {
+                        matches = ["system", "online", "activate"];
+                    }
+                } else {
+                    const searchUpper = rawToken.toUpperCase();
+                    const direct = DICTIONARY.filter(w => w.startsWith(searchUpper));
+                    
+                    if (direct.length >= 3) {
+                        matches = direct.slice(0, 3);
+                    } else {
+                        const scored = DICTIONARY.map(w => ({ word: w, dist: levenshtein(searchUpper, w) }));
+                        scored.sort((a, b) => a.dist - b.dist);
+                        matches = scored.slice(0, 3).map(s => s.word);
+                    }
+                }
+
+                self.postMessage({ matches, rawToken });
+            };
+        `;
+
+        const blob = new Blob([workerCode], { type: 'application/javascript' });
+        const nlpWorker = new Worker(URL.createObjectURL(blob));
+
+        nlpWorker.onmessage = function(e) {
+            const { matches, rawToken } = e.data;
+            for (let i = 0; i < 3; i++) {
+                const pill = document.getElementById(`pred_${i}`);
+                if (matches && matches[i]) {
+                    pill.innerText = formatWordCase(rawToken, matches[i]);
+                    pill.classList.remove('empty');
+                } else {
+                    pill.innerText = formatWordCase(rawToken, ["i", "the", "activate"][i]);
+                    pill.classList.add('empty');
+                }
+            }
+        };
+
         function loadVoices() {
             if (!synth) return;
             availableVoices = synth.getVoices();
@@ -764,7 +1090,6 @@
             }
         }
 
-        // GLOBAL FEMALE-ORIENTED NEURAL VOICE DISPATCHER
         function speakText(text, onComplete = null) {
             if (!synth) {
                 if (onComplete) onComplete();
@@ -778,12 +1103,11 @@
             }
             
             const utterance = new SpeechSynthesisUtterance(cleanText);
-            utterance.rate = 1.18; // Finely tuned for 3-4s completion
+            utterance.rate = 1.18;
             utterance.pitch = 1.12;
 
             if (availableVoices.length === 0) loadVoices();
 
-            // Prioritize natural female voices across OS and browsers
             const femaleVoice = availableVoices.find(v => 
                 v.lang.includes('en') && (
                     v.name.includes('Female') ||
@@ -819,7 +1143,7 @@
         }
         window.addEventListener('resize', resizeCanvases);
 
-        // EDGE-TO-EDGE 3D NEURAL PLEXUS FIELD (220 KINETIC NODES)
+        // 3D NEURAL PLEXUS FIELD
         const PLEXUS_NODE_COUNT = 220;
         const neuralNodes = Array.from({ length: PLEXUS_NODE_COUNT }, () => ({
             x: (Math.random() - 0.5) * 3600,
@@ -865,7 +1189,6 @@
                 };
             });
 
-            // Connect Vector Constellation Beams
             for (let i = 0; i < projected.length; i++) {
                 for (let j = i + 1; j < projected.length; j++) {
                     const dx = projected[i].x - projected[j].x;
@@ -884,7 +1207,6 @@
                 }
             }
 
-            // Render Glowing Neural Stars
             projected.forEach(p => {
                 const radius = Math.max(1.2, p.scale * 3.8);
                 neuralCtx.fillStyle = isAuthorized ? "#00ff66" : "#00f2ff";
@@ -901,92 +1223,34 @@
             }
         }
 
-        const DICTIONARY = [
-            "ACTIVATE", "ACCESS", "ACCOUNT", "ACTION", "ACTIVE", "ADD", "ADDRESS", "ADVANCED", "AGAIN", "AGENT",
-            "ALERT", "ALGORITHM", "ALLOW", "ALMOST", "ALONE", "ALREADY", "ALSO", "ALWAYS", "AMONG", "AMOUNT",
-            "ANALYZE", "ANDROID", "ANSWER", "ANY", "ANYONE", "ANYTHING", "APPLICATION", "APPLY", "AREA", "ARMOR",
-            "AROUND", "ARRAY", "ARTICLE", "ARTIFICIAL", "ASK", "ASSISTANT", "ATTACK", "AUDIO", "AUTHENTICATE", "AUTHORIZE",
-            "AUTO", "AVAILABLE", "BACK", "BACKUP", "BASE", "BASIC", "BATTERY", "BEAUTIFUL", "BECOME", "BEFORE",
-            "BEGIN", "BEHIND", "BELIEVE", "BETTER", "BETWEEN", "BINARY", "BIOMETRIC", "BLOCK", "BLUETOOTH", "BOARD",
-            "BODY", "BOOT", "BORDER", "BOT", "BOTH", "BRAIN", "BRANCH", "BREAK", "BRIDGE", "BROWSER",
-            "BUFFER", "BUILD", "BUILT", "BUSINESS", "BUTTON", "BYTE", "CALCULATE", "CALL", "CAMERA", "CANCEL",
-            "CAPACITY", "CAPTURE", "CARD", "CARE", "CARRY", "CASE", "CENTER", "CENTRAL", "CHAIN", "CHALLENGE",
-            "CHANGE", "CHANNEL", "CHARGE", "CHECK", "CHIP", "CIPHER", "CIRCUIT", "CITY", "CLASS", "CLEAN",
-            "CLEAR", "CLICK", "CLIENT", "CLONE", "CLOSE", "CLOUD", "CLUSTER", "CODE", "COGNITIVE", "COLLAPSE",
-            "COLLECT", "COLOR", "COMMAND", "COMMENCE", "COMMON", "COMMUNICATE", "COMPILE", "COMPLETE", "COMPLEX", "COMPONENT",
-            "COMPUTE", "COMPUTER", "CONFIG", "CONNECT", "CONSOLE", "CONSTANT", "CONTAIN", "CONTEXT", "CONTINUE", "CONTROL",
-            "CONVERT", "COOL", "COORDINATE", "COPY", "CORE", "CORRECT", "COUNT", "COURSE", "CRACK", "CREATE",
-            "CRIMSON", "CRITICAL", "CURRENT", "CURSOR", "CYBER", "CYBERPUNK", "CYBERSPACE", "CYCLE", "DATA", "DATABASE",
-            "DEBUG", "DECENTRALIZED", "DECIDE", "DECODE", "DEFAULT", "DEFENSE", "DEFINE", "DELETE", "DELIVERY", "DEPLOY",
-            "DESIGN", "DESKTOP", "DESTROY", "DETECT", "DEVELOP", "DEVICE", "DIAGNOSTIC", "DIALOG", "DICTIONARY", "DIGITAL",
-            "DIRECT", "DISABLE", "DISCONNECT", "DISPLAY", "DISTANCE", "DOCK", "DOCUMENT", "DOMAIN", "DOUBLE", "DOWNLOAD",
-            "DRIVE", "DRIVER", "DRONE", "DYNAMIC", "EARLY", "ECHO", "EDGE", "EDIT", "EFFECT", "EFFORT",
-            "ELECTRIC", "ELECTRONIC", "ELEMENT", "ELEVATE", "EMBED", "EMERGENCY", "EMIT", "ENABLE", "ENCRYPT", "END",
-            "ENERGY", "ENGINE", "ENHANCE", "ENTER", "ENTITY", "ENTRY", "ENVIRONMENT", "EQUIPMENT", "ERROR", "ESCAPE",
-            "EVENT", "EVERY", "EVERYONE", "EVERYTHING", "EXACT", "EXECUTE", "EXPAND", "EXPECT", "EXPORT", "EXTEND",
-            "EXTERNAL", "EXTREME", "EYE", "FACE", "FACTOR", "FAIL", "FAST", "FEATURE", "FEED", "FIELD",
-            "FILE", "FILTER", "FINAL", "FIND", "FINGER", "FIREWALL", "FIRMWARE", "FIRST", "FIX", "FLASH",
-            "FLIGHT", "FLOW", "FLUSH", "FOCUS", "FOLLOW", "FORCE", "FORECAST", "FORMAT", "FRAME", "FRAMEWORK",
-            "FREE", "FREQUENCY", "FRONT", "FULL", "FUNCTION", "FUTURE", "GAME", "GATE", "GATEWAY", "GATHER",
-            "GENERATE", "GESTURE", "GHOST", "GLOBAL", "GLOW", "GOAL", "GPS", "GRAPH", "GRAPHICS", "GRID",
-            "GROUP", "GROWTH", "GUARD", "GUIDE", "HACK", "HAND", "HARDWARE", "HEAD", "HEALTH", "HEATMAP",
-            "HELLO", "HELP", "HIDE", "HIGH", "HISTORY", "HOLD", "HOLOGRAPHIC", "HOME", "HOST", "HOTSPOT",
-            "HOVER", "HUD", "HUMAN", "HYPER", "IDENTIFY", "IDENTITY", "IMAGE", "IMMEDIATE", "IMPACT", "IMPLEMENT",
-            "IMPORT", "IMPROVE", "INDEX", "INDICATE", "INFO", "INFRASTRUCTURE", "INITIALIZE", "INITIATE", "INPUT", "INSIGHT",
-            "INSPECT", "INSTALL", "INSTANCE", "INSTANT", "INSTRUCTION", "INTEGRATE", "INTEL", "INTELLIGENCE", "INTENT", "INTERACTION",
-            "INTERFACE", "INTERNAL", "INTERNET", "INTERRUPT", "INTERVAL", "INVALID", "INVENT", "IP", "ISOLATE", "ITEM",
-            "JAVASCRIPT", "JOIN", "JOYSTICK", "JUMP", "KERNEL", "KEY", "KEYBOARD", "KEYSTROKE", "KILL", "KNOWLEDGE",
-            "LABEL", "LANDMARK", "LANGUAGE", "LASER", "LATENCY", "LAUNCH", "LAYER", "LAYOUT", "LEAD", "LEARN",
-            "LEAVE", "LEVEL", "LIBRARY", "LIGHT", "LIMIT", "LINE", "LINK", "LINUX", "LIST", "LISTEN",
-            "LIVE", "LOAD", "LOCAL", "LOCATE", "LOCATION", "LOCK", "LOG", "LOGIC", "LOGIN", "LOOP",
-            "MACHINE", "MAIN", "MAINTAIN", "MAJOR", "MAKE", "MANAGE", "MAP", "MARK", "MARKET", "MASTER",
-            "MATCH", "MATRIX", "MAXIMUM", "MEDIA", "MEDIAPIPE", "MEMORY", "MENU", "MESSAGE", "METRIC", "MICRO",
-            "MINIMUM", "MISSION", "MODE", "MODEL", "MODEM", "MODIFY", "MODULE", "MONITOR", "MOTION", "MOVE",
-            "MULTI", "MULTIMEDIA", "NAME", "NANOTECH", "NATIVE", "NAVIGATE", "NEAR", "NEED", "NEON", "NET",
-            "NETWORK", "NEURAL", "NODE", "NOISE", "NORMALIZE", "NOTE", "NOTIFICATION", "NULL", "NUMBER", "OBJECT",
-            "OBSERVE", "OFFLINE", "OFFSET", "ONLINE", "OPEN", "OPERATE", "OPERATION", "OPERATOR", "OPTIMIZE", "OPTION",
-            "ORBIT", "ORDER", "ORIENTATION", "ORIGIN", "OS", "OUTPUT", "OVERLAY", "OVERRIDE", "PACKET", "PAGE",
-            "PANEL", "PARAM", "PARAMETER", "PARSER", "PASSWORD", "PATH", "PATTERN", "PAUSE", "PEER", "PERCENT",
-            "PERFECT", "PERFORM", "PERFORMANCE", "PERMISSION", "PERSON", "PHONE", "PHOTO", "PHYSICAL", "PINCH", "PIPELINE",
-            "PIXEL", "PLATFORM", "PLAY", "PLUGIN", "POINT", "POINTER", "POLICY", "PORT", "POSITION", "POWER",
-            "PRECISION", "PREDICT", "PREFIX", "PREVIEW", "PRIMARY", "PRINT", "PRIORITY", "PRIVATE", "PROCESS", "PROCESSOR",
-            "PROFILE", "PROGRAM", "PROJECT", "PROMPT", "PROTECT", "PROTOCOL", "PROVIDER", "PUBLIC", "PULSE", "PUSH",
-            "QUANTUM", "QUERY", "QUEUE", "QUICK", "RADAR", "RADIO", "RADIUS", "RAM", "RANDOM", "RANGE",
-            "RATE", "RAW", "REACH", "REACT", "READ", "READY", "REAL", "REALTIME", "REBOOT", "RECEIVE",
-            "RECOGNIZE", "RECORD", "RECOVERY", "REDUCE", "REFRESH", "REGION", "REGISTER", "RELEASE", "RELOAD", "REMOTE",
-            "REMOVE", "RENDER", "REPEAT", "REPLACE", "REPORT", "REQUEST", "REQUIRE", "RESET", "RESOLUTION", "RESOURCE",
-            "RESPONSE", "RESTORE", "RESTRICT", "RESULT", "RETICLE", "RETURN", "REVERSE", "REVISION", "RIBBON", "ROBOT",
-            "ROOT", "ROTATE", "ROUTER", "ROUTINE", "ROW", "RULE", "RUN", "RUNTIME", "SAFE", "SAMPLE",
-            "SAVE", "SCALE", "SCAN", "SCANNER", "SCENARIO", "SCHEDULE", "SCREEN", "SCRIPT", "SCROLL", "SEARCH",
-            "SECURE", "SECURITY", "SEGMENT", "SELECT", "SEND", "SENSOR", "SEQUENCE", "SERIAL", "SERVE", "SERVER",
-            "SERVICE", "SESSION", "SET", "SETTINGS", "SHIFT", "SHORTCUT", "SHUTDOWN", "SIDEBAR", "SIGNAL", "SIGNATURE",
-            "SILENT", "SIMPLE", "SIMULATION", "SINGLE", "SITE", "SIZE", "SLM", "SMART", "SNAPSHOT", "SOCKET",
-            "SOFTWARE", "SOURCE", "SPACE", "SPATIAL", "SPEAK", "SPEECH", "SPEED", "STACK", "STANDARD", "STANDBY",
-            "START", "STATE", "STATIC", "STATISTICS", "STATUS", "STEREOSCOPIC", "STOP", "STORAGE", "STREAM", "STRING",
-            "STRUCTURE", "STYLE", "SUBMIT", "SUBSYSTEM", "SUCCESS", "SUGGESTION", "SUPERVISOR", "SUPPORT", "SURVEILLANCE", "SWITCH",
-            "SYNAPSE", "SYNCHRONIZE", "SYNTAX", "SYSTEM", "TAB", "TABLE", "TAG", "TARGET", "TASK", "TEAM",
-            "TECH", "TECHNOLOGY", "TELEMETRY", "TEMPERATURE", "TEMPLATE", "TERMINAL", "TEST", "TEXT", "THEME", "THREAD",
-            "THRESHOLD", "THUMB", "TIME", "TIMEOUT", "TIMER", "TITLE", "TOGGLE", "TOKEN", "TOOL", "TOOLKIT",
-            "TOP", "TOUCH", "TRACE", "TRACK", "TRACKING", "TRAFFIC", "TRANSFORM", "TRANSLATE", "TRANSMIT", "TRIGGER",
-            "TRUE", "TRY", "TUNNEL", "TYPE", "TYPING", "ULTRA", "UNAUTHORIZED", "UNDER", "UNIT", "UNKNOWN",
-            "UNLOCK", "UPDATE", "UPGRADE", "UPLOAD", "URL", "USER", "UTILITY", "VALIDATE", "VALUE", "VARIABLE",
-            "VECTOR", "VERIFY", "VERSION", "VIDEO", "VIEW", "VIEWPORT", "VIRTUAL", "VISION", "VOICE", "VOLUME",
-            "WAIT", "WARNING", "WATCH", "WAVE", "WEATHER", "WEB", "WEBCAM", "WEBGPU", "WEBRTC", "WEIGHT",
-            "WINDOW", "WIRELESS", "WORD", "WORK", "WORKER", "WORKSPACE", "WORLD", "WPM", "WRITE", "ZONE"
-        ];
+        // HOLOGRAPHIC GPS RADAR CANVAS
+        let radarSweepAngle = 0;
+        function renderGpsRadar() {
+            radarCtx.clearRect(0, 0, 48, 48);
+            const cx = 24;
+            const cy = 24;
 
-        const BIGRAMS = {
-            "HELLO": ["world", "there", "system"],
-            "ACTIVATE": ["system", "command", "protocol"],
-            "SYSTEM": ["online", "ready", "status"],
-            "CYBER": ["matrix", "security", "space"],
-            "START": ["engine", "process", "recording"],
-            "CLEAR": ["buffer", "log", "screen"],
-            "INPUT": ["mode", "device", "data"],
-            "OPEN": ["terminal", "console", "settings"],
-            "SECURITY": ["authorized", "enabled", "check"],
-            "THE": ["system", "matrix", "user"]
-        };
+            radarCtx.strokeStyle = "rgba(0, 242, 255, 0.4)";
+            radarCtx.lineWidth = 1;
+            radarCtx.beginPath();
+            radarCtx.arc(cx, cy, 20, 0, Math.PI * 2);
+            radarCtx.arc(cx, cy, 10, 0, Math.PI * 2);
+            radarCtx.stroke();
+
+            radarSweepAngle += 0.05;
+            radarCtx.beginPath();
+            radarCtx.moveTo(cx, cy);
+            radarCtx.arc(cx, cy, 22, radarSweepAngle, radarSweepAngle + 0.5);
+            radarCtx.fillStyle = "rgba(0, 242, 255, 0.35)";
+            radarCtx.fill();
+
+            radarCtx.fillStyle = "#00ff66";
+            radarCtx.beginPath();
+            radarCtx.arc(cx, cy, 2, 0, Math.PI * 2);
+            radarCtx.fill();
+
+            requestAnimationFrame(renderGpsRadar);
+        }
 
         function playSecurityChime(isSuccess) {
             if (!audioCtx) return;
@@ -1062,6 +1326,7 @@
             if (!startTime) startTime = Date.now();
             rawBuffer = rawBuffer.slice(0, caretPos) + text + rawBuffer.slice(caretPos);
             caretPos += text.length;
+            recordKeyHit(text.trim());
             renderTerminal();
         }
 
@@ -1095,33 +1360,10 @@
         function updatePredictionRibbon() {
             const rawToken = getActiveTokenBeforeCaret();
             const left = rawBuffer.slice(0, caretPos);
-            const endsWithSpace = left.endsWith(" ") || left.endsWith("\n");
-            
-            let matches = [];
+            const prevTokens = left.trim().split(/\s+/);
+            const prevWord = prevTokens.length > 1 ? prevTokens[prevTokens.length - 2] : "";
 
-            if (endsWithSpace) {
-                const prevTokens = left.trim().split(/\s+/);
-                const prev = prevTokens.length > 0 ? prevTokens[prevTokens.length - 1].toUpperCase() : "";
-                const bigramMatches = BIGRAMS[prev] || ["system", "online", "command"];
-                matches = bigramMatches.map(w => formatWordCase(rawToken, w));
-            } else if (rawToken.length > 0) {
-                const searchUpper = rawToken.toUpperCase();
-                const prefixMatches = DICTIONARY.filter(w => w.startsWith(searchUpper));
-                const allMatches = prefixMatches.length < 3 ? prefixMatches.concat(DICTIONARY.filter(w => !prefixMatches.includes(w) && w.includes(searchUpper))) : prefixMatches;
-                matches = allMatches.slice(0, 3).map(w => formatWordCase(rawToken, w));
-            }
-
-            const defaults = ["i", "the", "activate"].map(w => formatWordCase(rawToken, w));
-            for (let i = 0; i < 3; i++) {
-                const pill = document.getElementById(`pred_${i}`);
-                if (matches[i]) {
-                    pill.innerText = matches[i];
-                    pill.classList.remove('empty');
-                } else {
-                    pill.innerText = defaults[i];
-                    pill.classList.add('empty');
-                }
-            }
+            nlpWorker.postMessage({ rawToken, prevWord });
         }
 
         function injectPrediction(word) {
@@ -1149,6 +1391,39 @@
             pill.onclick = () => injectPrediction(pill.innerText);
         }
 
+        // STARK AI CYBERPUNK ASSISTANT TERMINAL ENGINE
+        function queryStarkAI(promptText) {
+            const query = promptText.replace('/ai', '').trim();
+            if (!query) {
+                insertTextAtCaret("\n[STARK_AI]: Ready. Enter command or question.");
+                return;
+            }
+
+            insertTextAtCaret(`\n[STARK_AI]: Processing query: "${query}"...`);
+            
+            setTimeout(() => {
+                let reply = "Directive executed. All spatial nodes operational.";
+                const q = query.toLowerCase();
+
+                if (q.includes("status") || q.includes("system")) {
+                    reply = "G-BOARD Core V9.0 running nominal at 60 FPS. Biometrics active, GPS lock confirmed.";
+                } else if (q.includes("who are you") || q.includes("identity")) {
+                    reply = "I am STARK AI, the neural coprocessor integrated into your Ghost_Keyboard OS.";
+                } else if (q.includes("help") || q.includes("command")) {
+                    reply = "Commands: /ai <prompt>, CLR (Flush), SPEAK (Readout), MIC (STT), COPY (Clipboard).";
+                } else if (q.includes("time") || q.includes("date")) {
+                    reply = `Current local timestamp: ${new Date().toLocaleTimeString()} ${new Date().toLocaleDateString()}.`;
+                } else {
+                    reply = `Neural synthesis complete for: "${query}". Buffer state synced to memory bus.`;
+                }
+
+                rawBuffer += `\n[STARK_AI]: ${reply}\n> `;
+                caretPos = rawBuffer.length;
+                renderTerminal();
+                speakText(reply);
+            }, 600);
+        }
+
         function setInputMode(modeIndex) {
             currentModeIndex = modeIndex % INPUT_MODES.length;
             const mode = INPUT_MODES[currentModeIndex];
@@ -1163,6 +1438,7 @@
 
         document.getElementById('btn_toggle_mode').onclick = () => setInputMode(currentModeIndex + 1);
 
+        // SPEECH RECOGNITION (MIC)
         let recognition = null;
         let isRecording = false;
 
@@ -1201,6 +1477,7 @@
             }
         }
 
+        // BINAURAL 3D AUDIO CLICK ENGINE
         function playSpatialClick(normalizedX = 0) {
             if (!audioCtx) return;
             try {
@@ -1257,6 +1534,7 @@
                     async (position) => {
                         const lat = position.coords.latitude;
                         const lon = position.coords.longitude;
+                        document.getElementById('stat_coords').innerText = `${lat.toFixed(2)}° N, ${lon.toFixed(2)}° E`;
 
                         try {
                             const revGeoRes = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`);
@@ -1283,6 +1561,31 @@
                     { enableHighAccuracy: false, timeout: 6000, maximumAge: 60000 }
                 );
             }
+        }
+
+        // PEERJS WEBRTC SMARTPHONE GYROSCOPIC MOUSE
+        let peer = null;
+        function initWebRTCBridge() {
+            peer = new Peer();
+            peer.on('open', (id) => {
+                lblPeerId.innerText = `ID: ${id}`;
+                document.getElementById('rss_ticker_stream').innerText = `PEER LINK READY [${id}]... SMARTPHONE GYROSCOPE CHANNEL ACTIVE...`;
+            });
+
+            peer.on('connection', (conn) => {
+                conn.on('data', (data) => {
+                    if (data && data.x !== undefined && data.y !== undefined) {
+                        cursor.style.display = 'block';
+                        cursor.style.left = `${data.x * window.innerWidth}px`;
+                        cursor.style.top = `${data.y * window.innerHeight}px`;
+
+                        if (data.click) {
+                            const el = document.elementFromPoint(data.x * window.innerWidth, data.y * window.innerHeight);
+                            if (el && el.click) el.click();
+                        }
+                    }
+                });
+            });
         }
 
         const qwertyRows = [
@@ -1319,6 +1622,7 @@
             [
                 { primary: "◀", class: "k-nav", special: true },
                 { primary: "▶", class: "k-nav", special: true },
+                { primary: "AI", class: "k-ai", special: true },
                 { primary: "MIC", class: "k-fn", special: true },
                 { primary: "SPEAK", class: "k-fn", special: true },
                 { primary: "SPACE", class: "k-space", special: true },
@@ -1382,6 +1686,17 @@
             renderTerminal();
         };
 
+        document.getElementById('btn_open_webrtc').onclick = () => {
+            webrtcModal.classList.add('open');
+            if (!peer) initWebRTCBridge();
+        };
+        document.getElementById('btn_close_webrtc').onclick = () => webrtcModal.classList.remove('open');
+
+        document.getElementById('btn_trigger_ai').onclick = () => {
+            const left = rawBuffer.slice(0, caretPos);
+            queryStarkAI(left);
+        };
+
         function updateMetrics() {
             const len = rawBuffer.length;
             document.getElementById('stat_chars').innerText = `${len} (${caretPos})`;
@@ -1413,6 +1728,8 @@
             } else if (key === "SHIFT") {
                 isShift = !isShift;
                 buildKeyboard();
+            } else if (key === "AI") {
+                queryStarkAI(rawBuffer.slice(0, caretPos));
             } else if (key === "◀") {
                 moveCaret(-1);
             } else if (key === "▶") {
@@ -1427,7 +1744,11 @@
             } else if (key === "TAB") {
                 insertTextAtCaret("    ");
             } else if (key === "ENTER") {
-                insertTextAtCaret("\n");
+                if (rawBuffer.includes('/ai')) {
+                    queryStarkAI(rawBuffer);
+                } else {
+                    insertTextAtCaret("\n");
+                }
             } else if (key === "SPACE") {
                 insertTextAtCaret(" ");
             } else if (key === "MIC") {
@@ -1463,7 +1784,11 @@
                 deleteCharBeforeCaret();
                 playSpatialClick(0);
             } else if (e.key === "Enter") {
-                insertTextAtCaret("\n");
+                if (rawBuffer.includes('/ai')) {
+                    queryStarkAI(rawBuffer);
+                } else {
+                    insertTextAtCaret("\n");
+                }
                 playSpatialClick(0);
             } else if (e.key === "Tab") {
                 e.preventDefault();
@@ -1503,7 +1828,6 @@
                         statSec.className = "stat-val sec-auth";
                         playSecurityChime(true);
                         
-                        // Strict Speech-Gated Unlock Routine
                         speakText("Scan Completed, Approved! Accessing Ghost Keyboard", () => {
                             isAuthorized = true;
                             isSpeakingAuth = false;
@@ -1649,6 +1973,7 @@
             resizeCanvases();
             loadVoices();
             renderNeuralPlexus();
+            renderGpsRadar();
 
             const constraints = {
                 video: {
