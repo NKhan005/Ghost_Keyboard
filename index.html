@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="description" content="G-BOARD V9.2.0 - Adaptive High-FPS Spatial Matrix Operating System">
-    <title>G-BOARD | SPATIAL OS V9.2.0</title>
+    <meta name="description" content="G-BOARD V9.3.1 - High-Performance Multi-Device Spatial OS">
+    <title>G-BOARD | SPATIAL OS V9.3.1</title>
     
     <!-- Computer Vision & Communication CDNs -->
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
@@ -48,7 +48,7 @@
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none; 
-            touch-action: none;
+            touch-action: manipulation;
         }
 
         body { 
@@ -73,15 +73,6 @@
             filter: contrast(125%) brightness(85%); 
         }
 
-        #fx_canvas {
-            position: fixed;
-            inset: 0;
-            width: 100vw;
-            height: 100dvh;
-            pointer-events: none;
-            z-index: 120;
-        }
-
         /* BIOMETRIC SHIELD */
         #security_shield {
             position: fixed;
@@ -92,7 +83,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: opacity 0.5s cubic-bezier(0.2, 0, 0, 1), visibility 0.5s ease;
+            transition: opacity 0.4s cubic-bezier(0.2, 0, 0, 1), visibility 0.4s ease;
         }
 
         #security_shield.unlocked {
@@ -112,8 +103,8 @@
 
         #bio_aperture_wrapper {
             position: relative;
-            width: clamp(240px, 32vmin, 320px);
-            height: clamp(240px, 32vmin, 320px);
+            width: clamp(210px, 32vmin, 280px);
+            height: clamp(210px, 32vmin, 280px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -122,7 +113,7 @@
 
         #bio_camera_viewport {
             position: absolute;
-            inset: 10px;
+            inset: 8px;
             border-radius: 50%;
             overflow: hidden;
             z-index: 2;
@@ -144,13 +135,13 @@
             inset: 0;
             border: 2px solid rgba(0, 242, 255, 0.7);
             border-radius: 50%;
-            box-shadow: 0 0 25px rgba(0, 242, 255, 0.5), inset 0 0 20px rgba(0, 242, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.5), inset 0 0 15px rgba(0, 242, 255, 0.2);
             z-index: 4;
         }
 
         .bio-ring-dots {
             position: absolute;
-            inset: -8px;
+            inset: -6px;
             border: 2px dotted rgba(0, 242, 255, 0.75);
             border-radius: 50%;
             animation: rotateClockwise 28s linear infinite;
@@ -159,7 +150,7 @@
 
         .bio-ring-middle {
             position: absolute;
-            inset: 6px;
+            inset: 5px;
             border: 1px dashed rgba(0, 242, 255, 0.5);
             border-radius: 50%;
             animation: rotateCounterClockwise 16s linear infinite;
@@ -168,7 +159,7 @@
 
         #bio_radar_sweep {
             position: absolute;
-            inset: 10px;
+            inset: 8px;
             border-radius: 50%;
             background: conic-gradient(from 0deg, rgba(0, 242, 255, 0.35) 0deg, transparent 75deg);
             animation: radarSweep 2.4s linear infinite;
@@ -179,7 +170,7 @@
         #bio_aperture_wrapper.authorized .bio-ring-outer,
         #bio_aperture_wrapper.authorized .bio-ring-dots {
             border-color: var(--success);
-            box-shadow: 0 0 45px rgba(0, 255, 102, 0.9), inset 0 0 30px rgba(0, 255, 102, 0.35);
+            box-shadow: 0 0 35px rgba(0, 255, 102, 0.9), inset 0 0 20px rgba(0, 255, 102, 0.35);
         }
 
         #bio_aperture_wrapper.authorized #bio_radar_sweep {
@@ -194,24 +185,24 @@
             position: relative;
             z-index: 10;
             font-family: 'Orbitron', monospace, sans-serif;
-            font-size: clamp(0.85rem, 1.8vw, 1.15rem);
-            letter-spacing: clamp(2px, 0.5vw, 5px);
+            font-size: clamp(0.78rem, 1.6vw, 1.05rem);
+            letter-spacing: clamp(2px, 0.4vw, 4px);
             font-weight: 800;
             color: #00f2ff;
             text-align: center;
-            margin-top: 30px;
-            text-shadow: 0 0 16px var(--glow);
+            margin-top: 24px;
+            text-shadow: 0 0 14px var(--glow);
             text-transform: uppercase;
         }
 
         #bio_progress_bar {
             position: relative;
             z-index: 10;
-            width: min(320px, 84vw);
-            height: 6px;
+            width: min(280px, 80vw);
+            height: 5px;
             background: rgba(0, 30, 50, 0.7);
             border-radius: 4px;
-            margin-top: 12px;
+            margin-top: 10px;
             overflow: hidden;
             border: 1px solid rgba(0, 242, 255, 0.25);
         }
@@ -220,15 +211,15 @@
             width: 0%;
             height: 100%;
             background: #00f2ff;
-            box-shadow: 0 0 16px #00f2ff;
+            box-shadow: 0 0 14px #00f2ff;
             transition: width 0.08s linear, background-color 0.3s;
         }
 
-        /* CURSOR RETICLE */
+        /* RETICLE */
         #finger_cursor {
             position: fixed;
-            width: 36px;
-            height: 36px;
+            width: 34px;
+            height: 34px;
             pointer-events: none;
             z-index: 150;
             display: none;
@@ -243,7 +234,6 @@
             border: 2px dashed var(--neon);
             border-radius: 50%;
             animation: spinReticle 6s linear infinite;
-            transition: border-color 0.15s ease;
         }
 
         #finger_cursor .reticle-core {
@@ -251,44 +241,31 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             border: 1px solid var(--neon);
             border-radius: 2px;
             background: rgba(0, 242, 255, 0.25);
-            transition: all 0.15s ease;
         }
 
-        #finger_cursor.hovering { width: 42px; height: 42px; }
-        #finger_cursor.hovering .reticle-bracket {
-            border-style: solid;
-            border-width: 2px;
-            box-shadow: 0 0 14px var(--neon);
-        }
+        #finger_cursor.hovering { width: 40px; height: 40px; }
+        #finger_cursor.hovering .reticle-bracket { border-style: solid; box-shadow: 0 0 12px var(--neon); }
 
-        #finger_cursor.locked .reticle-bracket {
-            border-color: #00ff66;
-            box-shadow: 0 0 20px #00ff66;
-            animation-duration: 1.5s;
-        }
-        #finger_cursor.locked .reticle-core {
-            background: #00ff66;
-            border-color: #00ff66;
-            transform: translate(-50%, -50%) rotate(45deg);
-        }
+        #finger_cursor.locked .reticle-bracket { border-color: #00ff66; box-shadow: 0 0 16px #00ff66; }
+        #finger_cursor.locked .reticle-core { background: #00ff66; border-color: #00ff66; transform: translate(-50%, -50%) rotate(45deg); }
 
         @keyframes spinReticle { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         #main_title { 
             position: fixed; 
-            top: clamp(24px, 4vh, 32px); 
+            top: clamp(26px, 4vh, 32px); 
             left: 50%; 
             transform: translateX(-50%); 
             font-family: 'Orbitron', sans-serif; 
-            font-size: clamp(1rem, 2vw, 1.6rem); 
+            font-size: clamp(0.95rem, 1.8vw, 1.4rem); 
             font-weight: 900; 
-            letter-spacing: clamp(4px, 1vw, 10px); 
-            text-shadow: 0 0 20px var(--glow); 
+            letter-spacing: clamp(3px, 0.8vw, 8px); 
+            text-shadow: 0 0 18px var(--glow); 
             z-index: 100;
             color: #ffffff; 
             text-transform: uppercase;
@@ -297,13 +274,13 @@
             white-space: nowrap;
         }
 
-        /* RSS TICKER WITH ISOLATED BADGE */
+        /* RSS TICKER */
         #rss_ticker_bar {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
-            height: 24px;
+            height: 22px;
             background: #01060d;
             border-bottom: 1px solid var(--neon-dim);
             z-index: 110;
@@ -311,14 +288,14 @@
             align-items: center;
             overflow: hidden;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
+            font-size: 0.62rem;
         }
 
         .ticker-tag-container {
             position: relative;
             z-index: 5;
             background: #01060d;
-            padding-right: 8px;
+            padding-right: 6px;
             display: flex;
             align-items: center;
             height: 100%;
@@ -328,9 +305,8 @@
             background: var(--neon);
             color: #000000;
             font-weight: 900;
-            padding: 2px 10px;
+            padding: 2px 8px;
             font-family: 'Orbitron', sans-serif;
-            flex-shrink: 0;
             border-radius: 0 2px 2px 0;
             letter-spacing: 1px;
         }
@@ -359,35 +335,42 @@
         #telemetry_box { 
             position: fixed; 
             top: clamp(28px, 4.5vh, 34px); 
-            right: clamp(10px, 2vw, 20px); 
-            width: clamp(210px, 20vw, 260px); 
-            padding: 8px 12px; 
+            right: clamp(8px, 1.5vw, 16px); 
+            width: clamp(190px, 18vw, 240px); 
+            padding: 6px 10px; 
             background: var(--panel-bg); 
             -webkit-backdrop-filter: blur(14px);
             backdrop-filter: blur(14px); 
             border: 1px solid rgba(255, 255, 255, 0.15); 
-            border-right: 4px solid var(--neon);
+            border-right: 3px solid var(--neon);
             border-radius: 6px; 
             font-family: 'JetBrains Mono', monospace; 
-            font-size: clamp(0.55rem, 1vw, 0.66rem); 
+            font-size: clamp(0.52rem, 0.9vw, 0.64rem); 
             z-index: 100;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
             display: flex;
             flex-direction: column;
-            gap: 3px;
+            gap: 2px;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+
+        @media (max-width: 900px), (max-height: 600px) {
+            #telemetry_box {
+                display: none;
+            }
         }
 
         .sys-status-header {
             color: var(--neon); 
             font-weight: bold; 
             border-bottom: 1px solid var(--neon-dim); 
-            padding-bottom: 3px;
+            padding-bottom: 2px;
             display: flex;
             justify-content: space-between;
         }
 
         .fps-display { color: #ffffff; }
-        .stat-line { display: flex; justify-content: space-between; gap: 6px; }
+        .stat-line { display: flex; justify-content: space-between; gap: 4px; }
         .stat-label { opacity: 0.8; }
         .stat-val { font-weight: bold; color: #ffffff; text-align: right; }
         .sec-locked { color: var(--alert); }
@@ -397,23 +380,23 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-top: 3px;
-            padding-top: 3px;
+            margin-top: 2px;
+            padding-top: 2px;
             border-top: 1px dashed var(--neon-dim);
         }
 
         .radar-label-title { font-weight: bold; color: var(--neon); }
-        .radar-label-coords { font-size: 0.55rem; opacity: 0.7; }
+        .radar-label-coords { font-size: 0.52rem; opacity: 0.7; }
 
         #gps_radar_canvas {
-            width: 40px;
-            height: 40px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             border: 1px solid var(--neon);
             background: rgba(0, 20, 30, 0.8);
         }
 
-        /* FLUID SPATIAL WORKSPACE (SLIDES WHEN CONFIG OPENS) */
+        /* FLUID SPATIAL WORKSPACE */
         #workspace {
             width: 100vw;
             height: 100dvh;
@@ -421,20 +404,20 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            gap: clamp(4px, 0.8vh, 8px);
-            padding-top: clamp(20px, 4vh, 40px);
-            padding-bottom: clamp(65px, 10vh, 85px);
+            gap: clamp(3px, 0.6vh, 6px);
+            padding-top: clamp(15px, 3vh, 30px);
+            padding-bottom: clamp(55px, 8vh, 75px);
             transition: transform 0.35s cubic-bezier(0.2, 0, 0, 1), opacity 0.3s ease;
             z-index: 10;
         }
 
         body.dock-active #workspace {
-            transform: translateX(-140px);
+            transform: translateX(-130px);
         }
 
         @media (max-width: 900px) {
             body.dock-active #workspace {
-                transform: scale(0.85) translateX(-80px);
+                transform: scale(0.85) translateX(-60px);
             }
         }
 
@@ -446,8 +429,8 @@
 
         #prediction_ribbon {
             display: flex;
-            gap: 6px;
-            width: min(92vw, 840px);
+            gap: 4px;
+            width: min(94vw, 820px);
             justify-content: center;
         }
 
@@ -455,10 +438,10 @@
             flex: 1;
             background: rgba(0, 242, 255, 0.08);
             border: 1px solid var(--neon-dim);
-            border-radius: 6px;
-            padding: 5px 8px;
+            border-radius: 5px;
+            padding: 4px 6px;
             font-family: 'Orbitron', monospace;
-            font-size: clamp(0.65rem, 1.2vw, 0.8rem);
+            font-size: clamp(0.62rem, 1.1vw, 0.76rem);
             font-weight: 700;
             color: #ffffff;
             text-align: center;
@@ -467,17 +450,17 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            min-height: 28px;
+            min-height: 26px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .predict-pill.empty { opacity: 0.45; border-style: dashed; }
-        .predict-pill.hover, .predict-pill:hover {
+        .predict-pill.hover, .predict-pill:hover, .predict-pill:active {
             background: var(--neon);
             color: #000000;
-            box-shadow: 0 0 16px var(--neon);
+            box-shadow: 0 0 14px var(--neon);
             transform: scale(1.02);
             opacity: 1;
         }
@@ -485,39 +468,39 @@
         #keyboard_overlay { 
             display: flex; 
             flex-direction: column; 
-            gap: clamp(2px, 0.5vh, 4px); 
-            padding: clamp(6px, 1vw, 10px); 
-            background: rgba(2, 18, 24, 0.75); 
+            gap: clamp(2px, 0.4vh, 3px); 
+            padding: clamp(4px, 0.8vw, 8px); 
+            background: rgba(2, 18, 24, 0.8); 
             -webkit-backdrop-filter: blur(16px);
             backdrop-filter: blur(16px); 
-            border-radius: 10px; 
+            border-radius: 8px; 
             border: 1px solid rgba(255, 255, 255, 0.12); 
             box-shadow: 0 0 35px rgba(0, 0, 0, 0.7);
-            width: min(92vw, 840px);
+            width: min(94vw, 820px);
         }
 
         .row { display: flex; justify-content: center; gap: clamp(2px, 0.3vw, 4px); width: 100%; }
         
         .key { 
             flex: 1;
-            height: clamp(28px, 4.4vh, 38px); 
+            height: clamp(26px, 4.2vh, 36px); 
             border: 1px solid rgba(255, 255, 255, 0.18); 
             display: flex; 
             flex-direction: column;
             align-items: center; 
             justify-content: center; 
-            border-radius: 4px; 
+            border-radius: 3px; 
             font-weight: 700; 
             background: rgba(255, 255, 255, 0.04); 
-            transition: transform 0.06s ease, background 0.06s ease, box-shadow 0.1s ease; 
+            transition: transform 0.05s ease, background 0.05s ease, box-shadow 0.08s ease; 
             font-family: 'Orbitron', 'JetBrains Mono', sans-serif; 
-            font-size: clamp(0.62rem, 1.1vw, 0.78rem); 
+            font-size: clamp(0.58rem, 1vw, 0.74rem); 
             position: relative; 
             overflow: hidden; 
             color: var(--key-text);
             cursor: pointer;
             min-width: 0;
-            padding: 0 2px;
+            padding: 0 1px;
         }
 
         .key .sub-char { font-size: 0.55em; opacity: 0.6; margin-bottom: -2px; }
@@ -527,7 +510,7 @@
         .key.k-enter { flex: 1.8; background: rgba(0, 242, 255, 0.12); }
         .key.k-shift { flex: 2.1; }
         .key.k-nav { flex: 0.9; background: rgba(0, 242, 255, 0.1); }
-        .key.k-space { flex: 5.2; border-bottom: 3px solid var(--neon); }
+        .key.k-space { flex: 5.2; border-bottom: 2px solid var(--neon); }
         .key.k-fn { flex: 1.3; background: rgba(255, 255, 255, 0.08); font-size: 0.72em; }
         .key.k-ai { flex: 1.3; background: rgba(189, 0, 255, 0.15); border-color: var(--ai-purple); color: #e48fff; }
         .key.k-sym { flex: 1.2; background: rgba(0, 242, 255, 0.12); }
@@ -539,15 +522,22 @@
         .key.hover, .key:focus { 
             background: var(--neon); 
             color: #000000; 
-            box-shadow: 0 0 16px var(--neon); 
+            box-shadow: 0 0 14px var(--neon); 
             transform: scale(1.04); 
             outline: none;
             z-index: 2;
         }
 
+        .key.key-pressed-flash {
+            background: #ffffff !important;
+            color: #000000 !important;
+            box-shadow: 0 0 25px #ffffff, 0 0 10px var(--neon) !important;
+            transform: scale(0.96) !important;
+        }
+
         .key.heatmap-boost {
             border-color: #ffaa00;
-            box-shadow: inset 0 0 8px rgba(255, 170, 0, 0.3);
+            box-shadow: inset 0 0 6px rgba(255, 170, 0, 0.3);
         }
         
         #clr_fill { 
@@ -562,16 +552,17 @@
             transition: width 0.04s linear; 
         }
 
+        /* TERMINAL & PROXY */
         #terminal_container {
             position: fixed;
-            bottom: clamp(6px, 1.5vh, 12px);
+            bottom: clamp(6px, 1.2vh, 10px);
             left: 50%;
             transform: translateX(-50%);
-            width: min(92vw, 840px);
+            width: min(94vw, 820px);
             background: rgba(2, 10, 14, 0.96);
             border: 1px solid var(--neon-dim);
-            border-left: 5px solid var(--neon);
-            border-radius: 0 8px 8px 0;
+            border-left: 4px solid var(--neon);
+            border-radius: 0 6px 6px 0;
             box-shadow: 0 8px 30px rgba(0,0,0,0.85);
             z-index: 90;
             display: flex;
@@ -580,33 +571,40 @@
         }
 
         body.dock-active #terminal_container {
-            transform: translateX(calc(-50% - 140px));
+            transform: translateX(calc(-50% - 130px));
         }
 
         @media (max-width: 900px) {
             body.dock-active #terminal_container {
-                transform: translateX(calc(-50% - 80px)) scale(0.85);
+                transform: translateX(calc(-50% - 60px)) scale(0.85);
             }
         }
 
         #terminal_log { 
             width: 100%;
-            padding: 8px 14px; 
+            padding: 8px 12px; 
             font-family: 'JetBrains Mono', monospace; 
-            font-size: clamp(0.78rem, 1.3vw, 0.95rem); 
+            font-size: clamp(0.74rem, 1.2vw, 0.9rem); 
             white-space: pre-wrap;
             word-break: break-word;
-            min-height: 42px; 
-            max-height: 130px;
+            min-height: 38px; 
+            max-height: 120px;
             overflow-y: auto;
             color: #ffffff;
             cursor: text;
-            line-height: 1.4;
+            line-height: 1.35;
         }
 
-        #terminal_log::-webkit-scrollbar { width: 4px; }
-        #terminal_log::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
-        #terminal_log::-webkit-scrollbar-thumb { background: var(--neon); border-radius: 4px; }
+        #mobile_keyboard_proxy {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
 
         .terminal-segment { cursor: pointer; transition: background 0.1s; border-radius: 2px; }
         .terminal-segment:hover { background: rgba(0, 242, 255, 0.2); }
@@ -619,10 +617,10 @@
 
         .terminal-caret {
             display: inline-block;
-            width: 8px;
+            width: 7px;
             height: 1.15em;
             background: var(--neon);
-            box-shadow: 0 0 10px var(--neon);
+            box-shadow: 0 0 8px var(--neon);
             margin: 0 1px;
             vertical-align: middle;
             animation: caretBlink 0.9s infinite;
@@ -634,15 +632,15 @@
         #sidebar_dock {
             position: fixed;
             top: 0;
-            right: -300px;
-            width: 280px;
+            right: -280px;
+            width: 260px;
             height: 100dvh;
             background: var(--panel-bg); 
             -webkit-backdrop-filter: blur(16px);
             backdrop-filter: blur(16px);
             border-left: 2px solid var(--neon);
             box-shadow: -8px 0 30px rgba(0,0,0,0.85);
-            padding: 16px 14px;
+            padding: 16px 12px;
             display: flex;
             flex-direction: column;
             gap: 8px;
@@ -656,57 +654,47 @@
         #btn_sidebar_toggle {
             position: fixed;
             top: clamp(28px, 4.5vh, 34px); 
-            left: clamp(10px, 2vw, 20px); 
+            left: clamp(8px, 1.5vw, 16px); 
             background: rgba(2, 18, 24, 0.85);
             border: 1px solid var(--neon);
             color: var(--neon);
-            padding: 6px 14px;
-            border-radius: 6px;
+            padding: 5px 12px;
+            border-radius: 5px;
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.72rem;
+            font-size: 0.68rem;
             font-weight: 700;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             cursor: pointer;
             z-index: 110;
             transition: all 0.2s ease;
-            box-shadow: 0 0 10px var(--neon-dim);
-        }
-
-        #btn_sidebar_toggle:hover, #btn_sidebar_toggle:focus {
-            background: var(--neon);
-            color: #000;
-            box-shadow: 0 0 18px var(--neon);
-            outline: none;
         }
 
         .dock-header {
             color: var(--neon);
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             font-weight: bold;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             border-bottom: 1px solid var(--neon-dim);
-            padding-bottom: 6px;
+            padding-bottom: 5px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .dock-close-btn { background: none; border: none; color: var(--neon); font-size: 1rem; cursor: pointer; }
-        .control-group { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+        .control-group { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
 
         .sidebar-btn {
             background: rgba(255, 255, 255, 0.06);
             border: 1px solid var(--neon-dim);
             color: #ffffff;
-            padding: 9px 11px;
-            border-radius: 6px;
+            padding: 8px 10px;
+            border-radius: 5px;
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.7rem;
+            font-size: 0.68rem;
             font-weight: 700;
-            letter-spacing: 1px;
             cursor: pointer;
-            transition: all 0.2s ease;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -715,7 +703,7 @@
         .sidebar-btn:hover, .sidebar-btn:focus {
             background: var(--neon);
             color: #000000;
-            box-shadow: 0 0 15px var(--neon);
+            box-shadow: 0 0 12px var(--neon);
             outline: none;
         }
 
@@ -728,11 +716,11 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: min(360px, 88vw);
+            width: min(340px, 86vw);
             background: rgba(2, 14, 24, 0.96);
             border: 2px solid var(--neon);
             box-shadow: 0 0 40px var(--glow);
-            padding: 18px;
+            padding: 16px;
             border-radius: 8px;
             z-index: 195;
             display: none;
@@ -743,16 +731,15 @@
 
         #webrtc_modal.open { display: flex; }
 
-        .modal-heading { font-family: 'Orbitron', sans-serif; font-weight: 800; color: var(--neon); }
-        .modal-subtext { font-size: 0.72rem; opacity: 0.85; }
+        .modal-heading { font-family: 'Orbitron', sans-serif; font-weight: 800; color: var(--neon); font-size: 0.9rem; }
+        .modal-subtext { font-size: 0.7rem; opacity: 0.85; }
 
         .peer-id-badge {
             background: rgba(0, 242, 255, 0.1);
             border: 1px dashed var(--neon);
             padding: 8px;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
+            font-size: 0.82rem;
             color: #ffffff;
             cursor: pointer;
         }
@@ -762,18 +749,18 @@
             top: 50%; 
             left: 50%; 
             transform: translate(-50%, -50%); 
-            padding: 16px 36px; 
+            padding: 15px 32px; 
             font-family: 'Orbitron', sans-serif; 
             background: var(--neon); 
             color: #000000; 
             border: none; 
             cursor: pointer; 
             z-index: 200; 
-            font-size: clamp(0.95rem, 1.8vw, 1.2rem); 
+            font-size: clamp(0.9rem, 1.8vw, 1.15rem); 
             font-weight: 900; 
-            letter-spacing: 3px;
-            border-radius: 8px; 
-            box-shadow: 0 0 35px var(--neon); 
+            letter-spacing: 2px;
+            border-radius: 6px; 
+            box-shadow: 0 0 30px var(--neon); 
             white-space: nowrap;
         }
     </style>
@@ -782,9 +769,8 @@
 
     <button id="start_btn" aria-label="Launch G-BOARD Operating System">LAUNCH G-BOARD MATRIX</button>
     <video id="video_input"></video>
-    <canvas id="fx_canvas"></canvas>
 
-    <!-- RSS TICKER BAR -->
+    <!-- RSS TICKER -->
     <div id="rss_ticker_bar">
         <div class="ticker-tag-container">
             <span class="ticker-tag">NET:RSS</span>
@@ -840,7 +826,7 @@
                 <div class="radar-label-title">GPS RADAR</div>
                 <div class="radar-label-coords" id="stat_coords">--° N, --° E</div>
             </div>
-            <canvas id="gps_radar_canvas" width="40" height="40"></canvas>
+            <canvas id="gps_radar_canvas" width="34" height="34"></canvas>
         </div>
     </div>
 
@@ -855,6 +841,7 @@
 
     <div id="terminal_container">
         <div id="terminal_log"></div>
+        <input type="text" id="mobile_keyboard_proxy" aria-label="Terminal Input Proxy" placeholder="Type here..." autocomplete="off" spellcheck="false">
     </div>
 
     <!-- COMMAND SIDEBAR DOCK -->
@@ -906,12 +893,16 @@
     </div>
 
     <script>
+        const isMobileDevice = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
         const videoElement = document.getElementById('video_input');
         const bioLiveVideo = document.getElementById('bio_live_video');
+        
+        // Programmatic inline playback configuration (satisfies cross-browser linters)
         videoElement.playsInline = true;
         bioLiveVideo.playsInline = true;
 
         const terminalLog = document.getElementById('terminal_log');
+        const mobileProxy = document.getElementById('mobile_keyboard_proxy');
         const keyboard = document.getElementById('keyboard_overlay');
         const workspace = document.getElementById('workspace');
         const startBtn = document.getElementById('start_btn');
@@ -925,9 +916,6 @@
         const neuralCtx = neuralBgCanvas.getContext('2d');
         const gpsRadarCanvas = document.getElementById('gps_radar_canvas');
         const radarCtx = gpsRadarCanvas.getContext('2d');
-
-        const fxCanvas = document.getElementById('fx_canvas');
-        const fxCtx = fxCanvas.getContext('2d');
         
         const bioStatusText = document.getElementById('bio_status_text');
         const bioProgressFill = document.getElementById('bio_progress_fill');
@@ -939,7 +927,7 @@
 
         const FACE_LOCK_TIMEOUT = 6000;
         let isAuthorized = false;
-        let isSpeakingAuth = false;
+        let isUnlockingInProgress = false;
         let scanProgress = 0;
         let lastFaceDetectedTime = 0;
 
@@ -971,50 +959,10 @@
             }
         }
 
-        // KINETIC PARTICLE ENGINE
-        const particles = [];
-        function emitKeyParticles(x, y) {
-            const themeColor = getComputedStyle(document.body).getPropertyValue('--neon').trim() || '#00f2ff';
-            for (let i = 0; i < 16; i++) {
-                const angle = Math.random() * Math.PI * 2;
-                const speed = Math.random() * 5 + 2;
-                particles.push({
-                    x: x,
-                    y: y,
-                    vx: Math.cos(angle) * speed,
-                    vy: Math.sin(angle) * speed,
-                    life: 1.0,
-                    decay: Math.random() * 0.04 + 0.02,
-                    size: Math.random() * 3 + 1.5,
-                    color: themeColor
-                });
-            }
-        }
-
-        function renderParticleFX() {
-            fxCtx.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
-            for (let i = particles.length - 1; i >= 0; i--) {
-                const p = particles[i];
-                p.x += p.vx;
-                p.y += p.vy;
-                p.life -= p.decay;
-
-                if (p.life <= 0) {
-                    particles.splice(i, 1);
-                    continue;
-                }
-
-                fxCtx.fillStyle = p.color;
-                fxCtx.globalAlpha = p.life;
-                fxCtx.shadowBlur = 8;
-                fxCtx.shadowColor = p.color;
-                fxCtx.beginPath();
-                fxCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                fxCtx.fill();
-                fxCtx.shadowBlur = 0;
-            }
-            fxCtx.globalAlpha = 1.0;
-            requestAnimationFrame(renderParticleFX);
+        function triggerKeyFlash(keyElement) {
+            if (!keyElement) return;
+            keyElement.classList.add('key-pressed-flash');
+            setTimeout(() => keyElement.classList.remove('key-pressed-flash'), 120);
         }
 
         // NLP LEVENSHTEIN WORKER
@@ -1093,19 +1041,6 @@
                 "WINDOW", "WIRELESS", "WORD", "WORK", "WORKER", "WORKSPACE", "WORLD", "WPM", "WRITE", "ZONE"
             ];
 
-            const BIGRAMS = {
-                "HELLO": ["world", "there", "system"],
-                "ACTIVATE": ["system", "command", "protocol"],
-                "SYSTEM": ["online", "ready", "status"],
-                "CYBER": ["matrix", "security", "space"],
-                "START": ["engine", "process", "recording"],
-                "CLEAR": ["buffer", "log", "screen"],
-                "INPUT": ["mode", "device", "data"],
-                "OPEN": ["terminal", "console", "settings"],
-                "SECURITY": ["authorized", "enabled", "check"],
-                "THE": ["system", "matrix", "user"]
-            };
-
             function levenshtein(a, b) {
                 const matrix = [];
                 for (let i = 0; i <= b.length; i++) matrix[i] = [i];
@@ -1127,15 +1062,11 @@
             }
 
             self.onmessage = function(e) {
-                const { rawToken, prevWord } = e.data;
+                const { rawToken } = e.data;
                 let matches = [];
 
                 if (!rawToken || rawToken.trim() === "") {
-                    if (prevWord && BIGRAMS[prevWord.toUpperCase()]) {
-                        matches = BIGRAMS[prevWord.toUpperCase()];
-                    } else {
-                        matches = ["system", "online", "activate"];
-                    }
+                    matches = ["system", "online", "activate"];
                 } else {
                     const searchUpper = rawToken.toUpperCase();
                     const direct = DICTIONARY.filter(w => w.startsWith(searchUpper));
@@ -1176,9 +1107,7 @@
         }
         if (synth) {
             loadVoices();
-            if (synth.onvoiceschanged !== undefined) {
-                synth.onvoiceschanged = loadVoices;
-            }
+            if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
         }
 
         function speakText(text, onComplete = null) {
@@ -1186,40 +1115,26 @@
                 if (onComplete) onComplete();
                 return;
             }
-            synth.cancel();
-            const cleanText = text.trim();
-            if (cleanText.length === 0) {
+            try {
+                synth.cancel();
+                const utterance = new SpeechSynthesisUtterance(text.trim());
+                utterance.rate = 1.18;
+                utterance.pitch = 1.12;
+
+                if (availableVoices.length === 0) loadVoices();
+                const femaleVoice = availableVoices.find(v => 
+                    v.lang.includes('en') && (v.name.includes('Female') || v.name.includes('Zira') || v.name.includes('Samantha') || v.name.includes('Natural'))
+                ) || availableVoices.find(v => v.lang.includes('en'));
+
+                if (femaleVoice) utterance.voice = femaleVoice;
+                if (onComplete) {
+                    utterance.onend = () => onComplete();
+                    utterance.onerror = () => onComplete();
+                }
+                synth.speak(utterance);
+            } catch (e) {
                 if (onComplete) onComplete();
-                return;
             }
-            
-            const utterance = new SpeechSynthesisUtterance(cleanText);
-            utterance.rate = 1.18;
-            utterance.pitch = 1.12;
-
-            if (availableVoices.length === 0) loadVoices();
-
-            const femaleVoice = availableVoices.find(v => 
-                v.lang.includes('en') && (
-                    v.name.includes('Female') ||
-                    v.name.includes('Zira') ||
-                    v.name.includes('Samantha') ||
-                    v.name.includes('Victoria') ||
-                    v.name.includes('Karen') ||
-                    v.name.includes('Google UK English Female') ||
-                    v.name.includes('Google US English') ||
-                    v.name.includes('Natural')
-                )
-            ) || availableVoices.find(v => v.lang.includes('en'));
-
-            if (femaleVoice) utterance.voice = femaleVoice;
-
-            if (onComplete) {
-                utterance.onend = () => onComplete();
-                utterance.onerror = () => onComplete();
-            }
-
-            synth.speak(utterance);
         }
 
         const themes = ['cyan', 'amber', 'crimson'];
@@ -1230,17 +1145,15 @@
         function resizeCanvases() {
             neuralBgCanvas.width = window.innerWidth;
             neuralBgCanvas.height = window.innerHeight;
-            fxCanvas.width = window.innerWidth;
-            fxCanvas.height = window.innerHeight;
         }
         window.addEventListener('resize', resizeCanvases);
 
-        // 3D NEURAL PLEXUS
-        const PLEXUS_NODE_COUNT = 180;
+        // OPTIMIZED NEURAL PLEXUS
+        const PLEXUS_NODE_COUNT = isMobileDevice ? 50 : 140;
         const neuralNodes = Array.from({ length: PLEXUS_NODE_COUNT }, () => ({
-            x: (Math.random() - 0.5) * 3600,
-            y: (Math.random() - 0.5) * 2400,
-            z: Math.random() * 1200 + 50,
+            x: (Math.random() - 0.5) * 3000,
+            y: (Math.random() - 0.5) * 2000,
+            z: Math.random() * 1000 + 50,
             vx: (Math.random() - 0.5) * 0.8,
             vy: (Math.random() - 0.5) * 0.8,
             vz: (Math.random() - 0.5) * 0.8
@@ -1254,9 +1167,9 @@
             const h = neuralBgCanvas.height;
             const cx = w / 2;
             const cy = h / 2;
-            const fov = 520;
+            const fov = 480;
 
-            plexusAngle += 0.0016;
+            plexusAngle += 0.002;
             const cosA = Math.cos(plexusAngle);
             const sinA = Math.sin(plexusAngle);
 
@@ -1265,20 +1178,15 @@
                 node.y += node.vy;
                 node.z += node.vz;
 
-                if (node.x < -1800) node.x = 1800; if (node.x > 1800) node.x = -1800;
-                if (node.y < -1200) node.y = 1200; if (node.y > 1200) node.y = -1200;
-                if (node.z < 50) node.z = 1250; if (node.z > 1250) node.z = 50;
+                if (node.x < -1500) node.x = 1500; if (node.x > 1500) node.x = -1500;
+                if (node.y < -1000) node.y = 1000; if (node.y > 1000) node.y = -1000;
+                if (node.z < 50) node.z = 1050; if (node.z > 1050) node.z = 50;
 
                 const rotX = node.x * cosA - node.z * sinA;
-                const rotZ = node.x * sinA + node.z * cosA + 750;
+                const rotZ = node.x * sinA + node.z * cosA + 650;
 
                 const scale = fov / (rotZ || 1);
-                return {
-                    x: cx + rotX * scale,
-                    y: cy + node.y * scale,
-                    scale: scale,
-                    z: rotZ
-                };
+                return { x: cx + rotX * scale, y: cy + node.y * scale, scale: scale };
             });
 
             for (let i = 0; i < projected.length; i++) {
@@ -1287,10 +1195,10 @@
                     const dy = projected[i].y - projected[j].y;
                     const dist = Math.hypot(dx, dy);
 
-                    if (dist < 180) {
-                        const alpha = (1 - dist / 180) * 0.35;
+                    if (dist < 140) {
+                        const alpha = (1 - dist / 140) * 0.3;
                         neuralCtx.strokeStyle = `rgba(0, 242, 255, ${alpha})`;
-                        neuralCtx.lineWidth = (1 - dist / 180) * 1.5;
+                        neuralCtx.lineWidth = 1;
                         neuralCtx.beginPath();
                         neuralCtx.moveTo(projected[i].x, projected[i].y);
                         neuralCtx.lineTo(projected[j].x, projected[j].y);
@@ -1299,35 +1207,27 @@
                 }
             }
 
-            projected.forEach(p => {
-                const radius = Math.max(1.2, p.scale * 3.5);
-                neuralCtx.fillStyle = "#00f2ff";
-                neuralCtx.beginPath();
-                neuralCtx.arc(p.x, p.y, radius, 0, Math.PI * 2);
-                neuralCtx.fill();
-            });
-
             requestAnimationFrame(renderNeuralPlexus);
         }
 
         // GPS RADAR
         let radarSweepAngle = 0;
         function renderGpsRadar() {
-            radarCtx.clearRect(0, 0, 40, 40);
-            const cx = 20;
-            const cy = 20;
+            radarCtx.clearRect(0, 0, 34, 34);
+            const cx = 17;
+            const cy = 17;
 
             radarCtx.strokeStyle = "rgba(0, 242, 255, 0.4)";
             radarCtx.lineWidth = 1;
             radarCtx.beginPath();
-            radarCtx.arc(cx, cy, 16, 0, Math.PI * 2);
-            radarCtx.arc(cx, cy, 8, 0, Math.PI * 2);
+            radarCtx.arc(cx, cy, 14, 0, Math.PI * 2);
+            radarCtx.arc(cx, cy, 7, 0, Math.PI * 2);
             radarCtx.stroke();
 
             radarSweepAngle += 0.05;
             radarCtx.beginPath();
             radarCtx.moveTo(cx, cy);
-            radarCtx.arc(cx, cy, 18, radarSweepAngle, radarSweepAngle + 0.5);
+            radarCtx.arc(cx, cy, 15, radarSweepAngle, radarSweepAngle + 0.5);
             radarCtx.fillStyle = "rgba(0, 242, 255, 0.35)";
             radarCtx.fill();
 
@@ -1352,7 +1252,7 @@
                     osc.frequency.setValueAtTime(300, audioCtx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.2);
                 }
-                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
@@ -1409,7 +1309,29 @@
             setCaret(caretPos + offset);
         }
 
-        terminalLog.onclick = () => setCaret(rawBuffer.length);
+        terminalLog.onclick = () => {
+            setCaret(rawBuffer.length);
+            if (isMobileDevice || INPUT_MODES[currentModeIndex] === "PHYSICAL ONLY") {
+                mobileProxy.focus();
+            }
+        };
+
+        mobileProxy.addEventListener('input', () => {
+            if (!isAuthorized) return;
+            const val = mobileProxy.value;
+            if (val) {
+                insertTextAtCaret(val);
+                mobileProxy.value = "";
+            }
+        });
+
+        mobileProxy.addEventListener('keydown', (e) => {
+            if (e.key === 'Backspace') {
+                deleteCharBeforeCaret();
+            } else if (e.key === 'Enter') {
+                insertTextAtCaret("\n");
+            }
+        });
 
         function selectAllBuffer() {
             if (rawBuffer.length === 0) return;
@@ -1493,21 +1415,14 @@
 
         function formatWordCase(template, targetWord) {
             if (!template) return targetWord.toLowerCase();
-            if (template === template.toUpperCase() && template.length > 1) {
-                return targetWord.toUpperCase();
-            }
-            if (template[0] === template[0].toUpperCase()) {
-                return targetWord.charAt(0).toUpperCase() + targetWord.slice(1).toLowerCase();
-            }
+            if (template === template.toUpperCase() && template.length > 1) return targetWord.toUpperCase();
+            if (template[0] === template[0].toUpperCase()) return targetWord.charAt(0).toUpperCase() + targetWord.slice(1).toLowerCase();
             return targetWord.toLowerCase();
         }
 
         function updatePredictionRibbon() {
             const rawToken = getActiveTokenBeforeCaret();
-            const left = rawBuffer.slice(0, caretPos);
-            const prevTokens = left.trim().split(/\s+/);
-            const prevWord = prevTokens.length > 1 ? prevTokens[prevTokens.length - 2] : "";
-            nlpWorker.postMessage({ rawToken, prevWord });
+            nlpWorker.postMessage({ rawToken });
         }
 
         function injectPrediction(word) {
@@ -1546,26 +1461,24 @@
             insertTextAtCaret(`\n[STARK_AI]: Processing query: "${query}"...`);
             
             setTimeout(() => {
-                let reply = "Directive executed. All spatial nodes operational.";
+                let reply = "Directive executed. Spatial matrix nominal.";
                 const q = query.toLowerCase();
 
                 if (q.includes("status") || q.includes("system")) {
-                    reply = "G-BOARD Core V9.2 running nominal at 60 FPS. Biometrics active, GPS lock confirmed.";
+                    reply = "G-BOARD Core V9.3 nominal. Multi-device frame pipeline verified.";
                 } else if (q.includes("who are you") || q.includes("identity")) {
-                    reply = "I am STARK AI, the neural coprocessor integrated into your Ghost_Keyboard OS.";
+                    reply = "I am STARK AI, the neural coprocessor inside Ghost_Keyboard.";
                 } else if (q.includes("help") || q.includes("command")) {
-                    reply = "Commands: /ai <prompt>, CLR (Flush), SPEAK (Readout), MIC (STT), NUM (Symbol Matrix), Ctrl+A (Select All).";
-                } else if (q.includes("time") || q.includes("date")) {
-                    reply = `Current local timestamp: ${new Date().toLocaleTimeString()} ${new Date().toLocaleDateString()}.`;
+                    reply = "Commands: /ai <prompt>, CLR (Flush), SPEAK (TTS), MIC (STT), NUM (Symbols).";
                 } else {
-                    reply = `Neural synthesis complete for: "${query}". Buffer state synced to memory bus.`;
+                    reply = `Neural synthesis complete for: "${query}". Buffer synced.`;
                 }
 
                 rawBuffer += `\n[STARK_AI]: ${reply}\n> `;
                 caretPos = rawBuffer.length;
                 renderTerminal();
                 speakText(reply);
-            }, 600);
+            }, 500);
         }
 
         function setInputMode(modeIndex) {
@@ -1577,6 +1490,7 @@
             if (mode === "PHYSICAL ONLY") {
                 cursor.style.display = 'none';
                 cachedInteractables.forEach(k => k.classList.remove('hover'));
+                if (isMobileDevice) mobileProxy.focus();
             }
         }
 
@@ -1604,7 +1518,7 @@
 
         function toggleSpeechRecognition() {
             if (!recognition) {
-                alert("Speech Recognition API is not supported in this browser.");
+                alert("Speech Recognition API unavailable.");
                 return;
             }
             const micKey = document.getElementById('k_MIC');
@@ -1630,7 +1544,7 @@
                 osc.frequency.setValueAtTime(860, audioCtx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(130, audioCtx.currentTime + 0.035);
 
-                gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.035);
 
                 if (panner) {
@@ -1649,16 +1563,14 @@
         }
 
         function copyBuffer() {
-            navigator.clipboard.writeText(rawBuffer).then(() => {
-                alert("Terminal Buffer Copied to Clipboard!");
-            });
+            navigator.clipboard.writeText(rawBuffer).then(() => alert("Buffer Copied!"));
         }
 
         function exportBuffer() {
             const blob = new Blob([rawBuffer], { type: 'text/plain;charset=utf-8' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = `G-BOARD_PROMPT_${Date.now()}.txt`;
+            link.download = `G-BOARD_LOG_${Date.now()}.txt`;
             link.click();
         }
 
@@ -1680,7 +1592,7 @@
                         try {
                             const revGeoRes = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`);
                             const geoData = await revGeoRes.json();
-                            const locality = geoData.locality || geoData.city || geoData.principalSubdivision || "SURAMPALEM";
+                            const locality = geoData.locality || geoData.city || "SURAMPALEM";
                             const country = geoData.countryCode || "IN";
                             document.getElementById('stat_loc').innerText = `${locality.toUpperCase()}, ${country}`;
                         } catch (e) {
@@ -1692,14 +1604,14 @@
                             const weatherData = await weatherRes.json();
                             document.getElementById('stat_temp').innerText = `${weatherData.current_weather.temperature}°C`;
                         } catch (e) {
-                            document.getElementById('stat_temp').innerText = "30.2°C";
+                            document.getElementById('stat_temp').innerText = "31.9°C";
                         }
                     },
                     () => {
                         document.getElementById('stat_loc').innerText = "SURAMPALEM, IN";
-                        document.getElementById('stat_temp').innerText = "30.2°C";
+                        document.getElementById('stat_temp').innerText = "31.9°C";
                     },
-                    { enableHighAccuracy: false, timeout: 6000, maximumAge: 60000 }
+                    { enableHighAccuracy: false, timeout: 5000, maximumAge: 60000 }
                 );
             }
         }
@@ -1725,7 +1637,7 @@
 
             peer.on('connection', (conn) => {
                 webrtcModal.classList.remove('open');
-                speakText("Mobile Gyroscopic Controller Paired");
+                speakText("Mobile Gyro Paired");
 
                 conn.on('data', (data) => {
                     if (data && data.x !== undefined && data.y !== undefined) {
@@ -1747,7 +1659,7 @@
                                 cursor.classList.add('locked');
                                 const normX = (targetX / window.innerWidth) * 2 - 1;
                                 handleKeyExecution(el, normX);
-                                emitKeyParticles(targetX, targetY);
+                                triggerKeyFlash(el);
                                 setTimeout(() => cursor.classList.remove('locked'), 200);
                             }
                         } else {
@@ -1866,11 +1778,11 @@
 
                     if (keyObj.primary === "CLR") btn.innerHTML += '<div id="clr_fill"></div>';
 
-                    btn.onclick = (e) => {
+                    btn.onclick = () => {
                         const rect = btn.getBoundingClientRect();
                         const normX = ((rect.left + rect.width / 2) / window.innerWidth) * 2 - 1;
                         handleKeyExecution(btn, normX);
-                        emitKeyParticles(e.clientX || (rect.left + rect.width / 2), e.clientY || (rect.top + rect.height / 2));
+                        triggerKeyFlash(btn);
                     };
 
                     rowDiv.appendChild(btn);
@@ -1911,7 +1823,7 @@
         lblPeerId.onclick = () => {
             if (lblPeerId.innerText && !lblPeerId.innerText.includes('CONNECTING')) {
                 navigator.clipboard.writeText(lblPeerId.innerText);
-                alert("Peer ID copied to clipboard!");
+                alert("Peer ID copied!");
             }
         };
 
@@ -1996,7 +1908,7 @@
             }
         }
 
-        // KEYBOARD SHORTCUTS
+        // PHYSICAL KEYBOARD SHORTCUTS
         window.addEventListener('keydown', async (e) => {
             if (!isAuthorized) return;
             const currentMode = INPUT_MODES[currentModeIndex];
@@ -2028,9 +1940,7 @@
                     }
                     renderTerminal();
                     playSpatialClick(0);
-                } catch (err) {
-                    console.log("Clipboard read blocked:", err);
-                }
+                } catch (err) {}
                 return;
             }
 
@@ -2084,7 +1994,7 @@
             }
         });
 
-        // MEDIAPIPE FACE RECOGNITION
+        // MEDIAPIPE FACE DETECTION (WITH ROBUST IOS UNLOCK FALLBACK)
         const faceDetection = new FaceDetection({
             locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/${file}`
         });
@@ -2093,47 +2003,57 @@
             minDetectionConfidence: 0.5
         });
 
+        function performUnlockSequence() {
+            if (isAuthorized) return;
+            isAuthorized = true;
+            isUnlockingInProgress = false;
+            securityShield.classList.add('unlocked');
+            if (isMobileDevice) {
+                setInputMode(2); // Auto-default to PHYSICAL ONLY on mobile for high FPS
+            }
+        }
+
         faceDetection.onResults((results) => {
             if (results.detections && results.detections.length > 0) {
                 lastFaceDetectedTime = Date.now();
 
-                if (!isAuthorized && !isSpeakingAuth) {
-                    scanProgress += 3.5;
+                if (!isAuthorized && !isUnlockingInProgress) {
+                    scanProgress += 4.0;
                     bioProgressFill.style.width = `${Math.min(100, scanProgress)}%`;
                     bioStatusText.innerText = `BIOMETRIC MESH SCAN: ${Math.round(scanProgress)}%`;
 
                     if (scanProgress >= 100) {
-                        isSpeakingAuth = true;
+                        isUnlockingInProgress = true;
                         bioApertureWrapper.classList.add('authorized');
-                        bioStatusText.innerText = "BIOMETRIC MESH SCAN - COMPLETE 100%";
+                        bioStatusText.innerText = "BIOMETRIC SCAN - 100% COMPLETE";
                         bioStatusText.style.color = "var(--success)";
                         bioProgressFill.style.backgroundColor = "var(--success)";
                         statSec.innerText = "AUTHORIZED";
                         statSec.className = "stat-val sec-auth";
                         playSecurityChime(true);
                         
-                        speakText("Scan Completed, Approved! Accessing Ghost Keyboard", () => {
-                            isAuthorized = true;
-                            isSpeakingAuth = false;
-                            securityShield.classList.add('unlocked');
+                        speakText("Scan Completed, Access Granted", () => {
+                            performUnlockSequence();
                         });
+
+                        setTimeout(() => performUnlockSequence(), 350);
                     }
                 }
             } else {
                 if (isAuthorized && (Date.now() - lastFaceDetectedTime > FACE_LOCK_TIMEOUT)) {
                     isAuthorized = false;
-                    isSpeakingAuth = false;
+                    isUnlockingInProgress = false;
                     scanProgress = 0;
                     bioProgressFill.style.width = "0%";
                     bioApertureWrapper.classList.remove('authorized');
-                    bioStatusText.innerText = "SECURITY LOCKDOWN - NO USER DETECTED";
+                    bioStatusText.innerText = "SECURITY LOCKDOWN";
                     bioStatusText.style.color = "var(--alert)";
                     statSec.innerText = "LOCKED";
                     statSec.className = "stat-val sec-locked";
                     securityShield.classList.remove('unlocked');
                     renderNeuralPlexus();
                     playSecurityChime(false);
-                } else if (!isAuthorized && !isSpeakingAuth) {
+                } else if (!isAuthorized && !isUnlockingInProgress) {
                     scanProgress = Math.max(0, scanProgress - 2.0);
                     bioProgressFill.style.width = `${scanProgress}%`;
                     bioStatusText.innerText = "ALIGN FACE WITHIN APERTURE";
@@ -2198,7 +2118,7 @@
                 const dy = (landmarks[8].y - landmarks[4].y) * window.innerHeight;
                 const pinchDist = Math.hypot(dx, dy);
 
-                // OPEN PALM FREEZE GESTURE
+                // OPEN PALM FREEZE
                 const middleTip = landmarks[12];
                 const ringTip = landmarks[16];
                 const pinkyTip = landmarks[20];
@@ -2215,7 +2135,7 @@
                     return;
                 }
 
-                // PINCH-FLICK DOWN GESTURE
+                // PINCH FLICK DOWN
                 const currentWristY = wrist.y * window.innerHeight;
                 if (prevWristY !== null && (Date.now() - lastGestureTime > 1000)) {
                     const deltaY = currentWristY - prevWristY;
@@ -2242,7 +2162,7 @@
                                 el.click();
                             } else {
                                 handleKeyExecution(el, spatialPanX);
-                                emitKeyParticles(x, y);
+                                triggerKeyFlash(el);
                             }
                         }
                     } else {
@@ -2259,7 +2179,7 @@
                                 if (fill) fill.style.width = Math.min((duration / 1.1) * 100, 100) + "%";
                                 if (duration >= 1.1) {
                                     handleKeyExecution(el, spatialPanX);
-                                    emitKeyParticles(x, y);
+                                    triggerKeyFlash(el);
                                     hoverStartTime = Date.now();
                                     if (fill) fill.style.width = "0%";
                                 }
@@ -2268,7 +2188,7 @@
                                     el.click();
                                 } else {
                                     handleKeyExecution(el, spatialPanX);
-                                    emitKeyParticles(x, y);
+                                    triggerKeyFlash(el);
                                 }
                                 hoverStartTime = Date.now();
                             }
@@ -2288,7 +2208,7 @@
             }
         });
 
-        // HIGH-FPS DECOUPLED FRAME DISPATCHER
+        // HIGH-FPS MULTI-DEVICE LAUNCHER
         startBtn.onclick = async () => {
             startBtn.style.display = 'none';
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -2298,13 +2218,12 @@
             loadVoices();
             renderNeuralPlexus();
             renderGpsRadar();
-            renderParticleFX();
             initWebRTCBridge();
 
             const constraints = {
                 video: {
-                    width: { ideal: 640 },
-                    height: { ideal: 480 },
+                    width: { ideal: isMobileDevice ? 320 : 640 },
+                    height: { ideal: isMobileDevice ? 240 : 480 },
                     facingMode: "user",
                     frameRate: { ideal: 60, max: 60 }
                 }
@@ -2322,14 +2241,15 @@
                     if (videoElement.readyState >= 2) {
                         frameCountTotal++;
                         
-                        // Decoupled Pipeline: Only scan Face every 30 frames once authorized
                         if (!isAuthorized) {
                             await faceDetection.send({ image: videoElement });
                         } else {
                             if (frameCountTotal % 30 === 0) {
                                 faceDetection.send({ image: videoElement });
                             }
-                            await hands.send({ image: videoElement });
+                            if (!isMobileDevice && INPUT_MODES[currentModeIndex] !== "PHYSICAL ONLY") {
+                                await hands.send({ image: videoElement });
+                            }
                         }
                     }
                     const now = new Date();
@@ -2338,7 +2258,7 @@
                 };
                 requestAnimationFrame(processFrame);
             } catch (err) {
-                alert("Camera Access Required to Enable Biometric Gate.");
+                alert("Camera Access Required for Biometric Gate.");
             }
         };
     </script>
