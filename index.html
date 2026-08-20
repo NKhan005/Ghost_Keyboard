@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="G-BOARD V9.1.1 - Complete Spatial Matrix OS with Shortcuts & Particle Engine">
-    <title>G-BOARD | SPATIAL OS V9.1.1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="G-BOARD V9.2.0 - Adaptive High-FPS Spatial Matrix Operating System">
+    <title>G-BOARD | SPATIAL OS V9.2.0</title>
     
-    <!-- Core Computer Vision & Engine CDNs -->
+    <!-- Computer Vision & Communication CDNs -->
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/face_detection.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
@@ -22,7 +22,7 @@
             --alert: #ff3b3b; 
             --success: #00ff66;
             --ai-purple: #bd00ff;
-            --panel-bg: rgba(2, 12, 22, 0.92);
+            --panel-bg: rgba(2, 12, 22, 0.94);
             --key-text: #00f2ff;
         }
 
@@ -30,7 +30,7 @@
             --neon: #ffb700;
             --neon-dim: rgba(255, 183, 0, 0.25);
             --glow: rgba(255, 183, 0, 0.65);
-            --panel-bg: rgba(20, 15, 3, 0.92);
+            --panel-bg: rgba(20, 15, 3, 0.94);
             --key-text: #ffb700;
         }
 
@@ -38,7 +38,7 @@
             --neon: #ff0055;
             --neon-dim: rgba(255, 0, 85, 0.25);
             --glow: rgba(255, 0, 85, 0.65);
-            --panel-bg: rgba(20, 3, 10, 0.92);
+            --panel-bg: rgba(20, 3, 10, 0.94);
             --key-text: #ff0055;
         }
 
@@ -58,14 +58,14 @@
             font-family: 'Segoe UI', system-ui, sans-serif; 
             overflow: hidden; 
             width: 100vw;
-            height: 100vh; 
+            height: 100dvh; 
             transition: color 0.2s ease, background 0.2s ease;
         }
         
         #video_input { 
             position: fixed; 
             width: 100vw; 
-            height: 100vh; 
+            height: 100dvh; 
             object-fit: cover; 
             transform: scaleX(-1); 
             opacity: 0.12; 
@@ -73,17 +73,16 @@
             filter: contrast(125%) brightness(85%); 
         }
 
-        /* PARTICLE FX CANVAS */
         #fx_canvas {
             position: fixed;
             inset: 0;
             width: 100vw;
-            height: 100vh;
+            height: 100dvh;
             pointer-events: none;
             z-index: 120;
         }
 
-        /* FULL-SCREEN BIOMETRIC SECURITY SHIELD */
+        /* BIOMETRIC SHIELD */
         #security_shield {
             position: fixed;
             inset: 0;
@@ -106,15 +105,15 @@
             position: absolute;
             inset: 0;
             width: 100vw;
-            height: 100vh;
+            height: 100dvh;
             pointer-events: none;
             z-index: 1;
         }
 
         #bio_aperture_wrapper {
             position: relative;
-            width: clamp(270px, 36vmin, 340px);
-            height: clamp(270px, 36vmin, 340px);
+            width: clamp(240px, 32vmin, 320px);
+            height: clamp(240px, 32vmin, 320px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -195,12 +194,12 @@
             position: relative;
             z-index: 10;
             font-family: 'Orbitron', monospace, sans-serif;
-            font-size: clamp(0.9rem, 2vw, 1.25rem);
-            letter-spacing: clamp(3px, 0.6vw, 6px);
+            font-size: clamp(0.85rem, 1.8vw, 1.15rem);
+            letter-spacing: clamp(2px, 0.5vw, 5px);
             font-weight: 800;
             color: #00f2ff;
             text-align: center;
-            margin-top: 38px;
+            margin-top: 30px;
             text-shadow: 0 0 16px var(--glow);
             text-transform: uppercase;
         }
@@ -208,14 +207,13 @@
         #bio_progress_bar {
             position: relative;
             z-index: 10;
-            width: min(340px, 86vw);
+            width: min(320px, 84vw);
             height: 6px;
             background: rgba(0, 30, 50, 0.7);
             border-radius: 4px;
-            margin-top: 14px;
+            margin-top: 12px;
             overflow: hidden;
             border: 1px solid rgba(0, 242, 255, 0.25);
-            box-shadow: 0 0 12px rgba(0, 0, 0, 0.8);
         }
 
         #bio_progress_fill {
@@ -226,11 +224,11 @@
             transition: width 0.08s linear, background-color 0.3s;
         }
 
-        /* ROBOTIC HUD RETICLE */
+        /* CURSOR RETICLE */
         #finger_cursor {
             position: fixed;
-            width: 38px;
-            height: 38px;
+            width: 36px;
+            height: 36px;
             pointer-events: none;
             z-index: 150;
             display: none;
@@ -261,16 +259,7 @@
             transition: all 0.15s ease;
         }
 
-        #finger_cursor .reticle-core::before,
-        #finger_cursor .reticle-core::after {
-            content: '';
-            position: absolute;
-            background: var(--neon);
-        }
-        #finger_cursor .reticle-core::before { top: -6px; left: 4px; width: 2px; height: 4px; }
-        #finger_cursor .reticle-core::after { left: -6px; top: 4px; height: 2px; width: 4px; }
-
-        #finger_cursor.hovering { width: 44px; height: 44px; }
+        #finger_cursor.hovering { width: 42px; height: 42px; }
         #finger_cursor.hovering .reticle-bracket {
             border-style: solid;
             border-width: 2px;
@@ -292,13 +281,13 @@
 
         #main_title { 
             position: fixed; 
-            top: 28px; 
+            top: clamp(24px, 4vh, 32px); 
             left: 50%; 
             transform: translateX(-50%); 
             font-family: 'Orbitron', sans-serif; 
-            font-size: clamp(1.1rem, 2.3vw, 1.8rem); 
+            font-size: clamp(1rem, 2vw, 1.6rem); 
             font-weight: 900; 
-            letter-spacing: clamp(5px, 1.2vw, 12px); 
+            letter-spacing: clamp(4px, 1vw, 10px); 
             text-shadow: 0 0 20px var(--glow); 
             z-index: 100;
             color: #ffffff; 
@@ -308,14 +297,14 @@
             white-space: nowrap;
         }
 
-        /* REAL-TIME TECH RSS TICKER TAPE */
+        /* RSS TICKER WITH ISOLATED BADGE */
         #rss_ticker_bar {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
-            height: 22px;
-            background: rgba(1, 8, 16, 0.95);
+            height: 24px;
+            background: #01060d;
             border-bottom: 1px solid var(--neon-dim);
             z-index: 110;
             display: flex;
@@ -325,22 +314,40 @@
             font-size: 0.65rem;
         }
 
+        .ticker-tag-container {
+            position: relative;
+            z-index: 5;
+            background: #01060d;
+            padding-right: 8px;
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+
         .ticker-tag {
             background: var(--neon);
-            color: #000;
+            color: #000000;
             font-weight: 900;
-            padding: 2px 8px;
-            margin-right: 10px;
+            padding: 2px 10px;
             font-family: 'Orbitron', sans-serif;
             flex-shrink: 0;
+            border-radius: 0 2px 2px 0;
+            letter-spacing: 1px;
+        }
+
+        .ticker-marquee-wrapper {
+            position: relative;
+            flex: 1;
+            overflow: hidden;
+            white-space: nowrap;
+            display: flex;
         }
 
         .ticker-content {
-            white-space: nowrap;
             display: inline-block;
-            animation: marquee 35s linear infinite;
+            animation: marquee 32s linear infinite;
             color: #ffffff;
-            opacity: 0.85;
+            opacity: 0.9;
         }
 
         @keyframes marquee {
@@ -348,26 +355,26 @@
             100% { transform: translateX(-100%); }
         }
 
-        /* TELEMETRY HUD & LIVE GPS RADAR */
+        /* TELEMETRY HUD */
         #telemetry_box { 
             position: fixed; 
-            top: 32px; 
-            right: 15px; 
-            width: min(285px, 85vw); 
-            padding: 10px 12px; 
+            top: clamp(28px, 4.5vh, 34px); 
+            right: clamp(10px, 2vw, 20px); 
+            width: clamp(210px, 20vw, 260px); 
+            padding: 8px 12px; 
             background: var(--panel-bg); 
-            -webkit-backdrop-filter: blur(12px);
-            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(14px);
+            backdrop-filter: blur(14px); 
             border: 1px solid rgba(255, 255, 255, 0.15); 
             border-right: 4px solid var(--neon);
             border-radius: 6px; 
             font-family: 'JetBrains Mono', monospace; 
-            font-size: clamp(0.58rem, 1.3vw, 0.7rem); 
+            font-size: clamp(0.55rem, 1vw, 0.66rem); 
             z-index: 100;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 3px;
         }
 
         .sys-status-header {
@@ -390,8 +397,8 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-top: 4px;
-            padding-top: 4px;
+            margin-top: 3px;
+            padding-top: 3px;
             border-top: 1px dashed var(--neon-dim);
         }
 
@@ -399,23 +406,36 @@
         .radar-label-coords { font-size: 0.55rem; opacity: 0.7; }
 
         #gps_radar_canvas {
-            width: 48px;
-            height: 48px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             border: 1px solid var(--neon);
             background: rgba(0, 20, 30, 0.8);
         }
 
+        /* FLUID SPATIAL WORKSPACE (SLIDES WHEN CONFIG OPENS) */
         #workspace {
             width: 100vw;
-            height: 100vh;
+            height: 100dvh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            gap: 6px;
-            padding-bottom: 95px;
-            transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1), opacity 0.3s ease;
+            gap: clamp(4px, 0.8vh, 8px);
+            padding-top: clamp(20px, 4vh, 40px);
+            padding-bottom: clamp(65px, 10vh, 85px);
+            transition: transform 0.35s cubic-bezier(0.2, 0, 0, 1), opacity 0.3s ease;
+            z-index: 10;
+        }
+
+        body.dock-active #workspace {
+            transform: translateX(-140px);
+        }
+
+        @media (max-width: 900px) {
+            body.dock-active #workspace {
+                transform: scale(0.85) translateX(-80px);
+            }
         }
 
         #workspace.minimized {
@@ -426,10 +446,9 @@
 
         #prediction_ribbon {
             display: flex;
-            gap: 8px;
-            width: min(96vw, 920px);
+            gap: 6px;
+            width: min(92vw, 840px);
             justify-content: center;
-            z-index: 10;
         }
 
         .predict-pill {
@@ -437,9 +456,9 @@
             background: rgba(0, 242, 255, 0.08);
             border: 1px solid var(--neon-dim);
             border-radius: 6px;
-            padding: 6px 12px;
+            padding: 5px 8px;
             font-family: 'Orbitron', monospace;
-            font-size: clamp(0.7rem, 1.4vw, 0.85rem);
+            font-size: clamp(0.65rem, 1.2vw, 0.8rem);
             font-weight: 700;
             color: #ffffff;
             text-align: center;
@@ -448,7 +467,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            min-height: 32px;
+            min-height: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -459,30 +478,29 @@
             background: var(--neon);
             color: #000000;
             box-shadow: 0 0 16px var(--neon);
-            transform: scale(1.03);
+            transform: scale(1.02);
             opacity: 1;
         }
 
         #keyboard_overlay { 
             display: flex; 
             flex-direction: column; 
-            gap: clamp(3px, 0.7vh, 5px); 
-            padding: clamp(6px, 1.2vw, 12px); 
-            background: rgba(2, 18, 24, 0.65); 
+            gap: clamp(2px, 0.5vh, 4px); 
+            padding: clamp(6px, 1vw, 10px); 
+            background: rgba(2, 18, 24, 0.75); 
             -webkit-backdrop-filter: blur(16px);
             backdrop-filter: blur(16px); 
             border-radius: 10px; 
             border: 1px solid rgba(255, 255, 255, 0.12); 
-            z-index: 10;
             box-shadow: 0 0 35px rgba(0, 0, 0, 0.7);
-            width: min(96vw, 920px);
+            width: min(92vw, 840px);
         }
 
-        .row { display: flex; justify-content: center; gap: clamp(2px, 0.4vw, 5px); width: 100%; }
+        .row { display: flex; justify-content: center; gap: clamp(2px, 0.3vw, 4px); width: 100%; }
         
         .key { 
             flex: 1;
-            height: clamp(32px, 5vh, 42px); 
+            height: clamp(28px, 4.4vh, 38px); 
             border: 1px solid rgba(255, 255, 255, 0.18); 
             display: flex; 
             flex-direction: column;
@@ -493,7 +511,7 @@
             background: rgba(255, 255, 255, 0.04); 
             transition: transform 0.06s ease, background 0.06s ease, box-shadow 0.1s ease; 
             font-family: 'Orbitron', 'JetBrains Mono', sans-serif; 
-            font-size: clamp(0.68rem, 1.3vw, 0.85rem); 
+            font-size: clamp(0.62rem, 1.1vw, 0.78rem); 
             position: relative; 
             overflow: hidden; 
             color: var(--key-text);
@@ -522,7 +540,7 @@
             background: var(--neon); 
             color: #000000; 
             box-shadow: 0 0 16px var(--neon); 
-            transform: scale(1.05); 
+            transform: scale(1.04); 
             outline: none;
             z-index: 2;
         }
@@ -546,11 +564,11 @@
 
         #terminal_container {
             position: fixed;
-            bottom: 12px;
+            bottom: clamp(6px, 1.5vh, 12px);
             left: 50%;
             transform: translateX(-50%);
-            width: min(94vw, 920px);
-            background: rgba(2, 10, 14, 0.95);
+            width: min(92vw, 840px);
+            background: rgba(2, 10, 14, 0.96);
             border: 1px solid var(--neon-dim);
             border-left: 5px solid var(--neon);
             border-radius: 0 8px 8px 0;
@@ -558,25 +576,35 @@
             z-index: 90;
             display: flex;
             flex-direction: column;
-            transition: border-color 0.2s ease;
+            transition: transform 0.35s cubic-bezier(0.2, 0, 0, 1);
+        }
+
+        body.dock-active #terminal_container {
+            transform: translateX(calc(-50% - 140px));
+        }
+
+        @media (max-width: 900px) {
+            body.dock-active #terminal_container {
+                transform: translateX(calc(-50% - 80px)) scale(0.85);
+            }
         }
 
         #terminal_log { 
             width: 100%;
-            padding: 12px 18px; 
+            padding: 8px 14px; 
             font-family: 'JetBrains Mono', monospace; 
-            font-size: clamp(0.88rem, 1.5vw, 1.05rem); 
+            font-size: clamp(0.78rem, 1.3vw, 0.95rem); 
             white-space: pre-wrap;
             word-break: break-word;
-            min-height: 52px; 
-            max-height: 180px;
+            min-height: 42px; 
+            max-height: 130px;
             overflow-y: auto;
             color: #ffffff;
             cursor: text;
-            line-height: 1.45;
+            line-height: 1.4;
         }
 
-        #terminal_log::-webkit-scrollbar { width: 5px; }
+        #terminal_log::-webkit-scrollbar { width: 4px; }
         #terminal_log::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
         #terminal_log::-webkit-scrollbar-thumb { background: var(--neon); border-radius: 4px; }
 
@@ -591,8 +619,8 @@
 
         .terminal-caret {
             display: inline-block;
-            width: 9px;
-            height: 1.18em;
+            width: 8px;
+            height: 1.15em;
             background: var(--neon);
             box-shadow: 0 0 10px var(--neon);
             margin: 0 1px;
@@ -602,24 +630,24 @@
 
         @keyframes caretBlink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
 
-        /* COMMAND SIDEBAR DOCK */
+        /* COMMAND DOCK */
         #sidebar_dock {
             position: fixed;
             top: 0;
-            right: -320px;
-            width: 300px;
-            height: 100vh;
+            right: -300px;
+            width: 280px;
+            height: 100dvh;
             background: var(--panel-bg); 
-            -webkit-backdrop-filter: blur(14px);
-            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(16px);
             border-left: 2px solid var(--neon);
             box-shadow: -8px 0 30px rgba(0,0,0,0.85);
-            padding: 20px 16px;
+            padding: 16px 14px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
             z-index: 160;
-            transition: right 0.3s cubic-bezier(0.2, 0, 0, 1);
+            transition: right 0.35s cubic-bezier(0.2, 0, 0, 1);
             overflow-y: auto;
         }
 
@@ -627,15 +655,15 @@
 
         #btn_sidebar_toggle {
             position: fixed;
-            top: 30px;
-            left: 15px;
+            top: clamp(28px, 4.5vh, 34px); 
+            left: clamp(10px, 2vw, 20px); 
             background: rgba(2, 18, 24, 0.85);
             border: 1px solid var(--neon);
             color: var(--neon);
-            padding: 8px 16px;
+            padding: 6px 14px;
             border-radius: 6px;
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-weight: 700;
             letter-spacing: 1.5px;
             cursor: pointer;
@@ -654,7 +682,7 @@
         .dock-header {
             color: var(--neon);
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             font-weight: bold;
             letter-spacing: 1.5px;
             border-bottom: 1px solid var(--neon-dim);
@@ -665,16 +693,16 @@
         }
 
         .dock-close-btn { background: none; border: none; color: var(--neon); font-size: 1rem; cursor: pointer; }
-        .control-group { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
+        .control-group { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
 
         .sidebar-btn {
             background: rgba(255, 255, 255, 0.06);
             border: 1px solid var(--neon-dim);
             color: #ffffff;
-            padding: 10px 12px;
+            padding: 9px 11px;
             border-radius: 6px;
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             font-weight: 700;
             letter-spacing: 1px;
             cursor: pointer;
@@ -700,30 +728,30 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: min(380px, 90vw);
+            width: min(360px, 88vw);
             background: rgba(2, 14, 24, 0.96);
             border: 2px solid var(--neon);
             box-shadow: 0 0 40px var(--glow);
-            padding: 20px;
+            padding: 18px;
             border-radius: 8px;
             z-index: 195;
             display: none;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
             text-align: center;
         }
 
         #webrtc_modal.open { display: flex; }
 
         .modal-heading { font-family: 'Orbitron', sans-serif; font-weight: 800; color: var(--neon); }
-        .modal-subtext { font-size: 0.75rem; opacity: 0.85; }
+        .modal-subtext { font-size: 0.72rem; opacity: 0.85; }
 
         .peer-id-badge {
             background: rgba(0, 242, 255, 0.1);
             border: 1px dashed var(--neon);
             padding: 8px;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             letter-spacing: 1px;
             color: #ffffff;
             cursor: pointer;
@@ -734,14 +762,14 @@
             top: 50%; 
             left: 50%; 
             transform: translate(-50%, -50%); 
-            padding: 18px 40px; 
+            padding: 16px 36px; 
             font-family: 'Orbitron', sans-serif; 
             background: var(--neon); 
             color: #000000; 
             border: none; 
             cursor: pointer; 
             z-index: 200; 
-            font-size: clamp(1rem, 2vw, 1.25rem); 
+            font-size: clamp(0.95rem, 1.8vw, 1.2rem); 
             font-weight: 900; 
             letter-spacing: 3px;
             border-radius: 8px; 
@@ -756,12 +784,17 @@
     <video id="video_input"></video>
     <canvas id="fx_canvas"></canvas>
 
+    <!-- RSS TICKER BAR -->
     <div id="rss_ticker_bar">
-        <span class="ticker-tag">NET:RSS</span>
-        <span class="ticker-content" id="rss_ticker_stream">INITIALIZING GLOBAL TELEMETRY FEED... NEURAL MATRIX SYNC 100%... QUANTUM ENCRYPTION ACTIVE... STARK AI SYSTEM READY...</span>
+        <div class="ticker-tag-container">
+            <span class="ticker-tag">NET:RSS</span>
+        </div>
+        <div class="ticker-marquee-wrapper">
+            <span class="ticker-content" id="rss_ticker_stream">INITIALIZING GLOBAL TELEMETRY FEED... NEURAL MATRIX SYNC 100%... QUANTUM ENCRYPTION ACTIVE... STARK AI SYSTEM READY...</span>
+        </div>
     </div>
 
-    <!-- FULL-SCREEN HOLOGRAPHIC BIOMETRIC APERTURE -->
+    <!-- BIOMETRIC SHIELD -->
     <div id="security_shield">
         <canvas id="neural_background_canvas"></canvas>
 
@@ -807,7 +840,7 @@
                 <div class="radar-label-title">GPS RADAR</div>
                 <div class="radar-label-coords" id="stat_coords">--° N, --° E</div>
             </div>
-            <canvas id="gps_radar_canvas" width="48" height="48"></canvas>
+            <canvas id="gps_radar_canvas" width="40" height="40"></canvas>
         </div>
     </div>
 
@@ -864,7 +897,7 @@
         </div>
     </div>
 
-    <!-- WEBRTC SMARTPHONE GYROSCOPE MODAL -->
+    <!-- WEBRTC MODAL -->
     <div id="webrtc_modal">
         <div class="modal-heading">SMARTPHONE GYRO BRIDGE</div>
         <div class="modal-subtext">Peer ID channel armed for companion pairing:</div>
@@ -928,7 +961,6 @@
         const synth = window.speechSynthesis;
         let availableVoices = [];
 
-        // DYNAMIC HEATMAP METRICS
         const keyHitCounts = {};
         function recordKeyHit(keyChar) {
             if (!keyChar) return;
@@ -939,11 +971,11 @@
             }
         }
 
-        // KINETIC CYBERPUNK PARTICLE ENGINE
+        // KINETIC PARTICLE ENGINE
         const particles = [];
         function emitKeyParticles(x, y) {
             const themeColor = getComputedStyle(document.body).getPropertyValue('--neon').trim() || '#00f2ff';
-            for (let i = 0; i < 18; i++) {
+            for (let i = 0; i < 16; i++) {
                 const angle = Math.random() * Math.PI * 2;
                 const speed = Math.random() * 5 + 2;
                 particles.push({
@@ -953,7 +985,7 @@
                     vy: Math.sin(angle) * speed,
                     life: 1.0,
                     decay: Math.random() * 0.04 + 0.02,
-                    size: Math.random() * 3.5 + 1.5,
+                    size: Math.random() * 3 + 1.5,
                     color: themeColor
                 });
             }
@@ -974,7 +1006,7 @@
 
                 fxCtx.fillStyle = p.color;
                 fxCtx.globalAlpha = p.life;
-                fxCtx.shadowBlur = 10;
+                fxCtx.shadowBlur = 8;
                 fxCtx.shadowColor = p.color;
                 fxCtx.beginPath();
                 fxCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
@@ -985,7 +1017,7 @@
             requestAnimationFrame(renderParticleFX);
         }
 
-        // INLINE WEB WORKER: LEVENSHTEIN AUTOCORRECT
+        // NLP LEVENSHTEIN WORKER
         const workerCode = `
             const DICTIONARY = [
                 "ACTIVATE", "ACCESS", "ACCOUNT", "ACTION", "ACTIVE", "ADD", "ADDRESS", "ADVANCED", "AGAIN", "AGENT",
@@ -1204,7 +1236,7 @@
         window.addEventListener('resize', resizeCanvases);
 
         // 3D NEURAL PLEXUS
-        const PLEXUS_NODE_COUNT = 220;
+        const PLEXUS_NODE_COUNT = 180;
         const neuralNodes = Array.from({ length: PLEXUS_NODE_COUNT }, () => ({
             x: (Math.random() - 0.5) * 3600,
             y: (Math.random() - 0.5) * 2400,
@@ -1216,6 +1248,7 @@
 
         let plexusAngle = 0;
         function renderNeuralPlexus() {
+            if (isAuthorized) return;
             neuralCtx.clearRect(0, 0, neuralBgCanvas.width, neuralBgCanvas.height);
             const w = neuralBgCanvas.width;
             const h = neuralBgCanvas.height;
@@ -1254,10 +1287,10 @@
                     const dy = projected[i].y - projected[j].y;
                     const dist = Math.hypot(dx, dy);
 
-                    if (dist < 200) {
-                        const alpha = (1 - dist / 200) * (isAuthorized ? 0.42 : 0.35);
-                        neuralCtx.strokeStyle = isAuthorized ? `rgba(0, 255, 102, ${alpha})` : `rgba(0, 242, 255, ${alpha})`;
-                        neuralCtx.lineWidth = (1 - dist / 200) * 1.8;
+                    if (dist < 180) {
+                        const alpha = (1 - dist / 180) * 0.35;
+                        neuralCtx.strokeStyle = `rgba(0, 242, 255, ${alpha})`;
+                        neuralCtx.lineWidth = (1 - dist / 180) * 1.5;
                         neuralCtx.beginPath();
                         neuralCtx.moveTo(projected[i].x, projected[i].y);
                         neuralCtx.lineTo(projected[j].x, projected[j].y);
@@ -1267,39 +1300,34 @@
             }
 
             projected.forEach(p => {
-                const radius = Math.max(1.2, p.scale * 3.8);
-                neuralCtx.fillStyle = isAuthorized ? "#00ff66" : "#00f2ff";
-                neuralCtx.shadowBlur = 12;
-                neuralCtx.shadowColor = isAuthorized ? "#00ff66" : "#00f2ff";
+                const radius = Math.max(1.2, p.scale * 3.5);
+                neuralCtx.fillStyle = "#00f2ff";
                 neuralCtx.beginPath();
                 neuralCtx.arc(p.x, p.y, radius, 0, Math.PI * 2);
                 neuralCtx.fill();
-                neuralCtx.shadowBlur = 0;
             });
 
-            if (!isAuthorized) {
-                requestAnimationFrame(renderNeuralPlexus);
-            }
+            requestAnimationFrame(renderNeuralPlexus);
         }
 
-        // HOLOGRAPHIC GPS RADAR
+        // GPS RADAR
         let radarSweepAngle = 0;
         function renderGpsRadar() {
-            radarCtx.clearRect(0, 0, 48, 48);
-            const cx = 24;
-            const cy = 24;
+            radarCtx.clearRect(0, 0, 40, 40);
+            const cx = 20;
+            const cy = 20;
 
             radarCtx.strokeStyle = "rgba(0, 242, 255, 0.4)";
             radarCtx.lineWidth = 1;
             radarCtx.beginPath();
-            radarCtx.arc(cx, cy, 20, 0, Math.PI * 2);
-            radarCtx.arc(cx, cy, 10, 0, Math.PI * 2);
+            radarCtx.arc(cx, cy, 16, 0, Math.PI * 2);
+            radarCtx.arc(cx, cy, 8, 0, Math.PI * 2);
             radarCtx.stroke();
 
             radarSweepAngle += 0.05;
             radarCtx.beginPath();
             radarCtx.moveTo(cx, cy);
-            radarCtx.arc(cx, cy, 22, radarSweepAngle, radarSweepAngle + 0.5);
+            radarCtx.arc(cx, cy, 18, radarSweepAngle, radarSweepAngle + 0.5);
             radarCtx.fillStyle = "rgba(0, 242, 255, 0.35)";
             radarCtx.fill();
 
@@ -1522,7 +1550,7 @@
                 const q = query.toLowerCase();
 
                 if (q.includes("status") || q.includes("system")) {
-                    reply = "G-BOARD Core V9.1 running nominal at 60 FPS. Biometrics active, GPS lock confirmed.";
+                    reply = "G-BOARD Core V9.2 running nominal at 60 FPS. Biometrics active, GPS lock confirmed.";
                 } else if (q.includes("who are you") || q.includes("identity")) {
                     reply = "I am STARK AI, the neural coprocessor integrated into your Ghost_Keyboard OS.";
                 } else if (q.includes("help") || q.includes("command")) {
@@ -1664,12 +1692,12 @@
                             const weatherData = await weatherRes.json();
                             document.getElementById('stat_temp').innerText = `${weatherData.current_weather.temperature}°C`;
                         } catch (e) {
-                            document.getElementById('stat_temp').innerText = "31.5°C";
+                            document.getElementById('stat_temp').innerText = "30.2°C";
                         }
                     },
                     () => {
                         document.getElementById('stat_loc').innerText = "SURAMPALEM, IN";
-                        document.getElementById('stat_temp').innerText = "31.5°C";
+                        document.getElementById('stat_temp').innerText = "30.2°C";
                     },
                     { enableHighAccuracy: false, timeout: 6000, maximumAge: 60000 }
                 );
@@ -1735,7 +1763,7 @@
             });
         }
 
-        // QWERTY & SYMBOL MATRICES
+        // KEYBOARD LAYOUT
         const qwertyRows = [
             [
                 { primary: "`", shift: "~" }, { primary: "1", shift: "!" }, { primary: "2", shift: "@" }, 
@@ -1854,8 +1882,17 @@
 
         buildKeyboard();
 
-        document.getElementById('btn_sidebar_toggle').onclick = () => sidebarDock.classList.toggle('open');
-        document.getElementById('btn_dock_close').onclick = () => sidebarDock.classList.remove('open');
+        const toggleDock = () => {
+            const isOpen = sidebarDock.classList.toggle('open');
+            if (isOpen) {
+                document.body.classList.add('dock-active');
+            } else {
+                document.body.classList.remove('dock-active');
+            }
+        };
+
+        document.getElementById('btn_sidebar_toggle').onclick = toggleDock;
+        document.getElementById('btn_dock_close').onclick = toggleDock;
         document.getElementById('btn_toggle_theme').onclick = cycleTheme;
         document.getElementById('btn_export_doc').onclick = exportBuffer;
         document.getElementById('btn_clear_buffer').onclick = () => {
@@ -1959,13 +1996,12 @@
             }
         }
 
-        // PHYSICAL KEYBOARD SHORTCUTS ENGINE
+        // KEYBOARD SHORTCUTS
         window.addEventListener('keydown', async (e) => {
             if (!isAuthorized) return;
             const currentMode = INPUT_MODES[currentModeIndex];
             if (currentMode === "VISION ONLY") return;
 
-            // 1. CTRL + A / CMD + A -> SELECT ALL
             if ((e.ctrlKey || e.metaKey) && (e.key === 'a' || e.key === 'A')) {
                 e.preventDefault();
                 selectAllBuffer();
@@ -1973,14 +2009,12 @@
                 return;
             }
 
-            // 2. CTRL + C -> COPY BUFFER
             if ((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'C')) {
                 e.preventDefault();
                 copyBuffer();
                 return;
             }
 
-            // 3. CTRL + V -> PASTE CLIPBOARD
             if ((e.ctrlKey || e.metaKey) && (e.key === 'v' || e.key === 'V')) {
                 e.preventDefault();
                 try {
@@ -2000,7 +2034,6 @@
                 return;
             }
 
-            // 4. CTRL + BACKSPACE -> DELETE WORD
             if ((e.ctrlKey || e.metaKey) && e.key === "Backspace") {
                 e.preventDefault();
                 deleteLastWord();
@@ -2008,7 +2041,6 @@
                 return;
             }
 
-            // Regular Navigation / Typing
             if (e.key === "ArrowLeft") {
                 e.preventDefault();
                 clearBufferSelection();
@@ -2066,7 +2098,7 @@
                 lastFaceDetectedTime = Date.now();
 
                 if (!isAuthorized && !isSpeakingAuth) {
-                    scanProgress += 2.5;
+                    scanProgress += 3.5;
                     bioProgressFill.style.width = `${Math.min(100, scanProgress)}%`;
                     bioStatusText.innerText = `BIOMETRIC MESH SCAN: ${Math.round(scanProgress)}%`;
 
@@ -2102,7 +2134,7 @@
                     renderNeuralPlexus();
                     playSecurityChime(false);
                 } else if (!isAuthorized && !isSpeakingAuth) {
-                    scanProgress = Math.max(0, scanProgress - 1.5);
+                    scanProgress = Math.max(0, scanProgress - 2.0);
                     bioProgressFill.style.width = `${scanProgress}%`;
                     bioStatusText.innerText = "ALIGN FACE WITHIN APERTURE";
                     bioStatusText.style.color = "var(--neon)";
@@ -2110,7 +2142,7 @@
             }
         });
 
-        // HAND TRACKING & MULTI-GESTURE RECOGNITION PIPELINE
+        // HIGH-FPS MEDIAPIPE HANDS
         const hands = new Hands({locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`});
         hands.setOptions({ 
             maxNumHands: 1,
@@ -2123,7 +2155,6 @@
         let hoverStartTime = 0;
         let isPinching = false;
         const TRIGGER_DWELL = 0.65;
-
         let prevWristY = null;
         let lastGestureTime = 0;
 
@@ -2167,7 +2198,7 @@
                 const dy = (landmarks[8].y - landmarks[4].y) * window.innerHeight;
                 const pinchDist = Math.hypot(dx, dy);
 
-                // GESTURE 1: FULL OPEN PALM FREEZE
+                // OPEN PALM FREEZE GESTURE
                 const middleTip = landmarks[12];
                 const ringTip = landmarks[16];
                 const pinkyTip = landmarks[20];
@@ -2184,7 +2215,7 @@
                     return;
                 }
 
-                // GESTURE 2: PINCH-FLICK DOWN (TOGGLE HUD BAR)
+                // PINCH-FLICK DOWN GESTURE
                 const currentWristY = wrist.y * window.innerHeight;
                 if (prevWristY !== null && (Date.now() - lastGestureTime > 1000)) {
                     const deltaY = currentWristY - prevWristY;
@@ -2257,6 +2288,7 @@
             }
         });
 
+        // HIGH-FPS DECOUPLED FRAME DISPATCHER
         startBtn.onclick = async () => {
             startBtn.style.display = 'none';
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -2274,7 +2306,7 @@
                     width: { ideal: 640 },
                     height: { ideal: 480 },
                     facingMode: "user",
-                    frameRate: { ideal: 30, max: 60 }
+                    frameRate: { ideal: 60, max: 60 }
                 }
             };
 
@@ -2285,13 +2317,18 @@
                 await videoElement.play();
                 await bioLiveVideo.play();
 
-                let frameFlip = 0;
+                let frameCountTotal = 0;
                 const processFrame = async () => {
                     if (videoElement.readyState >= 2) {
-                        frameFlip++;
-                        if (frameFlip % 2 === 0) {
+                        frameCountTotal++;
+                        
+                        // Decoupled Pipeline: Only scan Face every 30 frames once authorized
+                        if (!isAuthorized) {
                             await faceDetection.send({ image: videoElement });
                         } else {
+                            if (frameCountTotal % 30 === 0) {
+                                faceDetection.send({ image: videoElement });
+                            }
                             await hands.send({ image: videoElement });
                         }
                     }
